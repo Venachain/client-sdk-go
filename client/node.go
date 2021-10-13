@@ -1,0 +1,137 @@
+package client
+
+import (
+	"encoding/json"
+	"errors"
+
+	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
+	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
+)
+
+type NodeClient struct {
+	ContractClient
+	NodeName string
+}
+
+// 必传参数为<publicKey>: 节点公钥，用于节点间安全通信。节点的公私钥对可由ethkey工具产生。
+//<externalIP>: 节点外网IP
+//<internalIP>: 节点内网IP
+func (nodeClient NodeClient) NodeAdd(txparam common_sdk.TxParams, requestNodeInfo syscontracts.NodeInfo) (string, error) {
+	funcName := "add"
+	nodeInfo, err := setNodeInfoDefault(nodeClient, requestNodeInfo)
+	if err != nil {
+		return "", err
+	}
+	bytes, _ := json.Marshal(nodeInfo)
+	strJson := string(bytes)
+	funcParams := []string{strJson}
+
+	result, err := nodeClient.contractCallWrap(txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	if err != nil {
+		return "", err
+	}
+	res := result[0].([]interface{})
+	return res[0].(string), nil
+}
+
+// 将节点从节点列表中删除。在下一次peers更新后，被删除的节点会被PlatONE网络中的其他节点断开连接。
+func (nodeClient NodeClient) NodeDelete(txparam common_sdk.TxParams) (string, error) {
+	funcName := "update"
+	var str = "{\"status\":2}"
+
+	if err := common_sdk.ParamValid(nodeClient.NodeName, "name"); err != nil {
+		return "", err
+	}
+	funcParams := common_sdk.CombineFuncParams(nodeClient.NodeName, str)
+
+	result, err := nodeClient.contractCallWrap(txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	if err != nil {
+		return "", err
+	}
+	res := result[0].([]interface{})
+	return res[0].(string), nil
+}
+
+func (nodeClient NodeClient) NodeUpdate(txparam common_sdk.TxParams, request syscontracts.NodeUpdateInfo) (string, error) {
+	funcName := "update"
+	if err := common_sdk.ParamValid(nodeClient.NodeName, "name"); err != nil {
+		return "", err
+	}
+	bytes, _ := json.Marshal(request)
+	strJson := string(bytes)
+	funcParams := []string{nodeClient.NodeName, strJson}
+	result, err := nodeClient.contractCallWrap(txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	if err != nil {
+		return "", err
+	}
+	res := result[0].([]interface{})
+	return res[0].(string), nil
+}
+
+// 如果传入为nil，则查询所有
+func (nodeClient NodeClient) NodeQuery(txparam common_sdk.TxParams, request *syscontracts.NodeQueryInfo) (string, error) {
+	if request == nil {
+		funcName := "getAllNodes"
+		result, err := nodeClient.contractCallWrap(txparam, nil, funcName, precompile.NodeManagementAddress)
+		if err != nil {
+			return "", err
+		}
+		res := result[0].([]interface{})
+		return res[0].(string), nil
+	}
+	funcName := "getNodes"
+	if err := common_sdk.ParamValid(nodeClient.NodeName, "name"); err != nil {
+		return "", err
+	}
+	bytes, _ := json.Marshal(request)
+	funcParams := []string{string(bytes)}
+
+	result, err := nodeClient.contractCallWrap(txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	if err != nil {
+		return "", err
+	}
+	res := result[0].([]interface{})
+	return res[0].(string), nil
+}
+
+// 通过查询键对节点信息进行查询，对匹配成功的数据对象进行统计，返回统计值，如果不需要，则传入为nil
+func (nodeClient NodeClient) NodeStat(txparam common_sdk.TxParams, request *syscontracts.NodeStatInfo) (int32, error) {
+	funcName := "nodesNum"
+	if err := common_sdk.ParamValid(nodeClient.NodeName, "name"); err != nil {
+		return 0, err
+	}
+	if request == nil {
+		return 0, errors.New("parameter is incorrect\n\n")
+	}
+	// tode: 处理status ==0 时的情况
+	//if request.Status == 0 {
+	//
+	//	//return 0, errors.New("parameter is incorrect\n\n")
+	//}
+
+	bytes, _ := json.Marshal(request)
+	funcParams := []string{string(bytes)}
+
+	result, err := nodeClient.contractCallWrap(txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	if err != nil {
+		return 0, err
+	}
+	res := result[0].([]interface{})
+	return res[0].(int32), nil
+}
+
+func setNodeInfoDefault(nodeClient NodeClient, requestNodeInfo syscontracts.NodeInfo) (*syscontracts.NodeInfo, error) {
+	if requestNodeInfo.ExternalIP == "" || requestNodeInfo.InternalIP == "" || requestNodeInfo.PublicKey == "" {
+		return nil, errors.New("insufficient parameters")
+	}
+	requestNodeInfo.Name = nodeClient.NodeName
+	requestNodeInfo.Status = 1
+	if requestNodeInfo.RpcPort == 0 {
+		requestNodeInfo.RpcPort = 6791
+	}
+	if requestNodeInfo.P2pPort == 0 {
+		requestNodeInfo.P2pPort = 16791
+	}
+	return &requestNodeInfo, nil
+}
