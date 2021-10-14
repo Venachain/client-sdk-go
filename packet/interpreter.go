@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
-	"strings"
 )
 
 // MessageCallDemo, the interface for different types of data package methods

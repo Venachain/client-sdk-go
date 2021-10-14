@@ -42,3 +42,17 @@ func TestAccountClient_QueryUser(t *testing.T) {
 	fmt.Println(result)
 	assert.True(t, result != "")
 }
+
+func TestAccountClient_Lock(t *testing.T) {
+	txparam, client := InitAccountClient()
+	result, _ := client.Lock(txparam)
+	fmt.Println(result)
+	assert.True(t, result == true)
+}
+
+func TestAccountClient_UnLock(t *testing.T) {
+	txparam, client := InitAccountClient()
+	result, _ := client.UnLock(txparam)
+	fmt.Println(result)
+	assert.True(t, result == false)
+}

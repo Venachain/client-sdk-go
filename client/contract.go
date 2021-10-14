@@ -76,6 +76,28 @@ func (contractClient ContractClient) Execute(txparam common.TxParams, funcName s
 	funcName, funcParams = common.FuncParse(funcName, funcParams)
 
 	result, err := contractClient.contractCallWrap(txparam, funcParams, funcName, address)
+	for _, data := range result {
+		if common.IsTypeLenLong(reflect.ValueOf(data)) {
+			//fmt.Printf("result%d:\n%+v\n", i, data)
+			res = append(res, data)
+		} else {
+			//fmt.Printf("result%d:%+v\n", i, data)
+			res = append(res, data)
+		}
+	}
+	return res, nil
+}
+
+// 通过cns 名字调用合约
+func (contractClient ContractClient) CnsExecute(txparam common.TxParams, funcName string, funcParams []string, cns string) ([]interface{}, error) {
+	var res []interface{}
+	isListMethods, err := contractClient.IsFuncNameInContract(funcName)
+	if !isListMethods {
+		return nil, err
+	}
+	funcName, funcParams = common.FuncParse(funcName, funcParams)
+
+	result, err := contractClient.contractCallWrap(txparam, funcParams, funcName, cns)
 	for i, data := range result {
 		if common.IsTypeLenLong(reflect.ValueOf(data)) {
 			fmt.Printf("result%d:\n%+v\n", i, data)

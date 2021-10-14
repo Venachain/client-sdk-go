@@ -2,6 +2,9 @@ package client
 
 import (
 	"encoding/json"
+	"time"
+
+	"golang.org/x/net/context"
 
 	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
@@ -84,6 +87,32 @@ func (accountClient AccountClient) QueryUser(txparam common_sdk.TxParams, user s
 	}
 	res := result[0].([]interface{})
 	return res[0].(string), nil
+}
+
+func (accountClient AccountClient) Lock(txparam common_sdk.TxParams) (bool, error) {
+	//var funcParams = make([]string, 0)
+	funcName := "personal_lockAccount"
+	funcParams := accountClient.Address.Hex()
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	var res bool
+	err := accountClient.Client.RpcClient.CallContext(ctx, &res, funcName, funcParams)
+	if err != nil {
+		return false, err
+	}
+	return res, nil
+}
+
+func (accountClient AccountClient) UnLock(txparam common_sdk.TxParams) (bool, error) {
+	//var funcParams = make([]string, 0)
+	funcName := "personal_unlockAccount"
+	funcParams := accountClient.Address.Hex()
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	var res bool
+	err := accountClient.Client.RpcClient.CallContext(ctx, &res, funcName, funcParams)
+	if err != nil {
+		return false, err
+	}
+	return res, nil
 }
 
 //func (accountClient AccountClient) Transfer(txparam common_sdk.TxParams, to string) (string, error) {

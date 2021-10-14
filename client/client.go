@@ -19,8 +19,8 @@ import (
 )
 
 var (
-	cliContainer map[string]*Client
-	lock         sync.Mutex
+	//cliContainer map[string]*Client
+	lock sync.Mutex
 )
 
 // Client 链 RPC 连接客户端
@@ -31,13 +31,12 @@ type Client struct {
 	URL         *URL
 }
 
-// 通过 Ethclient 可以使用以太坊通用接口的方法
 type URL struct {
 	IP      string
 	RPCPort uint64
 }
 
-func NewEthClient(ip string, port uint64) URL {
+func NewURL(ip string, port uint64) URL {
 	return URL{
 		IP:      ip,
 		RPCPort: port,
@@ -87,10 +86,10 @@ func NewClient(ctx context.Context, url string, passphrase string, keyfilePath s
 		Passphrase:  passphrase,
 		KeyfilePath: keyfilePath,
 	}
-	//cliContainer[url] = client
 	return client, nil
 }
 
+// rpcClient 继承了PlatONE RPC 客户端的方法
 func (client *Client) GetRpcClient() *rpc.Client {
 	return client.RpcClient
 }

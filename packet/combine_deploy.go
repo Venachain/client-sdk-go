@@ -2,6 +2,7 @@ package packet
 
 import (
 	"errors"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
 )
 

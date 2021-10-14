@@ -10,7 +10,7 @@ import (
 
 // 通过ethclient 调用，拿到的是json response
 func TestNewClient(t *testing.T) {
-	c := NewEthClient("127.0.0.1", 6791)
+	c := NewURL("127.0.0.1", 6791)
 	var param []interface{}
 	res := c.EthSend("eth_blockNumber", param)
 	fmt.Println(res)

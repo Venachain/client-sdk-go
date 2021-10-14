@@ -30,17 +30,6 @@ func ParamValid(param, paramName string) error {
 	return nil
 }
 
-//// CombineRule combines firewall rules
-//func CombineRule(addr, api string) string {
-//	return addr + ":" + api
-//}
-//
-//// CombineFuncParams combines the function parameters
-//func CombineFuncParams(args ...string) []string {
-//	strArray := append([]string{}, args...)
-//	return strArray
-//}
-
 //===============================Abi Parsing========================================
 // AbiParse gets the abi bytes by the input parameters provided
 // The abi file can be obtained through following ways:
@@ -185,54 +174,6 @@ func ParamParse(param, paramName string) (interface{}, error) {
 
 	return i, nil
 }
-
-//
-//// ChainParamConvert convert the string to chain defined type
-//func ChainParamConvert(param, paramName string) interface{} {
-//	var err error
-//	var i interface{}
-//
-//	switch paramName {
-//	case "value", "gasPrice":
-//		i, err = packet.IntValueConvert(param)
-//	case "gas":
-//		i, err = packet.UintValueConvert(param)
-//	case "address", "to", "from":
-//		i, err = packet.AddressConvert(param)
-//	default:
-//		i, err = param, nil //TODO
-//	}
-//
-//	if err != nil {
-//		fmt.Errorf("error parse ChainParamConvert")
-//	}
-//
-//	return i
-//}
-
-//
-//// ChainParamConvert convert the string to chain defined type
-//func ChainParamConvert(param, paramName string) interface{} {
-//	var err error
-//	var i interface{}
-//
-//	switch paramName {
-//	case "value", "gasPrice":
-//		i, err = packet.IntValueConvert(param)
-//	case "gas":
-//		i, err = packet.UintValueConvert(param)
-//	case "address", "to", "from":
-//		i, err = packet.AddressConvert(param)
-//	default:
-//		i, err = param, nil //TODO
-//	}
-//
-//	if err != nil {
-//		utl.Fatalf(packet.ErrParamParseFormat, paramName, err.Error())
-//	}
-//
-//	return i
-//}
 
 //================================CNS=================================
 const (

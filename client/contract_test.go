@@ -38,10 +38,11 @@ func InitContractClient() (common.TxParams, ContractClient) {
 	return txparam, contract
 }
 
-func TestContractClientDeploy(t *testing.T) {
+func TestContractClient_Deploy(t *testing.T) {
 	txparam, contract := InitContractClient()
 	var consParams []string
 	result, _ := contract.Deploy(txparam, consParams)
+	fmt.Println(result)
 	assert.True(t, result != nil)
 }
 
@@ -68,5 +69,14 @@ func TestContractClient_GetReceipt(t *testing.T) {
 		resultBytes, _ := json.MarshalIndent(result, "", "\t")
 		fmt.Printf("result:\n%s\n", resultBytes)
 	}
+	assert.True(t, result != nil)
+}
+func TestContractClient_CnsExecute(t *testing.T) {
+	txparam, contract := InitContractClient()
+	funcname := "setEvidence"
+	funcparam := []string{"1", "23"}
+	cns := "wxbc1"
+	result, _ := contract.Execute(txparam, funcname, funcparam, cns)
+	fmt.Println(result)
 	assert.True(t, result != nil)
 }

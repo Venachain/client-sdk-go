@@ -5,16 +5,17 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/keystore"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/keystore"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
 )
 
 type JsonParam struct {
