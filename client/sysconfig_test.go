@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -12,7 +13,7 @@ import (
 func InitSysconfigClient() (common_sdk.TxParams, SysConfigClient) {
 	txparam, contract := InitContractClient()
 	contract.AbiPath = ""
-	contract.CodePath = ""
+	//contract.CodePath = ""
 	client := SysConfigClient{
 		ContractClient: contract,
 	}
@@ -26,49 +27,49 @@ func TestSysConfigClient_SetSysConfig(t *testing.T) {
 		Block_gaslimit: "20000000000",
 		Empty_block:    "notallow-empty",
 	}
-	result, _ := client.SetSysConfig(txparam, request)
+	result, _ := client.SetSysConfig(context.Background(), txparam, request)
 	fmt.Println(result)
 	assert.True(t, result != nil)
 }
 
 func TestSysConfigClient_GetIsApproveDeployedContract(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsApproveDeployedContract(txparam)
+	result, _ := client.GetIsApproveDeployedContract(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetVRFParams(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetVRFParams(txparam)
+	result, _ := client.GetVRFParams(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result != "")
 }
 
 func TestSysConfigClient_GetIsTxUseGas(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsTxUseGas(txparam)
+	result, _ := client.GetIsTxUseGas(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetIsProduceEmptyBlock(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsProduceEmptyBlock(txparam)
+	result, _ := client.GetIsProduceEmptyBlock(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetBlockGasLimit(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetBlockGasLimit(txparam)
+	result, _ := client.GetBlockGasLimit(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result != 0)
 }
 
 func TestSysConfigClient_GetTxGasLimit(t *testing.T) {
 	txparam, client := InitSysconfigClient()
-	result, _ := client.GetTxGasLimit(txparam)
+	result, _ := client.GetTxGasLimit(context.Background(), txparam)
 	fmt.Println(result)
 	assert.True(t, result != 0)
 }

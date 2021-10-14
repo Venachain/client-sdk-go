@@ -265,8 +265,8 @@ func (c *Client) Close() {
 //
 // The result must be a pointer so that package json can unmarshal into it. You
 // can also pass nil, in which case the result is ignored.
-func (c *Client) Call(result interface{}, method string, args ...interface{}) error {
-	ctx := context.Background()
+func (c *Client) Call(ctx context.Context, result interface{}, method string, args ...interface{}) error {
+	//ctx := context.Background()
 	return c.CallContext(ctx, result, method, args...)
 }
 
@@ -804,5 +804,5 @@ func (sub *ClientSubscription) unmarshal(result json.RawMessage) (interface{}, e
 
 func (sub *ClientSubscription) requestUnsubscribe() error {
 	var result interface{}
-	return sub.client.Call(&result, sub.namespace+unsubscribeMethodSuffix, sub.subid)
+	return sub.client.Call(context.Background(), &result, sub.namespace+unsubscribeMethodSuffix, sub.subid)
 }

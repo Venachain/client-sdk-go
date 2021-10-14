@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"strings"
 )
 
 //
@@ -138,125 +139,6 @@ func (abiFunc *FuncDesc) getParamType() []string {
 	return paramTypes
 }
 
-//// ======================== Precompiled Contract Return ========================
-//
-//// ContractReturn, system contract return object
-//type ContractReturn struct {
-//	Code int         `json:"code"`
-//	Msg  string      `json:"msg"`
-//	Data interface{} `json:"data"`
-//}
-//
-//// ParseSysContractResult parsed the result to ContractReturn object
-//func ParseSysContractResult(result []byte) (*ContractReturn, error) {
-//	a := ContractReturn{} //删除？
-//	err := json.Unmarshal(result, &a)
-//	if err != nil {
-//		// packet.Fatalf(utl.ErrUnmarshalBytesFormat, "contract return", err.Error())
-//		errStr := fmt.Sprintf(packet.ErrUnmarshalBytesFormat, "contract return", err.Error())
-//		return nil, errors.New(errStr)
-//	}
-//
-//	return &a, nil
-//}
-//
-////=========================Transaction=================================
-//
-//// TxParamsDemo, the object of the eth_call, eth_sendTransaction
-//type TxParams struct {
-//	From     common.Address  `json:"from"` // the address used to send the transaction
-//	To       *common.Address `json:"to"`   // the address receives the transactions
-//	Gas      string          `json:"gas"`
-//	GasPrice string          `json:"gasPrice"`
-//	Value    string          `json:"value"`
-//	Data     string          `json:"data"`
-//}
-//
-//// NewTxParams news a TxParams object
-//func NewTxParams(from common.Address, to *common.Address, value, gas, gasPrice, data string) *TxParams {
-//
-//	tx := &TxParams{
-//		From:     from,
-//		To:       to,
-//		GasPrice: gasPrice,
-//		Gas:      gas,
-//		Value:    value,
-//		Data:     data,
-//	}
-//
-//	return tx
-//}
-//
-//// SendMode selects the rpc calls (eth_call, eth_sendTransaction, and eth_sendRawTransaction)
-//func (tx *TxParams) SendMode(isWrite bool, keyfile *packet.Keyfile) ([]interface{}, string) {
-//	var action string
-//	var params = make([]interface{}, 0)
-//
-//	switch {
-//	case !isWrite:
-//		params = append(params, tx)
-//		params = append(params, "latest")
-//		action = "eth_call"
-//	case keyfile.Json != nil:
-//		signedTx, _ := tx.GetSignedTx(keyfile)
-//		params = append(params, signedTx)
-//		action = "eth_sendRawTransaction"
-//	default:
-//		params = append(params, tx)
-//		action = "eth_sendTransaction"
-//	}
-//
-//	return params, action
-//}
-//
-
-//// GetSignedTx gets the signed transaction
-//func (tx *TxParams) GetSignedTx(keyfile *packet.Keyfile) (string, error) {
-//
-//	var txSign *types.Transaction
-//
-//	// convert the TxParams object to types.Transaction object
-//	nonce := getNonceRand()
-//	value, _ := hexutil.DecodeBig(tx.Value)
-//	gas, _ := hexutil.DecodeUint64(tx.Gas)
-//	gasPrice, _ := hexutil.DecodeBig(tx.GasPrice)
-//	data, _ := hexutil.Decode(tx.Data)
-//
-//	if tx.To == nil {
-//		txSign = types.NewContractCreation(nonce, value, gas, gasPrice, data)
-//	} else {
-//		txSign = types.NewTransaction(nonce, *tx.To, value, gas, gasPrice, data)
-//	}
-//
-//	// extract pk from keystore file and sign the transaction
-//	// deprecated: move to the outter method
-//	/*
-//		priv, err := keyfile.GetPrivateKey()
-//		if err != nil {
-//			return "", err
-//		}*/
-//
-//	// todo: choose the correct signer
-//	txSign, _ = types.SignTx(txSign, types.HomesteadSigner{}, keyfile.GetPrivateKey())
-//	/// txSign, _ = types.SignTx(txSign, types.NewEIP155Signer(big.NewInt(300)), priv)
-//	/// utl.Logger.Printf("the signed transaction is %v\n", txSign)
-//
-//	str, err := rlpEncode(txSign)
-//	if err != nil {
-//		return "", err
-//	}
-//
-//	return str, nil
-//}
-//
-//// getNonceRand generate a random nonce
-//// Warning: if the design of the nonce mechanism is modified
-//// this part should be modified as well
-//func getNonceRand() uint64 {
-//	rand.Seed(time.Now().Unix())
-//	return rand.Uint64()
-//}
-//
 //// todo: move to packet.go ?
 var errorSig = crypto.Keccak256([]byte("Error(string)"))[:4]
 

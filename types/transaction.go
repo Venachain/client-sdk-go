@@ -20,6 +20,10 @@ import (
 	"bytes"
 	"container/heap"
 	"errors"
+	"io"
+	"math/big"
+	"sync/atomic"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
@@ -27,8 +31,6 @@ import (
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	lru "github.com/hashicorp/golang-lru"
 	log "github.com/sirupsen/logrus"
-	"io"
-	"math/big"
 )
 
 //go:generate gencodec -type txdata -field-override txdataMarshaling -out gen_tx_json.go
@@ -49,6 +51,38 @@ type txdataMarshaling struct {
 	V *hexutil.Big
 	R *hexutil.Big
 	S *hexutil.Big
+}
+type Response struct {
+	Jsonrpc string      `json:"jsonrpc"`
+	Result  interface{} `json:"result"`
+	Id      int         `json:"id"`
+}
+
+type Transaction struct {
+	data txdata
+	// caches
+	hash   atomic.Value
+	size   atomic.Value
+	from   atomic.Value
+	router int32
+}
+
+type txdata struct {
+	AccountNonce uint64          `json:"nonce"    gencodec:"required"`
+	Price        *big.Int        `json:"gasPrice" gencodec:"required"`
+	GasLimit     uint64          `json:"gas"      gencodec:"required"`
+	Recipient    *common.Address `json:"to"       rlp:"nil"` // nil means contract creation
+	Amount       *big.Int        `json:"value"    gencodec:"required"`
+	Payload      []byte          `json:"input"    gencodec:"required"`
+	//CnsData      []byte          `json:"cnsData"`
+
+	// Signature values
+	V *big.Int `json:"v" gencodec:"required"`
+	R *big.Int `json:"r" gencodec:"required"`
+	S *big.Int `json:"s" gencodec:"required"`
+
+	// This is only used when marshaling to JSON.
+	Hash *common.Hash `json:"hash" rlp:"-"`
 }
 
 func NewTransaction(nonce uint64, to common.Address, amount *big.Int, gasLimit uint64, gasPrice *big.Int, data []byte) *Transaction {

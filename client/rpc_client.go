@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,7 +17,7 @@ const (
 	sleepTime = 1000000000 // 1 seconds
 )
 
-func (pc Client) MessageCallV2(dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key, isSync bool) ([]interface{}, error) {
+func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key, isSync bool) ([]interface{}, error) {
 	var result = make([]interface{}, 1)
 	var err error
 
@@ -28,7 +29,7 @@ func (pc Client) MessageCallV2(dataGen packet.MsgDataGen, tx common.TxParams, ke
 
 	// 部署合约
 	if dataGen.GetIsWrite() {
-		res, err := pc.Send(&tx, key)
+		res, err := pc.Send(ctx, &tx, key)
 		if err != nil {
 			return nil, err
 		}
@@ -70,7 +71,7 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 
 	// send the RPC calls
 	var resp string
-	err := pc.RpcClient.Call(&resp, action, params...)
+	err := pc.RpcClient.Call(context.Background(), &resp, action, params...)
 	if err != nil {
 		return nil, errors.New("send Transaction through http error")
 	}
@@ -79,7 +80,7 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 	return dataGen.ParseNonConstantResponse(resp, outputType), nil
 }
 
-func (pc *Client) Send(tx *common.TxParams, key *keystore.Key) (string, error) {
+func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keystore.Key) (string, error) {
 	params, action, err := tx.SendModeV2(key)
 	if err != nil {
 		return "", err
@@ -87,7 +88,7 @@ func (pc *Client) Send(tx *common.TxParams, key *keystore.Key) (string, error) {
 
 	// send the RPC calls
 	var resp string
-	err = pc.RpcClient.Call(&resp, action, params...)
+	err = pc.RpcClient.Call(context, &resp, action, params...)
 	if err != nil {
 		return "", errors.New("send Transaction through http error")
 	}
@@ -141,7 +142,7 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 func (p *Client) GetTransactionReceipt(txHash string) (*packet.Receipt, error) {
 
 	var response interface{}
-	_ = p.RpcClient.Call(&response, "eth_getTransactionReceipt", txHash)
+	_ = p.RpcClient.Call(context.Background(), &response, "eth_getTransactionReceipt", txHash)
 	if response == nil {
 		return nil, nil
 	}
@@ -160,7 +161,7 @@ func (p *Client) GetTransactionReceipt(txHash string) (*packet.Receipt, error) {
 func (p *Client) GetRevertMsg(msg *common.TxParams, blockNum uint64) ([]byte, error) {
 
 	var hex = new(hexutil.Bytes)
-	err := p.RpcClient.Call(hex, "eth_call", msg, hexutil.EncodeUint64(blockNum))
+	err := p.RpcClient.Call(context.Background(), hex, "eth_call", msg, hexutil.EncodeUint64(blockNum))
 	if err != nil {
 		return nil, err
 	}

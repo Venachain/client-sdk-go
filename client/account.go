@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/json"
-	"time"
 
 	"golang.org/x/net/context"
 
@@ -17,7 +16,7 @@ type AccountClient struct {
 	Address common.Address
 }
 
-func (accountClient AccountClient) UserAdd(txparam common_sdk.TxParams, name, phone, email, organization string) (string, error) {
+func (accountClient AccountClient) UserAdd(ctx context.Context, txparam common_sdk.TxParams, name, phone, email, organization string) (string, error) {
 	userdescinfo := syscontracts.UserDescInfo{}
 	var userinfo syscontracts.UserInfo
 	funcName := "addUser"
@@ -34,7 +33,7 @@ func (accountClient AccountClient) UserAdd(txparam common_sdk.TxParams, name, ph
 	strJson := string(bytes)
 	funcParams := []string{strJson}
 
-	result, err := accountClient.contractCallWrap(txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -42,7 +41,7 @@ func (accountClient AccountClient) UserAdd(txparam common_sdk.TxParams, name, ph
 	return res[0].(string), nil
 }
 
-func (accountClient AccountClient) UserUpdate(txparam common_sdk.TxParams, phone, email, organization string) (string, error) {
+func (accountClient AccountClient) UserUpdate(ctx context.Context, txparam common_sdk.TxParams, phone, email, organization string) (string, error) {
 	var funcParams []string
 	funcParams = append(funcParams, accountClient.Address.Hex())
 	funcName := "updateUserDescInfo"
@@ -53,7 +52,7 @@ func (accountClient AccountClient) UserUpdate(txparam common_sdk.TxParams, phone
 	desbytes, _ := json.Marshal(userdescinfo)
 	funcParams = append(funcParams, string(desbytes))
 
-	result, err := accountClient.contractCallWrap(txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -62,7 +61,7 @@ func (accountClient AccountClient) UserUpdate(txparam common_sdk.TxParams, phone
 }
 
 // 根据账户地址或者账户名称查询用户信息，如果传入的name == ""，则为查找所有账户信息
-func (accountClient AccountClient) QueryUser(txparam common_sdk.TxParams, user string) (string, error) {
+func (accountClient AccountClient) QueryUser(ctx context.Context, txparam common_sdk.TxParams, user string) (string, error) {
 	var funcName string
 	var funcParams = make([]string, 0)
 	if user != "" {
@@ -81,7 +80,7 @@ func (accountClient AccountClient) QueryUser(txparam common_sdk.TxParams, user s
 		funcName = "getAllUsers"
 	}
 
-	result, err := accountClient.contractCallWrap(txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -89,37 +88,24 @@ func (accountClient AccountClient) QueryUser(txparam common_sdk.TxParams, user s
 	return res[0].(string), nil
 }
 
-func (accountClient AccountClient) Lock(txparam common_sdk.TxParams) (bool, error) {
-	//var funcParams = make([]string, 0)
+func (accountClient AccountClient) Lock(ctx context.Context) (bool, error) {
 	funcName := "personal_lockAccount"
 	funcParams := accountClient.Address.Hex()
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
 	var res bool
-	err := accountClient.Client.RpcClient.CallContext(ctx, &res, funcName, funcParams)
+	err := accountClient.Client.RPCSend(ctx, &res, funcName, funcParams)
 	if err != nil {
 		return false, err
 	}
 	return res, nil
 }
 
-func (accountClient AccountClient) UnLock(txparam common_sdk.TxParams) (bool, error) {
-	//var funcParams = make([]string, 0)
+func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
 	funcName := "personal_unlockAccount"
 	funcParams := accountClient.Address.Hex()
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
 	var res bool
-	err := accountClient.Client.RpcClient.CallContext(ctx, &res, funcName, funcParams)
+	err := accountClient.Client.RPCSend(ctx, &res, funcName, funcParams)
 	if err != nil {
 		return false, err
 	}
 	return res, nil
 }
-
-//func (accountClient AccountClient) Transfer(txparam common_sdk.TxParams, to string) (string, error) {
-//	addr := common.HexToAddress(to)
-//	accountClient.Client.clientCommonV2(txparam, nil, addr, true)
-//
-//	result, err := accountClient.contractCallWrap(txparam, funcParams, "updateUserDescInfo", precompile.UserManagementAddress)
-//	res := result[0].([]interface{})
-//	return res[0].(string), err
-//}

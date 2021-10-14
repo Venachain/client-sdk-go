@@ -13,7 +13,6 @@ import (
 
 func InitContractClient() (common.TxParams, ContractClient) {
 	txparam := common.TxParams{}
-	codePath1 := "/Users/cxh/Downloads/example/example.wasm"
 	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
 	abiPath := "/Users/cxh/Downloads/example/example.cpp.abi.json"
 	PassPhrase := "0"
@@ -30,18 +29,19 @@ func InitContractClient() (common.TxParams, ContractClient) {
 		URL:         &url,
 	}
 	contract := ContractClient{
-		Client:   &pc,
-		CodePath: codePath1,
-		AbiPath:  abiPath,
-		Vm:       vm,
+		Client: &pc,
+		//CodePath: codePath1,
+		AbiPath: abiPath,
+		Vm:      vm,
 	}
 	return txparam, contract
 }
 
 func TestContractClient_Deploy(t *testing.T) {
+	codePath1 := "/Users/cxh/Downloads/example/example.wasm"
 	txparam, contract := InitContractClient()
 	var consParams []string
-	result, _ := contract.Deploy(txparam, consParams)
+	result, _ := contract.Deploy(context.Background(), txparam, codePath1, consParams)
 	fmt.Println(result)
 	assert.True(t, result != nil)
 }
@@ -57,7 +57,7 @@ func TestContractClient_Execute(t *testing.T) {
 	funcname := "setEvidence"
 	funcparam := []string{"1", "23"}
 	addr := "0x24de7156a5e973a5d1a7ee82a27772ca0a22fdb5"
-	result, _ := contract.Execute(txparam, funcname, funcparam, addr)
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, addr)
 	assert.True(t, result != nil)
 }
 
@@ -76,7 +76,7 @@ func TestContractClient_CnsExecute(t *testing.T) {
 	funcname := "setEvidence"
 	funcparam := []string{"1", "23"}
 	cns := "wxbc1"
-	result, _ := contract.Execute(txparam, funcname, funcparam, cns)
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, cns)
 	fmt.Println(result)
 	assert.True(t, result != nil)
 }

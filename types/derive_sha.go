@@ -25,22 +25,3 @@ type DerivableList interface {
 	GetRlp(i int) []byte
 	GetHash() common.Hash
 }
-
-//func DeriveSha(list DerivableList) common.Hash {
-//	if list.Len() == 0 {
-//		return new(trie.Trie).Hash()
-//	}
-//	if common.SysCfg.IsBlockUseTrieHash() {
-//		keybuf := new(bytes.Buffer)
-//		trie := new(trie.Trie)
-//
-//		for i := 0; i < list.Len(); i++ {
-//			keybuf.Reset()
-//			rlp.Encode(keybuf, uint(i))
-//			trie.Update(keybuf.Bytes(), list.GetRlp(i))
-//		}
-//		return trie.Hash()
-//	} else {
-//		return list.GetHash()
-//	}
-//}

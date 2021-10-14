@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 func InitAccountClient() (common_sdk.TxParams, AccountClient) {
 	txparam, contract := InitContractClient()
 	contract.AbiPath = ""
-	contract.CodePath = ""
+	//contract.CodePath = ""
 	client := AccountClient{
 		ContractClient: contract,
 		Address:        common.HexToAddress("3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"),
@@ -24,35 +25,35 @@ func InitAccountClient() (common_sdk.TxParams, AccountClient) {
 
 func TestAccountClient_UserAdd(t *testing.T) {
 	txparam, client := InitAccountClient()
-	result, _ := client.UserAdd(txparam, "Alice", "110", "", "")
+	result, _ := client.UserAdd(context.Background(), txparam, "Alice", "110", "", "")
 	fmt.Println(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_UserUpdate(t *testing.T) {
 	txparam, client := InitAccountClient()
-	result, _ := client.UserUpdate(txparam, "13556672653", "test@163.com", "wxbc2")
+	result, _ := client.UserUpdate(context.Background(), txparam, "13556672653", "test@163.com", "wxbc2")
 	fmt.Println(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_QueryUser(t *testing.T) {
 	txparam, client := InitAccountClient()
-	result, _ := client.QueryUser(txparam, "Alice")
+	result, _ := client.QueryUser(context.Background(), txparam, "Alice")
 	fmt.Println(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_Lock(t *testing.T) {
-	txparam, client := InitAccountClient()
-	result, _ := client.Lock(txparam)
+	_, client := InitAccountClient()
+	result, _ := client.Lock(context.Background())
 	fmt.Println(result)
 	assert.True(t, result == true)
 }
 
 func TestAccountClient_UnLock(t *testing.T) {
-	txparam, client := InitAccountClient()
-	result, _ := client.UnLock(txparam)
+	_, client := InitAccountClient()
+	result, _ := client.UnLock(context.Background())
 	fmt.Println(result)
 	assert.True(t, result == false)
 }
