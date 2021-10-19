@@ -5,9 +5,10 @@ package types
 import (
 	"encoding/json"
 	"errors"
+	"math/big"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"math/big"
 )
 
 var _ = (*txdataMarshaling)(nil)

@@ -83,6 +83,13 @@ func (c *Client) RPCSend(ctx context.Context, result interface{}, method string,
 	return c.RpcClient.CallContext(ctx, result, method, args)
 }
 
+func (c *Client) Subscribe(ctx context.Context) error {
+	var result string
+	method := "eth_subscribe"
+	params := []string{"newPendingTransactions"}
+	return c.RpcClient.CallContext(ctx, result, method, params)
+}
+
 func (pc *Client) clientCommonV2(ctx context.Context, txparam common_sdk.TxParams, dataGen packet.MsgDataGen, to *common.Address, isSync bool) ([]interface{}, error) {
 	var result = make([]interface{}, 1)
 	// get the client global parameters

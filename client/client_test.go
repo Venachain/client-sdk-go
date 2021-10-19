@@ -32,3 +32,19 @@ func TestRpcSend(t *testing.T) {
 	fmt.Println(addresses)
 	assert.True(t, addresses != nil)
 }
+
+// 通过client rpc 调用rpcsend 方法
+func TestSubscribe(t *testing.T) {
+	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
+	//var addresses []string
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 26791,
+	}
+	client, _ := NewClient(ctx, url, "0", "./keystore")
+
+	err := client.Subscribe(ctx)
+	fmt.Println(err)
+	//fmt.Println(addresses)
+	assert.True(t, err == nil)
+}
