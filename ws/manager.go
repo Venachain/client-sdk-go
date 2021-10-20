@@ -3,13 +3,11 @@ package ws
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"net/url"
 	"time"
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
 )
@@ -184,54 +182,12 @@ func (manager *Manager) Info() map[string]interface{} {
 	return managerInfo
 }
 
-// WsClient gin 处理 websocket handler
-func (manager *Manager) WsClient(ctx *gin.Context) {
-	//group := ctx.Param("group")
-	group := "platone"
-
-	// 创建 websocket 升级器
-	upGrader := websocket.Upgrader{
-		// cross origin domain
-		CheckOrigin: func(r *http.Request) bool {
-			return true
-		},
-		// 处理 Sec-WebSocket-Protocol Header
-		Subprotocols: []string{ctx.GetHeader("Sec-WebSocket-Protocol")},
-	}
-	// 将 http 升级为 websocket
-	conn, err := upGrader.Upgrade(ctx.Writer, ctx.Request, nil)
-	if err != nil {
-		logrus.Errorf("websocket connect error: %s", group)
-		return
-	}
-
-	client := &Client{
-		Id:         uuid.NewV4().String(),
-		Group:      group,
-		LocalAddr:  conn.LocalAddr().String(),
-		RemoteAddr: conn.RemoteAddr().String(),
-		Path:       ctx.Request.URL.String(),
-		Socket:     conn,
-		IsAlive:    true,
-		IsDial:     false,
-		RetryCnt:   0,
-		Message:    make(chan []byte, BuffSize),
-	}
-	manager.RegisterClient(client)
-	if err = DefaultWSSubscriber.SubTopicsForChain(); err != nil {
-		fmt.Errorf("subTopicsForChain is error")
-	}
-	go client.Read()
-	go client.Write()
-}
-
 // Dial 作为 websocket 客户端拨号去连接其他 websocket 服务端
-func (manager *Manager) Dial(ip string, port int64, path string, group string) (*Client, error) {
+func (manager *Manager) Dial(ip string, port int64, group string) (*Client, error) {
 	host := fmt.Sprintf("%s:%v", ip, port)
 	uri := url.URL{
 		Scheme: "ws",
 		Host:   host,
-		Path:   path,
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	conn, resp, err := websocket.DefaultDialer.DialContext(ctx, uri.String(), nil)
@@ -247,7 +203,6 @@ func (manager *Manager) Dial(ip string, port int64, path string, group string) (
 		Group:      group,
 		LocalAddr:  conn.LocalAddr().String(),
 		RemoteAddr: conn.RemoteAddr().String(),
-		Path:       path,
 		Socket:     conn,
 		IsAlive:    true,
 		IsDial:     true,

@@ -93,6 +93,91 @@ func TestNewClient(t *testing.T) {
 
 
 
+## WebSocket 接口
+
+Websocket 包连接了Client 前端和PlatONE 的websocket 接口。为前端Client 提供订阅区块头和订阅事件的功能。
+
+其相应的代码在`ws`中。
+
+```go
+// ws/type.go:21
+// Client 单个 websocket 信息
+type Client struct {
+   Id, Group  string
+   LocalAddr  string
+   RemoteAddr string
+   Path       string
+   Socket     *websocket.Conn
+   IsAlive    bool
+   IsDial     bool
+   RetryCnt   int64
+   Message    chan []byte
+}
+```
+
+`ws_subscriber.go `中的 `wsSubscriber` 负责向PlatONE 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
+
+### 使用指南：
+
+`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于PlatONE 的运行环境创建一个 `wsSubscriber` ：
+
+```go
+// ws/ws_subscriber.go:31
+func newWSSubscriber() *wsSubscriber {
+	return &wsSubscriber{
+		wsManager: DefaultWebsocketManager,
+		ip:        "127.0.0.1",
+		port:      26791,
+		group: "platone",
+	}
+}
+```
+
+其中 PlatONE-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
+```go
+type Subscription interface {
+	SubHeadForChain() error
+	SubLogForChain(address, topic string) error
+}
+```
+
+`SubLogForChain` 需要传递订阅合约的地址和订阅的topic。例如，如果要订阅防火墙打开的事件，可以传入以下参数：
+
+```go
+// ws/example.go:113
+address := "0x1000000000000000000000000000000000000005"
+topic := "0x8cd284134f0437457b5542cb3a7da283d0c38208c497c5b4b005df47719f98a1"
+```
+
+**以下使用订阅区块头为例：**
+
+外部 `main` 包中直接运行mian 函数。前端访问 `ws_sub_test.html`测试页 http://127.0.0.1:8888/api/ws/ws_sub_test.html。 
+
+```go
+// main.go:9
+func main() {
+   gin.SetMode(gin.DebugMode)
+   gracesRouter := ws.InitRouter()
+   err := gracesRouter.Run("127.0.0.1:8888")
+   if err != nil {
+      logrus.Errorf("test start err: %v", err)
+      return
+   }
+}
+```
+
+可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在PlatONE 中发送交易，该订阅的结果会返回到前端页面。
+
+说明：
+
+测试页中 `mygroup1` 为前端的group，可使用不同的group。
+
+```javascript
+var host = "ws://127.0.0.1:8888/api/ws/head/mygroup1"
+```
+
+如果不使用测试页，可以使用例如 http://coolaf.com/tool/chattest 这样的websocket 测试网页，与 `ws://127.0.0.1:8888/api/ws/head/mygroup1  `建立连接，也可查看到订阅的结果。
+
 
 
 ## 预编译合约接口

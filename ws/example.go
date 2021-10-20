@@ -1,8 +1,11 @@
 package ws
 
 import (
+	"fmt"
 	"net/http"
-	"time"
+
+	"github.com/gorilla/websocket"
+	uuid "github.com/satori/go.uuid"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -66,15 +69,92 @@ func customRouter() {
 		wsGroup := api.Group("/ws")
 		{
 			if gin.Mode() == gin.DebugMode {
-				wsGroup.StaticFile("/ws_sub_test.html", "./ws_sub_test.html")
+				wsGroup.StaticFile("/ws_sub_test.html", "./ws/ws_sub_test.html")
 			}
-
-			wsGroup.GET("/", DefaultWebsocketManager.WsClient)
+			wsGroup.GET("/log/:group", DefaultWebsocketManager.WsClientForLog)
+			wsGroup.GET("/head/:group", DefaultWebsocketManager.WsClientForNewHeads)
 		}
 	}
 }
 
-func Test() {
-	DefaultWSSubscriber.SubTopicsForChain()
-	time.Sleep(100 * time.Second)
+// WsClient gin 处理 websocket handler
+func (manager *Manager) WsClientForLog(ctx *gin.Context) {
+	group := ctx.Param("group")
+	ClientGroup = group
+	// 创建 websocket 升级器
+	upGrader := websocket.Upgrader{
+		// cross origin domain
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+		// 处理 Sec-WebSocket-Protocol Header
+		Subprotocols: []string{ctx.GetHeader("Sec-WebSocket-Protocol")},
+	}
+	// 将 http 升级为 websocket
+	conn, err := upGrader.Upgrade(ctx.Writer, ctx.Request, nil)
+	if err != nil {
+		logrus.Errorf("websocket connect error: %s", group)
+		return
+	}
+
+	client := &Client{
+		Id:         uuid.NewV4().String(),
+		Group:      group,
+		LocalAddr:  conn.LocalAddr().String(),
+		RemoteAddr: conn.RemoteAddr().String(),
+		Path:       ctx.Request.URL.String(),
+		Socket:     conn,
+		IsAlive:    true,
+		IsDial:     false,
+		RetryCnt:   0,
+		Message:    make(chan []byte, BuffSize),
+	}
+	manager.RegisterClient(client)
+	address := "0x1000000000000000000000000000000000000005"
+	topic := "0x8cd284134f0437457b5542cb3a7da283d0c38208c497c5b4b005df47719f98a1"
+	if err = DefaultWSSubscriber.SubLogForChain(address, topic); err != nil {
+		fmt.Errorf("subTopicsForChain is error")
+	}
+	go client.Read()
+	go client.Write()
+}
+
+// WsClient gin 处理 websocket handler
+func (manager *Manager) WsClientForNewHeads(ctx *gin.Context) {
+	group := ctx.Param("group")
+	ClientGroup = group
+	// 创建 websocket 升级器
+	upGrader := websocket.Upgrader{
+		// cross origin domain
+		CheckOrigin: func(r *http.Request) bool {
+			return true
+		},
+		// 处理 Sec-WebSocket-Protocol Header
+		Subprotocols: []string{ctx.GetHeader("Sec-WebSocket-Protocol")},
+	}
+	// 将 http 升级为 websocket
+	conn, err := upGrader.Upgrade(ctx.Writer, ctx.Request, nil)
+	if err != nil {
+		logrus.Errorf("websocket connect error: %s", group)
+		return
+	}
+
+	client := &Client{
+		Id:         uuid.NewV4().String(),
+		Group:      group,
+		LocalAddr:  conn.LocalAddr().String(),
+		RemoteAddr: conn.RemoteAddr().String(),
+		Path:       ctx.Request.URL.String(),
+		Socket:     conn,
+		IsAlive:    true,
+		IsDial:     false,
+		RetryCnt:   0,
+		Message:    make(chan []byte, BuffSize),
+	}
+	manager.RegisterClient(client)
+	if err = DefaultWSSubscriber.SubHeadForChain(); err != nil {
+		fmt.Errorf("subTopicsForChain is error")
+	}
+	go client.Read()
+	go client.Write()
 }

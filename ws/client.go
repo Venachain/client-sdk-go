@@ -8,15 +8,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var result chan []byte
-
-//cc := make(chan int, 10)
+var ClientGroup string
 
 // 读信息，从 websocket 连接直接读取数据
 func (c *Client) Read() {
 	defer func() {
 		c.IsAlive = false
-		//DefaultWebsocketManager.UnRegister <- c
 		logrus.Infof("client [%s] disconnect", c.Id)
 		if err := c.Socket.Close(); err != nil {
 			logrus.Errorf("client [%s] disconnect err: %s", c.Id, err)

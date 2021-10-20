@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	//ws.Test()
 	gin.SetMode(gin.DebugMode)
 	gracesRouter := ws.InitRouter()
 	err := gracesRouter.Run("127.0.0.1:8888")
@@ -15,12 +14,4 @@ func main() {
 		logrus.Errorf("test start err: %v", err)
 		return
 	}
-
-}
-
-func test() {
-	//ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
-	//c, _ := client.NewClient(ctx, "http://127.0.0.1:6791", "0", "./keystore")
-	//client.RpcSend(c.RpcClient)
-
 }

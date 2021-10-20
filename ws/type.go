@@ -56,3 +56,18 @@ type WSMessageDTO struct {
 	// 要发送的消息内容
 	Message string `json:"message" binding:"required"`
 }
+
+// WSSubMsgDTO 与前端 ws 连接交互所需的消息 dto
+type WSSubMsgDTO struct {
+	// 消息id
+	ID string `json:"id"`
+	// 消息类型
+	Type string `json:"type"`
+	// 消息内容
+	Content interface{} `json:"content"`
+}
+
+type Subscription interface {
+	SubHeadForChain() error
+	SubLogForChain(address, topic string) error
+}

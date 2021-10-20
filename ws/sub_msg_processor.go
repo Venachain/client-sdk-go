@@ -1,9 +1,9 @@
 package ws
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
-	"reflect"
 )
 
 func NewSubMsgProcessor() *SubMsgProcessor {
@@ -14,59 +14,17 @@ func NewSubMsgProcessor() *SubMsgProcessor {
 type SubMsgProcessor struct{}
 
 func (s *SubMsgProcessor) Process(ctx *MsgProcessorContext, msg interface{}) error {
-
-	return nil
-}
-
-func (s *SubMsgProcessor) process(ctx *MsgProcessorContext, topicName string, chainID string, params map[string]interface{}) error {
-	methodName := MethodCapitalized(topicName)
-	reType := reflect.TypeOf(s)
-	method, ok := reType.MethodByName(methodName)
+	data, ok := msg.(map[string]interface{})
 	if !ok {
-		return errors.New(fmt.Sprintf("no process method for topic[%v]", topicName))
+		errStr := fmt.Sprintf("can't process unknown subMsg:\n %+v", msg)
+		return errors.New(errStr)
 	}
-	methodParams := make([]reflect.Value, 4)
-	// 第一个参数为方法的持有者
-	methodParams[0] = reflect.ValueOf(s)
-	methodParams[1] = reflect.ValueOf(ctx.client)
-	methodParams[2] = reflect.ValueOf(chainID)
-	methodParams[3] = reflect.ValueOf(params)
-	resValues := method.Func.Call(methodParams)
-	if len(resValues) > 0 {
-		if err, ok := resValues[len(resValues)-1].Interface().(error); ok {
-			return err
-		}
+
+	jsonMsg, err := json.Marshal(data)
+	if err != nil {
+		return err
 	}
-	return nil
-}
-
-// NewHeads newHeads topic 的订阅数据处理方法，方法名称需要与 topic 保持一致，但首字母需要是大写的
-func (s *SubMsgProcessor) NewHeads() error {
-	return nil
-}
-
-func (s *SubMsgProcessor) forwardBlock() error {
-	return nil
-}
-
-func (s *SubMsgProcessor) forwardTX() error {
-	return nil
-}
-
-func (s *SubMsgProcessor) forwardStats() error {
-	return nil
-}
-
-// Forward 把从链上接收到的事件数据转发到前端
-func (s *SubMsgProcessor) Forward() error {
-	return nil
-}
-
-// 获取统计数据
-func (s *SubMsgProcessor) getStat(chainID string) {
-}
-
-func (s *SubMsgProcessor) getNodes(chainID string) error {
+	DefaultWebsocketManager.SendGroup(ClientGroup, jsonMsg)
 
 	return nil
 }

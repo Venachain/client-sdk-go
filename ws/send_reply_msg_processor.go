@@ -61,13 +61,13 @@ func (s *SendReplyMsgProcessor) Subscription(ctx *MsgProcessorContext, msg inter
 	sendId := data["id"].(string)
 	fields := strings.Fields(sendId)
 	topic := fields[1]
-	id := fields[2]
+	//id := fields[2]
 	hash := data["result"].(string)
 	// 将订阅成功后返回的订阅哈希值设置到消息记录中
 	//if err := dao.DefaultWSMsgDao.UpdateWSMsgHash(id, topic, hash); err != nil {
 	//	return err
 	//}
-	logrus.Infof("topic[%v] subscribe success, update subMsg[%v] hash to [%v]", topic, id, hash)
+	logrus.Infof("topic[%v] subscribe success,hash to [%v]", topic, hash)
 	return nil
 }
 

@@ -13,8 +13,8 @@
 
 <script type="text/javascript">
     var websocket = null;
-    // 此处 ws/xxx 其中 xxx 是链的 id
-    var host = "ws://localhost:9999/api/ws/614b0e2f419cba18be4a9c0c"
+    // 此处 ws/xxx 其中 xxx 是group的 id
+    var host = "ws://127.0.0.1:8888/api/ws/head/mygroup1"
     //判断当前浏览器是否支持WebSocket, 主要此处要更换为自己的地址
     if ('WebSocket' in window) {
         websocket = new WebSocket(host);

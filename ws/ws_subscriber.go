@@ -22,16 +22,23 @@ func init() {
 
 type wsSubscriber struct {
 	wsManager *Manager
+	ip        string
+	port      int64
+	//path      string
+	group string
 }
 
 func newWSSubscriber() *wsSubscriber {
 	return &wsSubscriber{
 		wsManager: DefaultWebsocketManager,
+		ip:        "127.0.0.1",
+		port:      26791,
+		group:     "platone",
 	}
 }
 
-// SubTopicsForChain 为指定的链订阅它所配置的所有 websocket topics
-func (s *wsSubscriber) SubTopicsForChain() error {
+// SubHeadForChain 为指定的链订阅它所配置的所有 websocket topics
+func (s *wsSubscriber) SubHeadForChain() error {
 	// 1、获取 websocket 客户端连接
 	client, err := s.getWSClientByChain()
 	if err != nil {
@@ -55,7 +62,7 @@ func (s *wsSubscriber) SubTopicsForChain() error {
 	return nil
 }
 
-// SubTopicsForChain 为指定的链订阅它所配置的所有 websocket topics
+// SubHeadForChain 为指定的链订阅它所配置的所有 websocket topics
 func (s *wsSubscriber) SubLogForChain(address, topic string) error {
 	// 1、获取 websocket 客户端连接
 	client, err := s.getWSClientByChain()
@@ -120,7 +127,7 @@ func (s *wsSubscriber) wsSubTopicProcessor(client *Client, topic string, params 
 // NewHeads newHeads 事件的订阅处理
 func (s *wsSubscriber) NewHeads(client *Client, topic string, params string) error {
 	// 1、处理参数信息
-	_, paramsStr, err := s.wsSubParamsProcess(topic, params)
+	paramsStr, err := s.wsSubParamsProcess(topic, params)
 	if err != nil {
 		return err
 	}
@@ -139,7 +146,7 @@ func (s *wsSubscriber) NewHeads(client *Client, topic string, params string) err
 // Log log 事件的订阅处理
 func (s *wsSubscriber) Log(client *Client, topic string, params string) error {
 	// 1、处理参数信息
-	_, paramsStr, err := s.wsSubParamsProcess(topic, params)
+	paramsStr, err := s.wsSubParamsProcess(topic, params)
 	if err != nil {
 		return err
 	}
@@ -156,41 +163,38 @@ func (s *wsSubscriber) Log(client *Client, topic string, params string) error {
 }
 
 // 处理 websocket 事件订阅的参数
-func (s *wsSubscriber) wsSubParamsProcess(topic string, params string) (string, string, error) {
+func (s *wsSubscriber) wsSubParamsProcess(topic string, params string) (string, error) {
 	data := make(map[string]interface{})
-	id := "616d3d2ef47d856f7e1e94e0"
 	err := json.Unmarshal([]byte(params), &data)
 	if err != nil {
 		logrus.Errorf("websocket params unmarshal error: %v", err)
-		return "", "", err
+		return "", err
 	}
 	msgType := data["id"]
 	// type topic id
-	data["id"] = fmt.Sprintf("%v %v %v", msgType, topic, id)
+	data["id"] = fmt.Sprintf("%v %v", msgType, topic)
 
 	p, err := json.Marshal(data)
 	if err != nil {
 		logrus.Errorf("websocket params marshal error: %v", err)
-		return "", "", err
+		return "", err
 	}
 	params = string(p)
-	return id, params, nil
+	return params, nil
 }
 
 func (s *wsSubscriber) getWSClientByChain() (*Client, error) {
-	ip := "127.0.0.1"
-	port := 26791
-	path := ""
-	group := "platone"
-	client, err := s.wsManager.Dial(ip, int64(port), path, group)
+	ip := s.ip
+	port := s.port
+	//path := s.path
+	group := s.group
+	client, err := s.wsManager.Dial(ip, port, group)
 	url := fmt.Sprintf("ws://%s:%v", ip, port)
 	if err != nil {
 		msg := fmt.Sprintf("chain[%s][%s:%v] websocket dial [%s] error: %v",
 			group, ip, port, url, err)
 		return nil, errors.New(msg)
 	}
-	//logrus.Debugf("chain[%s][%s:%v] websocket dial [%s] success",
-	//	group, ip, port, url, err)
 	return client, nil
 }
 
@@ -207,7 +211,7 @@ func getLogTopic(address, topics string) map[string]interface{} {
 	topic := make(map[string]interface{})
 	tmp := make(map[string]interface{}, 2)
 	tmp["name"] = "log"
-	tmp["params"] = "{\"id\": 1, \"method\": \"eth_subscribe\", \"params\": [\"logs\", {\"address\":" + address + ", \"topics\": [" + topics + "]}]}"
+	tmp["params"] = "{\"id\": \"subscription\", \"method\": \"eth_subscribe\", \"params\": [\"logs\", {\"address\":\"" + address + "\", \"topics\": [\"" + topics + "\"]}]}"
 	topic["new_heads"] = tmp
 	return topic
 }
