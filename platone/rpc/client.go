@@ -238,15 +238,15 @@ func (c *Client) nextID() json.RawMessage {
 	return []byte(strconv.FormatUint(uint64(id), 10))
 }
 
-// SupportedModules calls the rpc_modules method, retrieving the list of
-// APIs that are available on the server.
-func (c *Client) SupportedModules() (map[string]string, error) {
-	var result map[string]string
-	ctx, cancel := context.WithTimeout(context.Background(), subscribeTimeout)
-	defer cancel()
-	err := c.CallContext(ctx, &result, "rpc_modules")
-	return result, err
-}
+//// SupportedModules calls the rpc_modules method, retrieving the list of
+//// APIs that are available on the server.
+//func (c *Client) SupportedModules() (map[string]string, error) {
+//	var result map[string]string
+//	ctx, cancel := context.WithTimeout(context.Background(), subscribeTimeout)
+//	defer cancel()
+//	err := c.CallContext(ctx, &result, "rpc_modules")
+//	return result, err
+//}
 
 // Close closes the client, aborting any in-flight requests.
 func (c *Client) Close() {
@@ -265,9 +265,9 @@ func (c *Client) Close() {
 //
 // The result must be a pointer so that package json can unmarshal into it. You
 // can also pass nil, in which case the result is ignored.
-func (c *Client) Call(ctx context.Context, result interface{}, method string, args ...interface{}) error {
+func (c *Client) Call(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error) {
 	//ctx := context.Background()
-	return c.CallContext(ctx, result, method, args...)
+	return c.CallContext(ctx, method, args...)
 }
 
 // CallContext performs a JSON-RPC call with the given arguments. If the context is
@@ -275,10 +275,11 @@ func (c *Client) Call(ctx context.Context, result interface{}, method string, ar
 //
 // The result must be a pointer so that package json can unmarshal into it. You
 // can also pass nil, in which case the result is ignored.
-func (c *Client) CallContext(ctx context.Context, result interface{}, method string, args ...interface{}) error {
+func (c *Client) CallContext(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error) {
+
 	msg, err := c.newMessage(method, args...)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	op := &requestOp{ids: []json.RawMessage{msg.ID}, resp: make(chan *jsonrpcMessage, 1)}
 
@@ -288,19 +289,20 @@ func (c *Client) CallContext(ctx context.Context, result interface{}, method str
 		err = c.send(ctx, op, msg)
 	}
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// dispatch has accepted the request and will close the channel when it quits.
 	switch resp, err := op.wait(ctx); {
 	case err != nil:
-		return err
+		return nil, err
 	case resp.Error != nil:
-		return errors.New(resp.Error.Message)
+		return nil, errors.New(resp.Error.Message)
 	case len(resp.Result) == 0:
-		return ErrNoResult
+		return nil, ErrNoResult
 	default:
-		return json.Unmarshal(resp.Result, &result)
+		return resp.Result, nil
+		//return json.Unmarshal(resp.Result, &result), nil
 	}
 }
 
@@ -803,6 +805,13 @@ func (sub *ClientSubscription) unmarshal(result json.RawMessage) (interface{}, e
 }
 
 func (sub *ClientSubscription) requestUnsubscribe() error {
-	var result interface{}
-	return sub.client.Call(context.Background(), &result, sub.namespace+unsubscribeMethodSuffix, sub.subid)
+	//var result interface{}
+	//if err = json.Unmarshal(result, &resp); err != nil {
+	//	return "", err
+	//}
+	_, err := sub.client.Call(context.Background(), sub.namespace+unsubscribeMethodSuffix, sub.subid)
+	if err != nil {
+		return err
+	}
+	return nil
 }

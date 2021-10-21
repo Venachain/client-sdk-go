@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"reflect"
 
@@ -56,12 +57,6 @@ func (contractClient ContractClient) ListContractMethods() (packet.ContractAbi, 
 	}
 	abiBytes := abiByte.([]byte)
 	return packet.ParseAbiFromJson(abiBytes)
-	//abiFuncs,err := packet.ParseAbiFromJson(abiBytes)
-	//if err != nil {
-	//	return "", err
-	//}
-	//result := abiFuncs.ListAbiFuncName()
-	//return result, nil
 }
 
 // execute a method in the contract(evm or wasm).
@@ -130,14 +125,16 @@ func (contractClient ContractClient) contractCallWrap(ctx context.Context, txpar
 }
 
 func (contractClient ContractClient) GetReceipt(txhash string) (*packet.Receipt, error) {
-	var response interface{}
-	_ = contractClient.RpcClient.Call(context.Background(), &response, "eth_getTransactionReceipt", txhash)
+	var res interface{}
+	response, _ := contractClient.RpcClient.Call(context.Background(), "eth_getTransactionReceipt", txhash)
 	if response == nil {
 		return nil, nil
 	}
 
+	json.Unmarshal(response, &res)
+
 	// parse the rpc response
-	receipt, err := packet.ParseTxReceipt(response)
+	receipt, err := packet.ParseTxReceipt(res)
 	if err != nil {
 		return nil, err
 	}

@@ -29,8 +29,7 @@ func InitContractClient() (common.TxParams, ContractClient) {
 		URL:         &url,
 	}
 	contract := ContractClient{
-		Client: &pc,
-		//CodePath: codePath1,
+		Client:  &pc,
 		AbiPath: abiPath,
 		Vm:      vm,
 	}
@@ -38,10 +37,10 @@ func InitContractClient() (common.TxParams, ContractClient) {
 }
 
 func TestContractClient_Deploy(t *testing.T) {
-	codePath1 := "/Users/cxh/Downloads/example/example.wasm"
+	codePath := "/Users/cxh/Downloads/example/example.wasm"
 	txparam, contract := InitContractClient()
 	var consParams []string
-	result, _ := contract.Deploy(context.Background(), txparam, codePath1, consParams)
+	result, _ := contract.Deploy(context.Background(), txparam, codePath, consParams)
 	fmt.Println(result)
 	assert.True(t, result != nil)
 }
@@ -49,14 +48,15 @@ func TestContractClient_Deploy(t *testing.T) {
 func TestContractClient_ListContractMethods(t *testing.T) {
 	_, contract := InitContractClient()
 	result, _ := contract.ListContractMethods()
+	fmt.Println(result.ListAbiFuncName())
 	assert.True(t, result != nil)
 }
 
 func TestContractClient_Execute(t *testing.T) {
 	txparam, contract := InitContractClient()
 	funcname := "setEvidence"
-	funcparam := []string{"1", "23"}
-	addr := "0x24de7156a5e973a5d1a7ee82a27772ca0a22fdb5"
+	funcparam := []string{"1", "data"}
+	addr := "0x35853e5643104cd96bd4590f5d4466c577786cfe"
 	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, addr)
 	assert.True(t, result != nil)
 }
@@ -71,6 +71,7 @@ func TestContractClient_GetReceipt(t *testing.T) {
 	}
 	assert.True(t, result != nil)
 }
+
 func TestContractClient_CnsExecute(t *testing.T) {
 	txparam, contract := InitContractClient()
 	funcname := "setEvidence"
@@ -79,4 +80,12 @@ func TestContractClient_CnsExecute(t *testing.T) {
 	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, cns)
 	fmt.Println(result)
 	assert.True(t, result != nil)
+}
+
+func TestContractClient_IsFuncNameInContract(t *testing.T) {
+	_, contract := InitContractClient()
+	funcname := "setEvidence"
+	result, _ := contract.IsFuncNameInContract(funcname)
+	fmt.Println(result)
+	assert.True(t, result != false)
 }

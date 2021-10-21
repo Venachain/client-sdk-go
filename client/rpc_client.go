@@ -36,6 +36,7 @@ func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, t
 		result[0] = res
 
 		if isSync {
+			time.Sleep(time.Second)
 			polRes, err := pc.GetReceiptByPolling(res)
 			if err != nil {
 				return result, nil
@@ -71,7 +72,8 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 
 	// send the RPC calls
 	var resp string
-	err := pc.RpcClient.Call(context.Background(), &resp, action, params...)
+	result, err := pc.RpcClient.Call(context.Background(), action, params...)
+	json.Unmarshal(result, &resp)
 	if err != nil {
 		return nil, errors.New("send Transaction through http error")
 	}
@@ -88,7 +90,11 @@ func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keysto
 
 	// send the RPC calls
 	var resp string
-	err = pc.RpcClient.Call(context, &resp, action, params...)
+	result, err := pc.RpcClient.Call(context, action, params...)
+
+	if err = json.Unmarshal(result, &resp); err != nil {
+		return "", err
+	}
 	if err != nil {
 		return "", errors.New("send Transaction through http error")
 	}
@@ -141,14 +147,18 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 
 func (p *Client) GetTransactionReceipt(txHash string) (*packet.Receipt, error) {
 
-	var response interface{}
-	_ = p.RpcClient.Call(context.Background(), &response, "eth_getTransactionReceipt", txHash)
+	//var response interface{}
+	response, err := p.RpcClient.Call(context.Background(), "eth_getTransactionReceipt", txHash)
+	if err != nil {
+		return nil, err
+	}
 	if response == nil {
 		return nil, nil
 	}
-
+	var resp interface{}
+	json.Unmarshal(response, &resp)
 	// parse the rpc response
-	receipt, err := packet.ParseTxReceipt(response)
+	receipt, err := packet.ParseTxReceipt(resp)
 	if err != nil {
 		return nil, err
 	}
@@ -161,10 +171,11 @@ func (p *Client) GetTransactionReceipt(txHash string) (*packet.Receipt, error) {
 func (p *Client) GetRevertMsg(msg *common.TxParams, blockNum uint64) ([]byte, error) {
 
 	var hex = new(hexutil.Bytes)
-	err := p.RpcClient.Call(context.Background(), hex, "eth_call", msg, hexutil.EncodeUint64(blockNum))
+	res, err := p.RpcClient.Call(context.Background(), "eth_call", msg, hexutil.EncodeUint64(blockNum))
 	if err != nil {
 		return nil, err
 	}
+	json.Unmarshal(res, &hex)
 
 	return *hex, nil
 }

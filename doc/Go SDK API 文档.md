@@ -1,7 +1,5 @@
 # Go SDK API 文档
 
-
-
 ```go
 // Go SDK Client 接口
 type Client struct {
@@ -30,35 +28,37 @@ type URL struct {
 NewClient(ctx context.Context, url URL, passphrase, keyfilePath string) (*Client, error)
 ```
 
-
-
 ## 以太坊通用接口
 
 Client 实现的接口如下：
 
 ```go
+// client/types.go:16
 type IClient interface {
 	GetRpcClient() *rpc.Client
 	RPCSend(ctx context.Context, result interface{}, method string, args ...interface{}) error
 }
 ```
 
- 其中  ```RPCSend ```  可以使用[以太坊RPC API手册](http://cw.hubwiz.com/card/c/parity-rpc-api/)中的方法，result 定义返回值的类型，只需要构造方法和参数即可。例如以下使用方法：
+ 其中  ```RPCSend ```  可以使用[以太坊RPC API手册](http://cw.hubwiz.com/card/c/parity-rpc-api/)中的方法。例如以下使用方法：
 
-函数名字为"personal_unlockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
+该方法表示解锁一个账户，函数名字为"personal_unlockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
 
 ```go
+// client/account.go:105
 func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
-   funcName := "personal_unlockAccount"
-   funcParams := accountClient.Address.Hex()
-   var res bool
-   err := accountClient.Client.RPCSend(ctx, &res, funcName, funcParams)
-   if err != nil {
-      return false, err
-   }
-   return res, nil
+	funcName := "personal_unlockAccount"
+	funcParams := accountClient.Address.Hex()
+	var res bool
+	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
+	if err != nil {
+		return false, err
+	}
+	if err = json.Unmarshal(result, &res); err != nil {
+		return false, err
+	}
+	return res, nil
 }
-
 ```
 
 或者可以参考以下test 的使用
@@ -78,7 +78,7 @@ func TestRpcSend(t *testing.T) {
 }
 ```
 
-如果不确定返回参数的类型，也可以使用EthSend 发送交易。
+如果不确定返回参数的类型，也可以使用ClientSend 发送交易。
 
 ```go
 func TestNewClient(t *testing.T) {
@@ -90,8 +90,6 @@ func TestNewClient(t *testing.T) {
    assert.True(t, res != nil)
 }
 ```
-
-
 
 ## WebSocket 接口
 
@@ -178,8 +176,357 @@ var host = "ws://127.0.0.1:8888/api/ws/head/mygroup1"
 
 如果不使用测试页，可以使用例如 http://coolaf.com/tool/chattest 这样的websocket 测试网页，与 `ws://127.0.0.1:8888/api/ws/head/mygroup1  `建立连接，也可查看到订阅的结果。
 
+## 合约部署和合约调用接口
 
+合约客户端定义如下：
+
+```go
+// client/contract.go:13
+type ContractClient struct {
+   *Client
+   AbiPath string
+   Vm      string
+}
+```
+
+实现的接口如下：
+
+```go
+// client/types.go:22
+type IContract interface {
+   Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) ([]interface{}, error)
+   ListContractMethods() (packet.ContractAbi, error)
+   Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error)
+   IsFuncNameInContract(funcName string) (bool, error)
+   GetReceipt(txhash string) (*packet.Receipt, error)
+}
+```
+
+### 合约部署
+
+在` client/contract_test.go `中的`initContractClient()` 展示了初始化合约客户端的例子：
+
+以下测试用例展示了如何部署合约：
+
+```
+func TestContractClient_Deploy(t *testing.T) {
+   codePath := "/Users/cxh/Downloads/example/example.wasm"
+   txparam, contract := InitContractClient()
+   var consParams []string
+   result, _ := contract.Deploy(context.Background(), txparam, codePath, consParams)
+   fmt.Println(result)
+   assert.True(t, result != nil)
+}
+```
+
+在完成ContractClient 的初始化之后，部署合约需要使用codePath 和 ContractClient中的AbiPath (此时初始化AbiPath 时不能设置为空)。同时还需要传入交易的参数txparam，该参数可以不传入任何值，但是需要初始化。当该结构体中的参数为默认值时，会被赋值一个默认值。 consParams 为合约的某个参数。执行该测试函数后，成功部署了一个合约。得到返回的事件和合约地址：
+
+```json
+{
+	"status": "Operation Succeeded",
+	"contractAddress": "0x35853e5643104cd96bd4590f5d4466c577786cfe",
+	"logs": [
+		"Event init: init success... "
+	],
+	"blockNumber": 198,
+	"GasUsed": 1911684,
+	"From": "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667",
+	"To": "",
+	"TxHash": "0xacdc551f2539068eab227f112ebaeade286d75852aa27e63ecb53176489bee3f"
+}
+```
+
+我们用以上得到的合约地址进行合约的相关测试。
+
+### 展示合约方法
+
+ ListContractMethods()  可以展示合约的所有方法。
+
+```go
+// client/contract_test.go:48
+func TestContractClient_ListContractMethods(t *testing.T) {
+	_, contract := InitContractClient()
+	result, _ := contract.ListContractMethods()
+	fmt.Println(result.ListAbiFuncName())
+	assert.True(t, result != nil)
+}
+```
+
+显示该合约的所有方法为：
+
+```shell
+function: init()
+function: setEvidence(key string,msg string)
+function: deleteEvidence(key string)
+function: getEvidence(key string) string
+event: setName( string)
+event: init( string)
+```
+
+### 合约调用
+
+上传合约数据：
+
+```go
+// client/contract_test.go:55
+func TestContractClient_Execute(t *testing.T) {
+   txparam, contract := InitContractClient()
+   funcname := "setEvidence"
+   funcparam := []string{"1", "data"}
+   addr := "0x35853e5643104cd96bd4590f5d4466c577786cfe"
+   result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, addr)
+   assert.True(t, result != nil)
+}
+```
+
+存证合约传入的参数是`"data"`，此时可以得到该交易的receipt。合约调用的核心是需要知道所要调用合约的函数，根据函数需要的input 类型构造函数的传入参数。
+
+此外，还可以通过cns 调用合约，此时Execute 传入的最后一个参数为cns 名字。例如：
+
+```go
+// client/contract_test.go:74
+func TestContractClient_CnsExecute(t *testing.T) {
+   txparam, contract := InitContractClient()
+   funcname := "setEvidence"
+   funcparam := []string{"1", "23"}
+   cns := "wxbc1"
+   result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, cns)
+   fmt.Println(result)
+   assert.True(t, result != nil)
+}
+```
+
+### 查询合约方法是否属于该合约
+
+```go
+// client/contract_test.go:84
+func TestContractClient_IsFuncNameInContract(t *testing.T) {
+   _, contract := InitContractClient()
+   funcname := "setEvidence"
+   result, _ := contract.IsFuncNameInContract(funcname)
+   fmt.Println(result)
+   assert.True(t, result != false)
+}
+```
+
+返回 true 则表示该合约中存在该方法。
+
+### 根据交易hash 查询交易的receipt
+
+```go
+GetReceipt(txhash string) (*packet.Receipt, error)
+```
+
+```go
+// client/contract_test.go:64 
+func TestContractClient_GetReceipt(t *testing.T) {
+   txhash := "0x35972a847e8c29148976e8a1884665732c862706c71bbaaf573e8cbd432ba921"
+   _, contractClient := InitContractClient()
+   result, _ := contractClient.GetReceipt(txhash)
+   if result != nil {
+      resultBytes, _ := json.MarshalIndent(result, "", "\t")
+      fmt.Printf("result:\n%s\n", resultBytes)
+   }
+   assert.True(t, result != nil)
+}
+```
 
 ## 预编译合约接口
 
-预编译合约不需要传入abi 文件，可以设置为“ ”。
+因为预编译合约需要调用合约，因此各个预编译合约的结构体都需要包含`ContractClient`。 并且预编译合约不需要传入合约的 abi 文件，因此在对各个合约初始化时，可以将contract 的AbiPath 设置为空。
+
+### 账户合约 Account
+
+账户客户端的数据结构如下，其中需要包括账户地址Address。
+
+```go
+// client/account.go:14
+type AccountClient struct {
+   ContractClient
+   Address common.Address
+}
+```
+
+账户的接口分别包括新增用户，更新用户，用户查询                                                                                                                                                                 
+
+```go
+// client/types.go:30
+type IAccount interface {
+   UserAdd(ctx context.Context, txparam common_sdk.TxParams, name, phone, email, organization string) (string, error)
+   UserUpdate(ctx context.Context, txparam common_sdk.TxParams, phone, email, organization string) (string, error)
+   QueryUser(ctx context.Context, txparam common_sdk.TxParams, user string) (string, error)
+   Lock(ctx context.Context) (bool, error)
+   UnLock(ctx context.Context) (bool, error)
+}
+```
+
+#### 新增账户
+
+以下为账户合约新增账户的示例：
+
+```go
+// client/account_test.go:15
+// 如果没有abipath 和codepath 的话，可以设置为空
+func InitAccountClient() (common_sdk.TxParams, AccountClient) {
+   txparam, contract := InitContractClient()
+   contract.AbiPath = ""
+   client := AccountClient{
+      ContractClient: contract,
+      Address:        common.HexToAddress("3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"),
+   }
+   return txparam, client
+}
+```
+
+首先需要初始化账户客户端，以下展示添加账户的例子，需要的参数分别代表name, phone, email, organization。如果不需要可以设置为“ ”。
+
+```go
+// client/account_test.go:25
+func TestAccountClient_UserAdd(t *testing.T) {
+   txparam, client := InitAccountClient()
+   result, _ := client.UserAdd(context.Background(), txparam, "Alice", "110", "", "")
+   fmt.Println(result)
+   assert.True(t, result != "")
+}
+```
+
+#### 更新账户
+
+传入需要更新的账户phone, email, organization。注意只能更新这些信息，账户的名字是不能更改的。
+
+```go
+// client/account_test.go:32
+func TestAccountClient_UserUpdate(t *testing.T) {
+   txparam, client := InitAccountClient()
+   result, _ := client.UserUpdate(context.Background(), txparam, "13556672653", "test@163.com", "wxbc2")
+   fmt.Println(result)
+   assert.True(t, result != "")
+}
+```
+
+#### 查询账户信息
+
+传入账户的名字即可查询到该账户的相关信息
+
+```go
+// func TestAccountClient_QueryUser(t *testing.T) {
+func TestAccountClient_QueryUser(t *testing.T) {
+   txparam, client := InitAccountClient()
+   result, _ := client.QueryUser(context.Background(), txparam, "Alice")
+   fmt.Println(result)
+   assert.True(t, result != "")
+}
+```
+
+#### 账户锁定和解锁
+
+在账户客户端，sdk 还提供了账户锁定和解锁的功能。调用以下函数即可：
+
+```go
+client.UnLock(context.Background())
+client.Lock(context.Background())
+```
+
+### 剩下的预编译合约
+
+#### CnsClient
+
+ 需要指定cns 的名字
+
+```go
+type CnsClient struct {
+   ContractClient
+   name string
+}
+```
+#### FireWallClient
+
+防火墙客户端管理合约的防火墙，需要指定合约地址。
+
+```go
+type FireWallClient struct {
+   ContractClient
+   ContractAddress string
+}
+```
+
+#### NodeClient
+
+节点客户端需要指定节点的名字
+
+```go
+type NodeClient struct {
+   ContractClient
+   NodeName string
+}
+```
+
+SysConfigClient 和 RoleClient 则使用合约的方法。
+
+剩下的预编译合约相关接口如下，相关的test 已在client 包中。可查看使用：
+
+```go
+type ICns interface {
+   CnsExecute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, cns string) ([]interface{}, error)
+   CnsRegister(ctx context.Context, txparam common_sdk.TxParams, version, address string) (string, error)
+   CnsResolve(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)
+   CnsRedirect(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)
+   CnsQueryAll(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   CnsQueryByName(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   CnsQueryByAddress(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   CnsQueryByAccount(ctx context.Context, txparam common_sdk.TxParams, account string) (string, error)
+   CnsStateByAddress(ctx context.Context, txparam common_sdk.TxParams, address string) (int32, error)
+   CnsState(ctx context.Context, txparam common_sdk.TxParams) (int32, error)
+}
+
+type IFireWall interface {
+   FwStatus(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   FwStart(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   FwClose(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   FwExport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (bool, error)
+   FwImport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (string, error)
+   FwNew(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
+   FwDelete(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
+   FwReset(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
+   FwClear(ctx context.Context, txparam common_sdk.TxParams, action string) (string, error)
+}
+
+type INode interface {
+   NodeAdd(ctx context.Context, txparam common_sdk.TxParams, requestNodeInfo syscontracts.NodeInfo) (string, error)
+   NodeDelete(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   NodeUpdate(ctx context.Context, txparam common_sdk.TxParams, request syscontracts.NodeUpdateInfo) (string, error)
+   NodeQuery(ctx context.Context, txparam common_sdk.TxParams, request *syscontracts.NodeQueryInfo) (string, error)
+   NodeStat(ctx context.Context, txparam common_sdk.TxParams, request *syscontracts.NodeStatInfo) (int32, error)
+}
+
+type IRole interface {
+   SetSuperAdmin(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   TransferSuperAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   AddChainAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   DelChainAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   AddGroupAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   DelGroupAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   AddNodeAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   DelNodeAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   AddContractAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   DelContractAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   AddContractDeployer(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   DelContractDeployer(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   GetAddrListOfRole(ctx context.Context, txparam common_sdk.TxParams, role string) (string, error)
+   GetRoles(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
+   HasRole(ctx context.Context, txparam common_sdk.TxParams, address, role string) (int32, error)
+}
+
+type ISysconfig interface {
+   SetSysConfig(ctx context.Context, txparam common_sdk.TxParams, request SysConfigParam) ([]string, error)
+   GetTxGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error)
+   GetBlockGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error)
+   GetGasContractName(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+   GetIsProduceEmptyBlock(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
+   GetCheckContractDeployPermission(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
+   GetAllowAnyAccountDeployContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
+   GetIsApproveDeployedContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
+   GetIsTxUseGas(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
+   GetVRFParams(ctx context.Context, txparam common_sdk.TxParams) (string, error)
+}
+```

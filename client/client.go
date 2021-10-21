@@ -41,12 +41,12 @@ func (c *URL) GetEndpoint() string {
 }
 
 // 当Client 的Passphrase 和KeyfilePath 为空时，使用默认客户端的账户和密码进行加密
-func (c *Client) EthSend(action string, params []interface{}) (interface{}, error) {
+func (c *Client) ClientSend(action string, params []interface{}) (interface{}, error) {
 	var response types.Response
 	res, err := common_sdk.Send(params, action, c.URL.GetEndpoint())
 	if err != nil {
 		logrus.Error("")
-		return nil, errors.New("send eth request is error")
+		return nil, errors.New("send request is error")
 	}
 	b := []byte(res)
 	err = json.Unmarshal(b, &response)
@@ -70,6 +70,7 @@ func NewClient(ctx context.Context, url URL, passphrase, keyfilePath string) (*C
 		RpcClient:   rpcClient,
 		Passphrase:  passphrase,
 		KeyfilePath: keyfilePath,
+		URL:         &url,
 	}
 	return client, nil
 }
@@ -79,15 +80,8 @@ func (client *Client) GetRpcClient() *rpc.Client {
 	return client.RpcClient
 }
 
-func (c *Client) RPCSend(ctx context.Context, result interface{}, method string, args ...interface{}) error {
-	return c.RpcClient.CallContext(ctx, result, method, args)
-}
-
-func (c *Client) Subscribe(ctx context.Context) error {
-	var result string
-	method := "eth_subscribe"
-	params := []string{"newPendingTransactions"}
-	return c.RpcClient.CallContext(ctx, result, method, params)
+func (c *Client) RPCSend(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error) {
+	return c.RpcClient.CallContext(ctx, method, args)
 }
 
 func (pc *Client) clientCommonV2(ctx context.Context, txparam common_sdk.TxParams, dataGen packet.MsgDataGen, to *common.Address, isSync bool) ([]interface{}, error) {

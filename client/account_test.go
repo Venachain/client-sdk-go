@@ -15,7 +15,6 @@ import (
 func InitAccountClient() (common_sdk.TxParams, AccountClient) {
 	txparam, contract := InitContractClient()
 	contract.AbiPath = ""
-	//contract.CodePath = ""
 	client := AccountClient{
 		ContractClient: contract,
 		Address:        common.HexToAddress("3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"),

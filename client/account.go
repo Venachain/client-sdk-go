@@ -92,8 +92,11 @@ func (accountClient AccountClient) Lock(ctx context.Context) (bool, error) {
 	funcName := "personal_lockAccount"
 	funcParams := accountClient.Address.Hex()
 	var res bool
-	err := accountClient.Client.RPCSend(ctx, &res, funcName, funcParams)
+	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
 	if err != nil {
+		return false, err
+	}
+	if err = json.Unmarshal(result, &res); err != nil {
 		return false, err
 	}
 	return res, nil
@@ -103,8 +106,11 @@ func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
 	funcName := "personal_unlockAccount"
 	funcParams := accountClient.Address.Hex()
 	var res bool
-	err := accountClient.Client.RPCSend(ctx, &res, funcName, funcParams)
+	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
 	if err != nil {
+		return false, err
+	}
+	if err = json.Unmarshal(result, &res); err != nil {
 		return false, err
 	}
 	return res, nil

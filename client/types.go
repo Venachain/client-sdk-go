@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
 
@@ -14,8 +15,8 @@ import (
 
 type IClient interface {
 	GetRpcClient() *rpc.Client
-	RPCSend(ctx context.Context, result interface{}, method string, args ...interface{}) error
-	EthSend(action string, params []interface{}) (interface{}, error)
+	RPCSend(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error)
+	ClientSend(action string, params []interface{}) (interface{}, error)
 }
 
 type IContract interface {
@@ -23,7 +24,6 @@ type IContract interface {
 	ListContractMethods() (packet.ContractAbi, error)
 	Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error)
 	IsFuncNameInContract(funcName string) (bool, error)
-	contractCallWrap(ctx context.Context, txparam common.TxParams, funcParams []string, funcName, contract string) ([]interface{}, error)
 	GetReceipt(txhash string) (*packet.Receipt, error)
 }
 
