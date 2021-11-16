@@ -40,6 +40,10 @@ func (c *URL) GetEndpoint() string {
 	return fmt.Sprintf("http://%v:%v", c.IP, c.RPCPort)
 }
 
+func (c *URL) GetEndpointAddr() string {
+	return fmt.Sprintf("%v:%v", c.IP, c.RPCPort)
+}
+
 // 当Client 的Passphrase 和KeyfilePath 为空时，使用默认客户端的账户和密码进行加密
 func (c *Client) ClientSend(action string, params []interface{}) (interface{}, error) {
 	var response types.Response
