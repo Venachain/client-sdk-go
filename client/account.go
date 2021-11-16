@@ -37,7 +37,7 @@ func (accountClient AccountClient) UserAdd(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -56,7 +56,7 @@ func (accountClient AccountClient) UserUpdate(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -84,7 +84,7 @@ func (accountClient AccountClient) QueryUser(ctx context.Context, txparam common
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 

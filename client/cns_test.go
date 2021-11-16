@@ -13,7 +13,6 @@ import (
 func InitCnsClient() (common_sdk.TxParams, CnsClient) {
 	txparam, contract := InitContractClient()
 	contract.AbiPath = ""
-	//contract.CodePath = ""
 	client := CnsClient{
 		ContractClient: contract,
 		name:           "wxbc1",

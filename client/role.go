@@ -19,7 +19,7 @@ func (roleClient RoleClient) SetSuperAdmin(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -32,7 +32,7 @@ func (roleClient RoleClient) TransferSuperAdmin(ctx context.Context, txparam com
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -45,7 +45,7 @@ func (roleClient RoleClient) AddChainAdmin(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -58,7 +58,7 @@ func (roleClient RoleClient) DelChainAdmin(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -70,7 +70,7 @@ func (roleClient RoleClient) AddGroupAdmin(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -82,7 +82,7 @@ func (roleClient RoleClient) DelGroupAdmin(ctx context.Context, txparam common_s
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -94,7 +94,7 @@ func (roleClient RoleClient) AddNodeAdmin(ctx context.Context, txparam common_sd
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -106,7 +106,7 @@ func (roleClient RoleClient) DelNodeAdmin(ctx context.Context, txparam common_sd
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -118,7 +118,7 @@ func (roleClient RoleClient) AddContractAdmin(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -130,7 +130,7 @@ func (roleClient RoleClient) DelContractAdmin(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -142,7 +142,7 @@ func (roleClient RoleClient) AddContractDeployer(ctx context.Context, txparam co
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -154,7 +154,7 @@ func (roleClient RoleClient) DelContractDeployer(ctx context.Context, txparam co
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -167,7 +167,7 @@ func (roleClient RoleClient) GetAddrListOfRole(ctx context.Context, txparam comm
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -180,7 +180,7 @@ func (roleClient RoleClient) GetRoles(ctx context.Context, txparam common_sdk.Tx
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -195,6 +195,6 @@ func (roleClient RoleClient) HasRole(ctx context.Context, txparam common_sdk.TxP
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(int32), nil
 }

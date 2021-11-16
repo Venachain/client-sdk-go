@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// 以下为websocket 测试
 func main() {
 	gin.SetMode(gin.DebugMode)
 	gracesRouter := ws.InitRouter()

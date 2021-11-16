@@ -32,7 +32,7 @@ func (nodeClient NodeClient) NodeAdd(ctx context.Context, txparam common_sdk.TxP
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -50,7 +50,7 @@ func (nodeClient NodeClient) NodeDelete(ctx context.Context, txparam common_sdk.
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -66,7 +66,7 @@ func (nodeClient NodeClient) NodeUpdate(ctx context.Context, txparam common_sdk.
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -78,7 +78,7 @@ func (nodeClient NodeClient) NodeQuery(ctx context.Context, txparam common_sdk.T
 		if err != nil {
 			return "", err
 		}
-		res := result[0].([]interface{})
+		res := result.([]interface{})
 		return res[0].(string), nil
 	}
 	funcName := "getNodes"
@@ -92,7 +92,7 @@ func (nodeClient NodeClient) NodeQuery(ctx context.Context, txparam common_sdk.T
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -117,10 +117,11 @@ func (nodeClient NodeClient) NodeStat(ctx context.Context, txparam common_sdk.Tx
 		funcParams = []string{string(bytes)}
 	}
 	result, err := nodeClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.NodeManagementAddress)
+	//cxh
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(int32), nil
 }
 

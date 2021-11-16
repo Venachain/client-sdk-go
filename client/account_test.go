@@ -24,7 +24,7 @@ func InitAccountClient() (common_sdk.TxParams, AccountClient) {
 
 func TestAccountClient_UserAdd(t *testing.T) {
 	txparam, client := InitAccountClient()
-	result, _ := client.UserAdd(context.Background(), txparam, "Alice", "110", "", "")
+	result, _ := client.UserAdd(context.Background(), txparam, "Alice1", "110", "", "")
 	fmt.Println(result)
 	assert.True(t, result != "")
 }

@@ -530,3 +530,8 @@ type ISysconfig interface {
    GetVRFParams(ctx context.Context, txparam common_sdk.TxParams) (string, error)
 }
 ```
+
+相关预编译合约的使用可以查看以下文档：
+
+https://git-c.i.wxblockchain.com/PlatONE/doc/Dev/blob/develop/PlatONE%20%E6%96%87%E6%A1%A3%E9%9B%86%E5%90%88/platoneCli/%E9%93%BE%E4%BA%A4%E4%BA%92%E5%B7%A5%E5%85%B7%20platonecli%20%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97.md
+

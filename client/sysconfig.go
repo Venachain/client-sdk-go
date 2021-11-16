@@ -119,7 +119,7 @@ func (sysConfigClient SysConfigClient) GetTxGasLimit(ctx context.Context, txpara
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint64), nil
 }
 
@@ -129,7 +129,7 @@ func (sysConfigClient SysConfigClient) GetBlockGasLimit(ctx context.Context, txp
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint64), nil
 }
 
@@ -139,7 +139,7 @@ func (sysConfigClient SysConfigClient) GetGasContractName(ctx context.Context, t
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -149,7 +149,7 @@ func (sysConfigClient SysConfigClient) GetIsProduceEmptyBlock(ctx context.Contex
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint32), nil
 }
 
@@ -159,7 +159,7 @@ func (sysConfigClient SysConfigClient) GetCheckContractDeployPermission(ctx cont
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint32), nil
 }
 
@@ -169,7 +169,7 @@ func (sysConfigClient SysConfigClient) GetAllowAnyAccountDeployContract(ctx cont
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint32), nil
 }
 
@@ -179,7 +179,7 @@ func (sysConfigClient SysConfigClient) GetIsApproveDeployedContract(ctx context.
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint32), nil
 }
 
@@ -189,7 +189,7 @@ func (sysConfigClient SysConfigClient) GetIsTxUseGas(ctx context.Context, txpara
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(uint32), nil
 }
 
@@ -199,7 +199,7 @@ func (sysConfigClient SysConfigClient) GetVRFParams(ctx context.Context, txparam
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -226,7 +226,8 @@ func setConfig(sysConfigClient SysConfigClient, ctx context.Context, txparam com
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 

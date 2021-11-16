@@ -35,7 +35,7 @@ func (firewallClient FireWallClient) FwStatus(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -46,7 +46,7 @@ func (firewallClient FireWallClient) FwStart(ctx context.Context, txparam common
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -57,7 +57,7 @@ func (firewallClient FireWallClient) FwClose(ctx context.Context, txparam common
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -67,7 +67,7 @@ func (firewallClient FireWallClient) FwExport(ctx context.Context, txparam commo
 	funcName := "__sys_FwExport"
 	funcParams := []string{firewallClient.ContractAddress}
 	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 
 	_ = json.Unmarshal([]byte(res[0].(string)), rule)
 	ruleBytes, err := json.Marshal(rule)
@@ -93,7 +93,7 @@ func (firewallClient FireWallClient) FwImport(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -129,7 +129,7 @@ func (firewallClient FireWallClient) fwCommon(ctx context.Context, txparam commo
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -162,6 +162,6 @@ func (firewallClient FireWallClient) clearCommon(ctx context.Context, txparam co
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }

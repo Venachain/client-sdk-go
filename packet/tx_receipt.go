@@ -5,6 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
+	"strings"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/byteutil"
@@ -12,8 +15,6 @@ import (
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
-	"reflect"
-	"strings"
 )
 
 const (

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"reflect"
 
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/common"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
@@ -16,7 +15,7 @@ type ContractClient struct {
 	Vm      string
 }
 
-func (contractClient ContractClient) Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) ([]interface{}, error) {
+func (contractClient ContractClient) Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) (interface{}, error) {
 	var abiBytes []byte
 	var consArgs = make([]interface{}, 0)
 
@@ -60,8 +59,8 @@ func (contractClient ContractClient) ListContractMethods() (packet.ContractAbi, 
 }
 
 // execute a method in the contract(evm or wasm).
-func (contractClient ContractClient) Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error) {
-	var res []interface{}
+func (contractClient ContractClient) Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) (interface{}, error) {
+	//var res []interface{}
 	isListMethods, err := contractClient.IsFuncNameInContract(funcName)
 	if !isListMethods {
 		return nil, err
@@ -69,16 +68,16 @@ func (contractClient ContractClient) Execute(ctx context.Context, txparam common
 	funcName, funcParams = common.FuncParse(funcName, funcParams)
 
 	result, err := contractClient.contractCallWrap(ctx, txparam, funcParams, funcName, address)
-	for _, data := range result {
-		if common.IsTypeLenLong(reflect.ValueOf(data)) {
-			//fmt.Printf("result%d:\n%+v\n", i, data)
-			res = append(res, data)
-		} else {
-			//fmt.Printf("result%d:%+v\n", i, data)
-			res = append(res, data)
-		}
-	}
-	return res, nil
+	//for _, data := range result {
+	//	if common.IsTypeLenLong(reflect.ValueOf(data)) {
+	//		//fmt.Printf("result%d:\n%+v\n", i, data)
+	//		res = append(res, data)
+	//	} else {
+	//		//fmt.Printf("result%d:%+v\n", i, data)
+	//		res = append(res, data)
+	//	}
+	//}
+	return result, nil
 }
 
 // 判断该函数是否属于合约中的方法
@@ -95,7 +94,7 @@ func (contractClient ContractClient) IsFuncNameInContract(funcName string) (bool
 }
 
 // 封装合约的方法
-func (contractClient ContractClient) contractCallWrap(ctx context.Context, txparam common.TxParams, funcParams []string, funcName, contract string) ([]interface{}, error) {
+func (contractClient ContractClient) contractCallWrap(ctx context.Context, txparam common.TxParams, funcParams []string, funcName, contract string) (interface{}, error) {
 	common.ParamValid(contractClient.Vm, "Vm")
 
 	// get the abi bytes of the contracts

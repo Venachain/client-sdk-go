@@ -69,5 +69,5 @@ func TestNodeClient_NodeStat(t *testing.T) {
 	}
 	result, _ := client.NodeStat(context.Background(), txparam, &request)
 	fmt.Println(result)
-	assert.True(t, result == 4)
+	assert.True(t, result == 1)
 }

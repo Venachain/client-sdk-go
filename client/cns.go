@@ -2,8 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"reflect"
 
 	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
 	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
@@ -23,13 +21,13 @@ func (cnsClient CnsClient) CnsRegister(ctx context.Context, txparam common_sdk.T
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
 // 通过cns 名字调用合约
-func (cnsClient CnsClient) CnsExecute(ctx context.Context, txparam common_sdk.TxParams, funcName string, funcParams []string, cns string) ([]interface{}, error) {
-	var res []interface{}
+func (cnsClient CnsClient) CnsExecute(ctx context.Context, txparam common_sdk.TxParams, funcName string, funcParams []string, cns string) (interface{}, error) {
+	//var res []interface{}
 	isListMethods, err := cnsClient.IsFuncNameInContract(funcName)
 	if !isListMethods {
 		return nil, err
@@ -37,16 +35,16 @@ func (cnsClient CnsClient) CnsExecute(ctx context.Context, txparam common_sdk.Tx
 	funcName, funcParams = common_sdk.FuncParse(funcName, funcParams)
 
 	result, err := cnsClient.contractCallWrap(ctx, txparam, funcParams, funcName, cns)
-	for i, data := range result {
-		if common_sdk.IsTypeLenLong(reflect.ValueOf(data)) {
-			fmt.Printf("result%d:\n%+v\n", i, data)
-			res = append(res, data)
-		} else {
-			fmt.Printf("result%d:%+v\n", i, data)
-			res = append(res, data)
-		}
-	}
-	return res, nil
+	//for i, data := range result {
+	//	if common_sdk.IsTypeLenLong(reflect.ValueOf(data)) {
+	//		fmt.Printf("result%d:\n%+v\n", i, data)
+	//		res = append(res, data)
+	//	} else {
+	//		fmt.Printf("result%d:%+v\n", i, data)
+	//		res = append(res, data)
+	//	}
+	//}
+	return result, nil
 }
 
 // 通过合约名称以及版本号（默认为"latest"）解析出对应的账户地址。一个合约名可以对应多个（在注册的）合约地址，
@@ -62,7 +60,7 @@ func (cnsClient CnsClient) CnsResolve(ctx context.Context, txparam common_sdk.Tx
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -75,7 +73,7 @@ func (cnsClient CnsClient) CnsRedirect(ctx context.Context, txparam common_sdk.T
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -88,7 +86,7 @@ func (cnsClient CnsClient) CnsQueryAll(ctx context.Context, txparam common_sdk.T
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -101,7 +99,7 @@ func (cnsClient CnsClient) CnsQueryByName(ctx context.Context, txparam common_sd
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -114,7 +112,7 @@ func (cnsClient CnsClient) CnsQueryByAddress(ctx context.Context, txparam common
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -127,7 +125,7 @@ func (cnsClient CnsClient) CnsQueryByAccount(ctx context.Context, txparam common
 	if err != nil {
 		return "", err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(string), nil
 }
 
@@ -140,7 +138,7 @@ func (cnsClient CnsClient) CnsStateByAddress(ctx context.Context, txparam common
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(int32), nil
 }
 
@@ -153,6 +151,6 @@ func (cnsClient CnsClient) CnsState(ctx context.Context, txparam common_sdk.TxPa
 	if err != nil {
 		return 0, err
 	}
-	res := result[0].([]interface{})
+	res := result.([]interface{})
 	return res[0].(int32), nil
 }

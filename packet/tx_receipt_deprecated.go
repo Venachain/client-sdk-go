@@ -2,12 +2,13 @@ package packet
 
 import (
 	"fmt"
+	"reflect"
+	"strings"
+
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
-	"reflect"
-	"strings"
 )
 
 type eventParsingFunc func(eLog *Log, abiBytes []byte) string
