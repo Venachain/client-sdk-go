@@ -91,6 +91,9 @@ func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keysto
 	// send the RPC calls
 	var resp string
 	result, err := pc.RpcClient.Call(context, action, params...)
+	if err != nil {
+		return "", err
+	}
 
 	if err = json.Unmarshal(result, &resp); err != nil {
 		return "", err

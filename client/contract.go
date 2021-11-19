@@ -68,6 +68,9 @@ func (contractClient ContractClient) Execute(ctx context.Context, txparam common
 	funcName, funcParams = common.FuncParse(funcName, funcParams)
 
 	result, err := contractClient.contractCallWrap(ctx, txparam, funcParams, funcName, address)
+	if err != nil {
+		return nil, err
+	}
 	//for _, data := range result {
 	//	if common.IsTypeLenLong(reflect.ValueOf(data)) {
 	//		//fmt.Printf("result%d:\n%+v\n", i, data)
