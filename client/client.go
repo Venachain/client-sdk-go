@@ -84,43 +84,7 @@ func (c *Client) RPCSend(ctx context.Context, method string, args ...interface{}
 	return c.RpcClient.CallContext(ctx, method, args)
 }
 
-//func (pc *Client) clientCommonV2(ctx context.Context, txparam common_sdk.TxParams, dataGen packet.MsgDataGen, to *common.Address, isSync bool) ([]interface{}, error) {
-//	var result = make([]interface{}, 1)
-//	// get the client global parameters
-//	keyjson, err := ioutil.ReadFile(pc.KeyfilePath)
-//	if err != nil {
-//		return nil, err
-//	}
-//	key, err := keystore.DecryptKey(keyjson, pc.Passphrase)
-//	if err != nil {
-//		return nil, err
-//	}
-//	rpcClient, err := NewClient(ctx, *pc.URL, pc.Passphrase, pc.KeyfilePath)
-//	pc.RpcClient = rpcClient.RpcClient
-//	tx := txparam
-//	tx.To = to
-//	if key.Address.String() != "" {
-//		tx.From = key.Address
-//	}
-//	// dataGen == nil 为普通发送交易的逻辑
-//	if dataGen == nil {
-//		res, err := pc.Send(ctx, &tx, key)
-//		if err != nil {
-//			return nil, errors.New("send transaction is error")
-//		}
-//		result[0] = res
-//		return result, nil
-//	}
-//	// dataGen ！= nil，以下为部署合约的逻辑
-//	result[0], err = pc.MessageCallV2(ctx, dataGen, tx, key, isSync)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return result, nil
-//}
-
 func (pc *Client) clientCommonV2(ctx context.Context, txparam common_sdk.TxParams, dataGen packet.MsgDataGen, to *common.Address, isSync bool) (interface{}, error) {
-	//var result = make([]interface{}, 1)
 	// get the client global parameters
 	keyjson, err := ioutil.ReadFile(pc.KeyfilePath)
 	if err != nil {
@@ -143,7 +107,6 @@ func (pc *Client) clientCommonV2(ctx context.Context, txparam common_sdk.TxParam
 		if err != nil {
 			return nil, errors.New("send transaction is error")
 		}
-		//result[0] = res
 		return res, nil
 	}
 	// dataGen ！= nil，以下为部署合约的逻辑

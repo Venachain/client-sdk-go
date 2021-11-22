@@ -71,15 +71,6 @@ func (contractClient ContractClient) Execute(ctx context.Context, txparam common
 	if err != nil {
 		return nil, err
 	}
-	//for _, data := range result {
-	//	if common.IsTypeLenLong(reflect.ValueOf(data)) {
-	//		//fmt.Printf("result%d:\n%+v\n", i, data)
-	//		res = append(res, data)
-	//	} else {
-	//		//fmt.Printf("result%d:%+v\n", i, data)
-	//		res = append(res, data)
-	//	}
-	//}
 	return result, nil
 }
 

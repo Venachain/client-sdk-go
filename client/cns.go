@@ -35,15 +35,6 @@ func (cnsClient CnsClient) CnsExecute(ctx context.Context, txparam common_sdk.Tx
 	funcName, funcParams = common_sdk.FuncParse(funcName, funcParams)
 
 	result, err := cnsClient.contractCallWrap(ctx, txparam, funcParams, funcName, cns)
-	//for i, data := range result {
-	//	if common_sdk.IsTypeLenLong(reflect.ValueOf(data)) {
-	//		fmt.Printf("result%d:\n%+v\n", i, data)
-	//		res = append(res, data)
-	//	} else {
-	//		fmt.Printf("result%d:%+v\n", i, data)
-	//		res = append(res, data)
-	//	}
-	//}
 	return result, nil
 }
 

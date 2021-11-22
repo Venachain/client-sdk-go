@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
-
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
+
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
 
 	"github.com/PlatONE_Network/PlatONE-SDK-Go/common"
 	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
@@ -20,9 +20,9 @@ type IClient interface {
 }
 
 type IContract interface {
-	Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) ([]interface{}, error)
+	Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) (interface{}, error)
 	ListContractMethods() (packet.ContractAbi, error)
-	Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error)
+	Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) (interface{}, error)
 	IsFuncNameInContract(funcName string) (bool, error)
 	GetReceipt(txhash string) (*packet.Receipt, error)
 }
@@ -36,7 +36,7 @@ type IAccount interface {
 }
 
 type ICns interface {
-	CnsExecute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, cns string) ([]interface{}, error)
+	CnsExecute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, cns string) (interface{}, error)
 	CnsRegister(ctx context.Context, txparam common_sdk.TxParams, version, address string) (string, error)
 	CnsResolve(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)
 	CnsRedirect(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)

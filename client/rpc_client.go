@@ -36,7 +36,7 @@ func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, t
 		result[0] = res
 
 		if isSync {
-			time.Sleep(time.Second)
+			//time.Sleep(time.Second)
 			polRes, err := pc.GetReceiptByPolling(res)
 			if err != nil {
 				return result, nil
