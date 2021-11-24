@@ -1,11 +1,13 @@
 package abi
 
 import (
+	"bytes"
 	"errors"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"math/big"
 	"reflect"
 	"strconv"
+
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 )
 
 // BytesConverter converts the bytes to the specific data type
@@ -25,7 +27,7 @@ func BytesConverter(source []byte, t string) interface{} {
 	case "float128":
 		return common.CallResAsFloat128(source)
 	case "string", "int128_s", "uint128_s", "int256_s", "uint256_s":
-		// source = bytes.TrimRight(source, "\x00")
+		source = bytes.TrimRight(source, "\x00")
 		if len(source) < 64 {
 			return string(source[:])
 		} else {
