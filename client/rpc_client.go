@@ -36,13 +36,15 @@ func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, t
 		result[0] = res
 
 		if isSync {
-			//time.Sleep(time.Second)
 			polRes, err := pc.GetReceiptByPolling(res)
 			if err != nil {
 				return result, nil
 			}
 
-			receiptBytes, _ := json.MarshalIndent(polRes, "", "\t")
+			receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
+			if err != nil {
+				return nil, err
+			}
 			fmt.Println(string(receiptBytes))
 
 			recpt := dataGen.ReceiptParsing(polRes)
@@ -73,9 +75,12 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 	// send the RPC calls
 	var resp string
 	result, err := pc.RpcClient.Call(context.Background(), action, params...)
-	json.Unmarshal(result, &resp)
 	if err != nil {
 		return nil, errors.New("send Transaction through http error")
+	}
+	err = json.Unmarshal(result, &resp)
+	if err != nil {
+		return nil, err
 	}
 
 	outputType := dataGen.GetMethodAbi().Outputs
@@ -106,6 +111,7 @@ func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keysto
 }
 
 func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
+	//time := time.Second * 10
 	ch := make(chan interface{}, 1)
 	go pc.getReceiptByPolling(txHash, ch)
 
@@ -125,14 +131,17 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 // todo: end goroutine?
 func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 
+	var receipt *packet.Receipt
 	for {
-		receipt, err := client.GetTransactionReceipt(txHash)
+		var err error
+		receipt, err = client.GetTransactionReceipt(txHash)
 
 		// limit the times of the polling
 		if err != nil {
 			fmt.Println(err.Error())
-			fmt.Printf("try again 5s later...")
-			time.Sleep(5 * sleepTime)
+			fmt.Printf("try again 2s later...")
+			// 重试机制，之前是5s
+			time.Sleep(2 * sleepTime)
 			fmt.Printf("try again...\n")
 			continue
 		}
@@ -141,9 +150,12 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 			time.Sleep(1 * sleepTime)
 			continue
 		}
-
 		ch <- receipt
+		break
 	}
+
+	//ch <- receipt
+	//fmt.Println("***receipt:", receipt)
 }
 
 // ============================ Tx Receipt ===================================

@@ -84,9 +84,14 @@ type RecptLogs []*Log
 // ParseSysContractResult parsed the rpc response to Receipt object
 func ParseTxReceipt(response interface{}) (*Receipt, error) {
 	var receipt = &Receipt{}
-
-	temp, _ := json.Marshal(response)
-	err := json.Unmarshal(temp, receipt)
+	if response == nil {
+		return nil, errors.New("response is nil")
+	}
+	temp, err := json.Marshal(response)
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(temp, receipt)
 	if err != nil {
 		return nil, errors.New("error in transaction receipt")
 	}
