@@ -19,7 +19,7 @@
 This key store behaves as KeyStorePlain with the difference that
 the private key is encrypted and on disk uses another JSON encoding.
 
-The crypto is documented at https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
+The bp is documented at https://github.com/ethereum/wiki/wiki/Web3-Secret-Storage-Definition
 
 */
 
@@ -34,13 +34,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"
@@ -143,7 +144,7 @@ func EncryptKey(key *Key, auth string, scryptN, scryptP int) ([]byte, error) {
 
 	salt := make([]byte, 32)
 	if _, err := io.ReadFull(rand.Reader, salt); err != nil {
-		panic("reading from crypto/rand failed: " + err.Error())
+		panic("reading from bp/rand failed: " + err.Error())
 	}
 	derivedKey, err := scrypt.Key(authArray, salt, scryptN, scryptR, scryptP, scryptDKLen)
 	if err != nil {
@@ -154,7 +155,7 @@ func EncryptKey(key *Key, auth string, scryptN, scryptP int) ([]byte, error) {
 
 	iv := make([]byte, aes.BlockSize) // 16
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic("reading from crypto/rand failed: " + err.Error())
+		panic("reading from bp/rand failed: " + err.Error())
 	}
 	cipherText, err := aesCTRXOR(encryptKey, keyBytes, iv)
 	if err != nil {

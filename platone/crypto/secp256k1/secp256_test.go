@@ -33,7 +33,7 @@ func generateKeyPair() (pubkey, privkey []byte) {
 func csprngEntropy(n int) []byte {
 	buf := make([]byte, n)
 	if _, err := io.ReadFull(rand.Reader, buf); err != nil {
-		panic("reading from crypto/rand failed: " + err.Error())
+		panic("reading from bp/rand failed: " + err.Error())
 	}
 	return buf
 }

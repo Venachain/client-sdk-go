@@ -22,15 +22,16 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"github.com/pborman/uuid"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
+	"github.com/pborman/uuid"
 )
 
 const (
@@ -70,14 +71,14 @@ type plainKeyJSON struct {
 
 type encryptedKeyJSONV3 struct {
 	Address string     `json:"address"`
-	Crypto  cryptoJSON `json:"crypto"`
+	Crypto  cryptoJSON `json:"bp"`
 	Id      string     `json:"id"`
 	Version int        `json:"version"`
 }
 
 type encryptedKeyJSONV1 struct {
 	Address string     `json:"address"`
-	Crypto  cryptoJSON `json:"crypto"`
+	Crypto  cryptoJSON `json:"bp"`
 	Id      string     `json:"id"`
 	Version string     `json:"version"`
 }
