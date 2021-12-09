@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 )
 
 type NodeClient struct {

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
 
 	"github.com/pkg/errors"
 )

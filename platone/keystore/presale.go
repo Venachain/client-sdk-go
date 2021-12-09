@@ -24,8 +24,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/accounts"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/accounts"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

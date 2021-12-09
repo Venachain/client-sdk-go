@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strconv"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/vm"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/vm"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
 const (

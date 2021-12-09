@@ -6,11 +6,11 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
 type FireWallClient struct {

@@ -4,11 +4,12 @@ import (
 	"crypto/ecdsa"
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/sha3"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	"math/big"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/sha3"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 )
 
 // HomesteadTransaction implements TransactionInterface using the

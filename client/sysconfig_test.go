@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
 	"github.com/stretchr/testify/assert"
 )
 

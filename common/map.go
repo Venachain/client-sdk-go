@@ -3,7 +3,7 @@ package common
 import (
 	"sync"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 type HashMaps struct {

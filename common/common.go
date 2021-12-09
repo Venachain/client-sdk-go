@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/vm"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/vm"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
 const defaultTxType = 2

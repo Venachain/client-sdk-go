@@ -5,10 +5,10 @@ import (
 
 	"golang.org/x/net/context"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 )
 
 type AccountClient struct {

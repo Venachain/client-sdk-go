@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
 type CnsClient struct {

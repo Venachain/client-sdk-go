@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/keystore"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 )
 
 const (

@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/keystore"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 )
 
 type JsonParam struct {

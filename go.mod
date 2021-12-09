@@ -1,4 +1,4 @@
-module github.com/PlatONE_Network/PlatONE-SDK-Go
+module git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go
 
 go 1.16
 

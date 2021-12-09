@@ -17,10 +17,11 @@
 package abi
 
 import (
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
 	"math/big"
 	"reflect"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
 )
 
 // packBytesSlice packs the given bytes as [L, V] as the canonical representation

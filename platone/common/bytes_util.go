@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"strconv"
 
-	math2 "github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
+	math2 "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
 )
 
 func BytesCombine(pBytes ...[]byte) []byte {

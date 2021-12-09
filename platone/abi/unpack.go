@@ -19,9 +19,10 @@ package abi
 import (
 	"encoding/binary"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"math/big"
 	"reflect"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 var (

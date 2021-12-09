@@ -1,6 +1,6 @@
 package precompile
 
-import "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
+import "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 
 var (
 	UserManagementAddress        = syscontracts.UserManagementAddress.String()        // The PlatONE Precompiled contract addr for user management

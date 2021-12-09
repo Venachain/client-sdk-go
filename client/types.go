@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled/syscontracts"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rpc"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rpc"
 )
 
 type IClient interface {

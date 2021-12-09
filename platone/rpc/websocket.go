@@ -31,7 +31,7 @@ import (
 	"time"
 
 	mapset "github.com/deckarep/golang-set"
-	//"github.com/PlatONE_Network/PlatONE-SDK-Go/log"
+	//"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )

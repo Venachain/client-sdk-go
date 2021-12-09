@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/ws"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/ws"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )

@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 	//"test"
 )
 

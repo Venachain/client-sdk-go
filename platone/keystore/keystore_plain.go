@@ -19,9 +19,10 @@ package keystore
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
 	"os"
 	"path/filepath"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 type keyStorePlain struct {

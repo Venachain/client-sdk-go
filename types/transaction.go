@@ -24,11 +24,11 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/sha3"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/sha3"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 	lru "github.com/hashicorp/golang-lru"
 	log "github.com/sirupsen/logrus"
 )

@@ -3,14 +3,15 @@ package abi
 import (
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
 	"math/big"
 	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
 	"unsafe"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 )
 
 // Type is the reflection of the supported argument type

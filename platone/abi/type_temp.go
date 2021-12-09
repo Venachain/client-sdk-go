@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 // BytesConverter converts the bytes to the specific data type

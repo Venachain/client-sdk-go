@@ -21,14 +21,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
 	"math/big"
 	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 )
 
 // Type enumerator

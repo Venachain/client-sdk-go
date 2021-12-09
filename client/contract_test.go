@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rpc"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rpc"
 	"github.com/stretchr/testify/assert"
 )
 

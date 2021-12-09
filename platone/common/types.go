@@ -26,9 +26,9 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/sha3"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/sha3"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 )
 
 // Lengths of hashes and addresses in bytes.

@@ -5,10 +5,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
-	precompile "github.com/PlatONE_Network/PlatONE-SDK-Go/precompiled"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
+	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
 type eventParsingFunc func(eLog *Log, abiBytes []byte) string

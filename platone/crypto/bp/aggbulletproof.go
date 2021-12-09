@@ -5,9 +5,9 @@ import (
 	"math/big"
 	"sync"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 )
 
 type AggBpStatement struct {

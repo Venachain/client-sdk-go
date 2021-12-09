@@ -3,8 +3,8 @@ package crypto
 import (
 	"math/big"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/bp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/bp"
 )
 
 // 输入两个值和范围，生成proof

@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 	"github.com/pkg/errors"
 )
 

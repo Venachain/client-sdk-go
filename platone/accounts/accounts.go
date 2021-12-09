@@ -18,9 +18,10 @@
 package accounts
 
 import (
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
 	"math/big"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 )
 
 // Account represents an Ethereum account located at a specific location defined

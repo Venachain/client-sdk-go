@@ -39,9 +39,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

@@ -1,6 +1,6 @@
 package packet
 
-import "github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
+import "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
 
 type RawData struct {
 	funcParams []interface{}

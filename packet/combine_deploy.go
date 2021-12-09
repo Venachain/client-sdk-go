@@ -3,7 +3,7 @@ package packet
 import (
 	"errors"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
 )
 
 // DeployCall, used for combining the data of contract deployment

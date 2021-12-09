@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/abi"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
 )
 
 //

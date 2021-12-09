@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/big"
 
-	math2 "github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
+	math2 "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
 )
 
 func CallResAsUint128(bts []byte) *big.Int {

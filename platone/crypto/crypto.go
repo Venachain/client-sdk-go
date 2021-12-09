@@ -26,9 +26,9 @@ import (
 	"math/big"
 	"os"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/sha3"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/sha3"
 )
 
 var (

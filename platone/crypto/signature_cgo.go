@@ -22,8 +22,9 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/math"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/crypto/secp256k1"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/math"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/secp256k1"
 )
 
 // Ecrecover returns the uncompressed public key that created the given signature.

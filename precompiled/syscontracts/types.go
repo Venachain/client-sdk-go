@@ -3,7 +3,7 @@ package syscontracts
 import (
 	"encoding/json"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 // the system contract addr  table

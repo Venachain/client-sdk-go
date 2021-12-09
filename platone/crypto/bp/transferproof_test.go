@@ -6,9 +6,9 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rlp"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 )
 
 func TestTfStatmentMarshal(t *testing.T) {

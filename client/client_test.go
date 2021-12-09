@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 
 	"github.com/stretchr/testify/assert"
 )

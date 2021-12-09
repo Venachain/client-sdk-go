@@ -7,12 +7,12 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/packet"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/keystore"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/rpc"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/types"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rpc"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 	"github.com/sirupsen/logrus"
 )
 

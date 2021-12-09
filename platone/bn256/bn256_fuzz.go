@@ -10,8 +10,8 @@ import (
 	"bytes"
 	"math/big"
 
-	cloudflare "github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
-	google "github.com/PlatONE_Network/PlatONE-SDK-Go/platone/bn256"
+	cloudflare "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
+	google "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 )
 
 // FuzzAdd fuzzez bn256 addition between the Google and Cloudflare libraries.

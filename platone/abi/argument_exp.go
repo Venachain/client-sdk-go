@@ -2,9 +2,10 @@ package abi
 
 import (
 	"fmt"
-	"github.com/PlatONE_Network/PlatONE-SDK-Go/platone/common/hexutil"
 	"reflect"
 	"strings"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 )
 
 type ArgumentMarshaling struct {

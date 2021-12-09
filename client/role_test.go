@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	common_sdk "github.com/PlatONE_Network/PlatONE-SDK-Go/common"
+	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
 )
 
 // 如果没有abipath 和codepath 的话，可以设置为空
