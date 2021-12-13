@@ -104,6 +104,15 @@ func UnmarshalPubkey(pub []byte) (*ecdsa.PublicKey, error) {
 	return &ecdsa.PublicKey{Curve: S256(), X: x, Y: y}, nil
 }
 
+// HexToECDSAPub parses a secp256k1 string to public key.
+func HexToECDSAPub(hexKey string) (*ecdsa.PublicKey, error) {
+	b, err := hex.DecodeString(hexKey)
+	if err != nil {
+		return nil, errors.New("invalid hex string")
+	}
+	return UnmarshalPubkey(b)
+}
+
 func FromECDSAPub(pub *ecdsa.PublicKey) []byte {
 	if pub == nil || pub.X == nil || pub.Y == nil {
 		return nil
