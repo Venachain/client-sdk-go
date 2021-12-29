@@ -92,7 +92,10 @@ func (accountClient AccountClient) Lock(ctx context.Context) (bool, error) {
 	funcName := "personal_lockAccount"
 	funcParams := accountClient.Address.Hex()
 	var res bool
-	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
+
+	//result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
+	result, err := accountClient.RpcClient.CallContext(ctx, funcName, funcParams)
+
 	if err != nil {
 		return false, err
 	}
@@ -104,9 +107,11 @@ func (accountClient AccountClient) Lock(ctx context.Context) (bool, error) {
 
 func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
 	funcName := "personal_unlockAccount"
-	funcParams := accountClient.Address.Hex()
+	account := accountClient.Address.Hex()
+
 	var res bool
-	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
+	result, err := accountClient.RpcClient.CallContext(ctx, funcName, account,accountClient.Passphrase,0)
+	//result, err := accountClient.Client.RPCSend(ctx, funcName, account,accountClient.Passphrase,0)
 	if err != nil {
 		return false, err
 	}

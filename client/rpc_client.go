@@ -27,7 +27,6 @@ func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, t
 		return nil, errors.New("packet data err: %s\n")
 	}
 
-	// 部署合约
 	if dataGen.GetIsWrite() {
 		res, err := pc.Send(ctx, &tx, key)
 		if err != nil {
