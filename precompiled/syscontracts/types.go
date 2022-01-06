@@ -16,6 +16,7 @@ var (
 	GroupManagementAddress       = common.HexToAddress("0x1000000000000000000000000000000000000006") // The PlatONE Precompiled contract addr for group management
 	ContractDataProcessorAddress = common.HexToAddress("0x1000000000000000000000000000000000000007") // The PlatONE Precompiled contract addr for group management
 	CnsInvokeAddress             = common.HexToAddress("0x0000000000000000000000000000000000000000") // The PlatONE Precompiled contract addr for group management
+	NFTContractAddress           = common.HexToAddress("0x0000000000000000000000000000000000000012") // The PlatONE Precompiled contract addr for NFT contract
 )
 
 type UpdateNode struct {

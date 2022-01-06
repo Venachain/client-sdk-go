@@ -14,7 +14,7 @@ import (
 func InitContractClient() (common.TxParams, ContractClient) {
 	txparam := common.TxParams{}
 	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
-	abiPath := "/Users/cxh/Downloads/example/example.cpp.abi.json"
+	//abiPath := "/Users/cxh/go/src/PlatONE-Go/release/linux/conf/contracts/evidenceManager.cpp.abi.json"
 	PassPhrase := "0"
 	vm := "wasm"
 	url := URL{
@@ -30,7 +30,7 @@ func InitContractClient() (common.TxParams, ContractClient) {
 	}
 	contract := ContractClient{
 		Client:  &pc,
-		AbiPath: abiPath,
+		//AbiPath: abiPath,
 		Vm:      vm,
 	}
 	return txparam, contract
@@ -74,13 +74,26 @@ func TestContractClient_GetReceipt(t *testing.T) {
 
 func TestContractClient_CnsExecute(t *testing.T) {
 	txparam, contract := InitContractClient()
-	funcname := "setEvidence"
-	funcparam := []string{"1", "23"}
-	cns := "wxbc1"
-	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, cns)
+	funcname := "saveEvidence"
+	funcparam := []string{"2", "23"}
+	//cns := "wxbc1"
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, "0x0000000000000000000000000000000000000099")
 	fmt.Println(result)
+	contract.Client.RpcClient.Close()
+
 	assert.True(t, result != nil)
 }
+
+func TestContractClient_GetReceipt2Execute(t *testing.T) {
+	txparam, contract := InitContractClient()
+	funcname := "getEvidence"
+	funcparam := []string{"2"}
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	fmt.Println(result)
+	contract.Client.RpcClient.Close()
+	assert.True(t, result != nil)
+}
+
 
 func TestContractClient_IsFuncNameInContract(t *testing.T) {
 	_, contract := InitContractClient()
@@ -89,3 +102,27 @@ func TestContractClient_IsFuncNameInContract(t *testing.T) {
 	fmt.Println(result)
 	assert.True(t, result != false)
 }
+
+func TestContractClient_NFTMint(t *testing.T) {
+	txparam, contract := InitContractClient()
+	funcname := "mint"
+	funcparam := []string{}
+	funcparam = append(funcparam,"{\"method\":\"mint\", \"data\":[{\"name\":\"abcd\",\"symbol\":\"ab\",\"description\":\"abcdf1\",\"iprice\": 100, \"price\":100,\"url\":\"ww.qwe.com\",\"property\":\"p11210\",\"others\":\"123\"}]}")
+	funcparam = append(funcparam,"")
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, "0x0000000000000000000000000000000000000012")
+	fmt.Println(result)
+	contract.Client.RpcClient.Close()
+	assert.True(t, result != nil)
+}
+
+func TestContractClient_NFTGet(t *testing.T) {
+	txparam, contract := InitContractClient()
+	funcname := "getNFTById"
+	funcparam := []string{}
+	funcparam = append(funcparam,"acd088948164483a37f73989f1c27b47a5586ebd1d004d9f6dfdcef17082f275")
+	result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, "0x0000000000000000000000000000000000000012")
+	fmt.Println(result)
+	contract.Client.RpcClient.Close()
+	assert.True(t, result != nil)
+}
+

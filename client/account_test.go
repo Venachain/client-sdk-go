@@ -17,10 +17,11 @@ func InitAccountClient() (common_sdk.TxParams, AccountClient) {
 	contract.AbiPath = ""
 	client := AccountClient{
 		ContractClient: contract,
-		Address:        common.HexToAddress("3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"),
+		Address:        common.HexToAddress("5e07f69a324b711dc7efbc7d4c2fb91429b5ec89"),
 	}
 	return txparam, client
 }
+
 
 func TestAccountClient_UserAdd(t *testing.T) {
 	txparam, client := InitAccountClient()
@@ -57,5 +58,5 @@ func TestAccountClient_UnLock(t *testing.T) {
 	_, client := InitAccountClient()
 	result, _ := client.UnLock(context.Background())
 	fmt.Println(result)
-	assert.True(t, result == false)
+	assert.True(t, result == true)
 }
