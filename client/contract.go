@@ -52,7 +52,7 @@ func (contractClient ContractClient) ListContractMethods() (packet.ContractAbi, 
 	}
 	abiByte, err := common.ParamParse(contractClient.AbiPath, "abi")
 	if err != nil {
-		return nil, errors.New("parameter resolution failed")
+		return nil, errors.New("abi file path is error,parameter resolution failed")
 	}
 	abiBytes := abiByte.([]byte)
 	return packet.ParseAbiFromJson(abiBytes)
@@ -60,11 +60,6 @@ func (contractClient ContractClient) ListContractMethods() (packet.ContractAbi, 
 
 // execute a method in the contract(evm or wasm).
 func (contractClient ContractClient) Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) (interface{}, error) {
-	//var res []interface{}
-	isListMethods, err := contractClient.IsFuncNameInContract(funcName)
-	if !isListMethods {
-		return nil, err
-	}
 	funcName, funcParams = common.FuncParse(funcName, funcParams)
 
 	result, err := contractClient.contractCallWrap(ctx, txparam, funcParams, funcName, address)
