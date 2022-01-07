@@ -1,0 +1,90 @@
+[
+    {
+        "name": "saveEvidence",
+        "inputs": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "evidenceValue",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "int32"
+            }
+        ],
+        "constant": "false",
+        "type": "function"
+    },
+    {
+        "name": "getEvidence",
+        "inputs": [
+            {
+                "name": "key",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "constant": "true",
+        "type": "function"
+    },
+    {
+        "name": "setJsonData",
+        "inputs": [
+            {
+                "name": "key",
+                "type": "string"
+            },
+            {
+                "name": "value",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "int32"
+            }
+        ],
+        "constant": "false",
+        "type": "function"
+    },
+    {
+        "name": "getJsonData",
+        "inputs": [
+            {
+                "name": "key",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "constant": "true",
+        "type": "function"
+    },
+    {
+        "name": "Notify",
+        "inputs": [
+            {
+                "type": "uint64"
+            },
+            {
+                "type": "string"
+            }
+        ],
+        "type": "event"
+    }
+]

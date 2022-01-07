@@ -1,6 +1,8 @@
 package precompile
 
-import "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+import (
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+)
 
 var (
 	UserManagementAddress        = syscontracts.UserManagementAddress.String()        // The PlatONE Precompiled contract addr for user management
@@ -12,6 +14,8 @@ var (
 	ContractDataProcessorAddress = syscontracts.ContractDataProcessorAddress.String() // The PlatONE Precompiled contract addr for group management
 	CnsInvokeAddress             = syscontracts.CnsInvokeAddress.String()             // The PlatONE Precompiled contract addr for group management
 	NFTContractAddress           = syscontracts.NFTContractAddress.String()
+	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String()     // The PlatONE Precompiled contract addr for evidence management
+	BulletProofAddress 			 = syscontracts.BulletProofAddress.String()            // The PlatONE Precompiled contract addr for Bullet proof
 )
 
 const (
@@ -30,6 +34,9 @@ var List = map[string]string{
 	GroupManagementAddress:       "../precompiled/syscontracts/groupManager.cpp.abi.json",
 	ContractDataProcessorAddress: "../precompiled/syscontracts/contractData.cpp.abi.json",
 	NFTContractAddress:           "../precompiled/syscontracts/nft.abi.json",
+	EvidenceManagementAddress:    "../precompiled/syscontracts/evidenceManager.cpp.abi.json",
+	BulletProofAddress: 		  "../precompiled/syscontracts/RangeProof.cpp.abi.json",
+
 
 	CnsInitRegEvent: "../precompiled/syscontracts/cnsInitRegEvent.json",
 	CnsInvokeEvent:  "../precompiled/syscontracts/cnsInvokeEvent.json",

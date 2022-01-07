@@ -1,0 +1,59 @@
+[
+    {
+        "name": "verifyProofByRange",
+        "inputs": [
+            {
+                "name": "userid",
+                "type": "string"
+            },
+            {
+                "name": "proof",
+                "type": "string"
+            },
+            {
+                "name": "pid",
+                "type": "string"
+            },{
+                "name": "range",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "int32"
+            }
+        ],
+        "constant": "false",
+        "type": "function"
+    },
+    {
+        "name": "getResult",
+        "inputs": [
+            {
+                "name": "pid",
+                "type": "string"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "constant": "true",
+        "type": "function"
+    },
+    {
+        "name": "Notify",
+        "inputs": [
+            {
+                "type": "uint64"
+            },
+            {
+                "type": "string"
+            }
+        ],
+        "type": "event"
+    }
+]
