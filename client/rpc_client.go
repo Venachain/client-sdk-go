@@ -119,9 +119,6 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 		return receipt.(*packet.Receipt), nil
 
 	case <-time.After(time.Second * 10):
-		// temp := fmt.Sprintf("\nget contract receipt timeout...more than %d second.\n", 10)
-		// return temp + txHash
-
 		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 10)
 		return nil, errors.New(errStr)
 	}
@@ -139,7 +136,6 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 		if err != nil {
 			fmt.Println(err.Error())
 			fmt.Printf("try again 2s later...")
-			// 重试机制，之前是5s
 			time.Sleep(2 * sleepTime)
 			fmt.Printf("try again...\n")
 			continue
