@@ -33,20 +33,20 @@ const (
 
 // link the precompiled contract addresses with abi file bytes
 var List = map[string]string{
-	UserManagementAddress:        "../precompiled/syscontracts/userManager.cpp.abi.json",
-	NodeManagementAddress:        "../precompiled/syscontracts/nodeManager.cpp.abi.json",
-	CnsManagementAddress:         "../precompiled/syscontracts/cnsManager.cpp.abi.json",
-	ParameterManagementAddress:   "../precompiled/syscontracts/paramManager.cpp.abi.json",
-	FirewallManagementAddress:    "../precompiled/syscontracts/fireWall.abi.json",
-	GroupManagementAddress:       "../precompiled/syscontracts/groupManager.cpp.abi.json",
-	ContractDataProcessorAddress: "../precompiled/syscontracts/contractData.cpp.abi.json",
-	NFTContractAddress:           "../precompiled/syscontracts/nft.abi.json",
+	UserManagementAddress:        "syscontracts/userManager.cpp.abi.json",
+	NodeManagementAddress:        "syscontracts/nodeManager.cpp.abi.json",
+	CnsManagementAddress:         "syscontracts/cnsManager.cpp.abi.json",
+	ParameterManagementAddress:   "syscontracts/paramManager.cpp.abi.json",
+	FirewallManagementAddress:    "syscontracts/fireWall.abi.json",
+	GroupManagementAddress:       "syscontracts/groupManager.cpp.abi.json",
+	ContractDataProcessorAddress: "syscontracts/contractData.cpp.abi.json",
+	NFTContractAddress:           "syscontracts/nft.abi.json",
 	EvidenceManagementAddress:    "evidenceManager.cpp.abi.json",
 	BulletProofAddress:           "RangeProof.cpp.abi.json",
 
-	CnsInitRegEvent: "../precompiled/syscontracts/cnsInitRegEvent.json",
-	CnsInvokeEvent:  "../precompiled/syscontracts/cnsInvokeEvent.json",
-	PermDeniedEvent: "../precompiled/syscontracts/permissionDeniedEvent.json",
+	CnsInitRegEvent: "cnsInitRegEvent.json",
+	CnsInvokeEvent:  "cnsInvokeEvent.json",
+	PermDeniedEvent: "permissionDeniedEvent.json",
 }
 
 func isWindowsSystem() bool {
