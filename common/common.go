@@ -1,11 +1,8 @@
 package common
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
-	"io"
-	"os"
 	"reflect"
 	"strconv"
 	"strings"
@@ -43,21 +40,12 @@ func AbiParse(abiFilePath, address string) []byte {
 	var abiBytes []byte
 
 	if abiFilePath == "" {
-		// todo: equalFold string?
 		if p := precompile.List[address]; p != "" {
-			file, err := os.Open(p)
-			if err != nil {
+			abibyte, err_byte := precompile.GetContractByte(p)
+			if err_byte != nil {
 				return nil
 			}
-			defer file.Close()
-			buf := bytes.NewBuffer(nil)
-			if _, err := io.Copy(buf, file); err != nil {
-				return nil
-			}
-			return buf.Bytes()
-
-			//precompiledAbi, _ := precompile.Asset(p)
-			//return precompiledAbi
+			return abibyte
 		}
 	}
 

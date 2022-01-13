@@ -1,6 +1,13 @@
 package precompile
 
 import (
+	"bytes"
+	"fmt"
+	"io"
+	"os"
+	"runtime"
+	"strings"
+
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 )
 
@@ -14,8 +21,8 @@ var (
 	ContractDataProcessorAddress = syscontracts.ContractDataProcessorAddress.String() // The PlatONE Precompiled contract addr for group management
 	CnsInvokeAddress             = syscontracts.CnsInvokeAddress.String()             // The PlatONE Precompiled contract addr for group management
 	NFTContractAddress           = syscontracts.NFTContractAddress.String()
-	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String()     // The PlatONE Precompiled contract addr for evidence management
-	BulletProofAddress 			 = syscontracts.BulletProofAddress.String()            // The PlatONE Precompiled contract addr for Bullet proof
+	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String() // The PlatONE Precompiled contract addr for evidence management
+	BulletProofAddress           = syscontracts.BulletProofAddress.String()        // The PlatONE Precompiled contract addr for Bullet proof
 )
 
 const (
@@ -34,11 +41,49 @@ var List = map[string]string{
 	GroupManagementAddress:       "../precompiled/syscontracts/groupManager.cpp.abi.json",
 	ContractDataProcessorAddress: "../precompiled/syscontracts/contractData.cpp.abi.json",
 	NFTContractAddress:           "../precompiled/syscontracts/nft.abi.json",
-	EvidenceManagementAddress:    "../precompiled/syscontracts/evidenceManager.cpp.abi.json",
-	BulletProofAddress: 		  "../precompiled/syscontracts/RangeProof.cpp.abi.json",
-
+	EvidenceManagementAddress:    "evidenceManager.cpp.abi.json",
+	BulletProofAddress:           "RangeProof.cpp.abi.json",
 
 	CnsInitRegEvent: "../precompiled/syscontracts/cnsInitRegEvent.json",
 	CnsInvokeEvent:  "../precompiled/syscontracts/cnsInvokeEvent.json",
 	PermDeniedEvent: "../precompiled/syscontracts/permissionDeniedEvent.json",
+}
+
+func isWindowsSystem() bool {
+	if runtime.GOOS == "windows" {
+		return true
+	}
+	return false
+}
+
+func getCurrentFilePath() string {
+	var separator = "/"
+	if isWindowsSystem() {
+		separator = "\\"
+	}
+	_, fileStr, _, _ := runtime.Caller(1)
+	split_value := strings.Split(fileStr, separator)
+	split_value = split_value[:len(split_value)-1]
+	var result string
+	for _, val := range split_value {
+		result = result + val + separator
+	}
+	return result
+}
+
+func GetContractByte(jsonName string) ([]byte, error) {
+	parentFilePath := getCurrentFilePath()
+	objectPath := parentFilePath + "syscontracts/" + jsonName
+	file, err := os.Open(objectPath)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer file.Close()
+	buf := bytes.NewBuffer(nil)
+	if _, err = io.Copy(buf, file); err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
