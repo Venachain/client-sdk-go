@@ -2,12 +2,9 @@ package bp
 
 import (
 	"errors"
-	//"errors"
 	"math/big"
-	"sync"
 
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
-	//"test"
 )
 
 /*
@@ -452,7 +449,8 @@ func (proof *BulletProof) Verify(param BulletProofParams) (bool, error) {
 }
 
 var bpparam BulletProofParams
-var initbp sync.Once
+
+//var initbp sync.Once
 
 /*
 init params
@@ -471,20 +469,23 @@ func GenerateBpParam(n int64) *BulletProofParams {
 	return &bpparam
 }
 
-func initbpparam() {
-	bpparam = BulletProofParams{}
-	bpparam.n = 32
-	bpparam.g = MapIntoGroup("g")
-	bpparam.h = MapIntoGroup("h")
-	bpparam.gVector = make([]*bn256.G1, bpparam.n)
-	bpparam.hVector = make([]*bn256.G1, bpparam.n)
-	for i := 0; i < int(bpparam.n); i++ {
-		bpparam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
-		bpparam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
-	}
-}
+//func initbpparam() {
+//	bpparam = BulletProofParams{}
+//	bpparam.n = 32
+//	bpparam.g = MapIntoGroup("g")
+//	bpparam.h = MapIntoGroup("h")
+//	bpparam.gVector = make([]*bn256.G1, bpparam.n)
+//	bpparam.hVector = make([]*bn256.G1, bpparam.n)
+//	for i := 0; i < int(bpparam.n); i++ {
+//		bpparam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
+//		bpparam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
+//	}
+//}
 
-func Bp() BulletProofParams {
-	initbp.Do(initbpparam)
-	return bpparam
+//func Bp() BulletProofParams {
+//	initbp.Do(initbpparam)
+//	return bpparam
+//}
+func Bp() *BulletProofParams {
+	return GenerateBpParam(16)
 }

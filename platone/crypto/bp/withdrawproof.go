@@ -143,7 +143,7 @@ func SigmaProve(g, h, cRn *bn256.G1, epoch, x, z, taux *big.Int, wit *WithdrawWi
 }
 
 func WithdrawProve(cLn, cRn, pub *bn256.G1, epoch *big.Int, sender []byte, witness *WithdrawWitness) (*WithdrawProof, error) {
-	aggBP := NewAggBpStatement(int64(1), AggBp())
+	aggBP := NewAggBpStatement(int64(1), *AggBp())
 	wdProof := new(WithdrawProof)
 	//compute A and S
 	aL, aR, alpha, A, _ := GenerateAggA(aggBP, witness.vDiff)
@@ -205,7 +205,7 @@ func WithdrawProve(cLn, cRn, pub *bn256.G1, epoch *big.Int, sender []byte, witne
 }
 
 func WithdrawVerify(statement *WithdrawStatement, proof *WithdrawProof) (bool, error) {
-	aggBP := NewAggBpStatement(int64(1), AggBp())
+	aggBP := NewAggBpStatement(int64(1), *AggBp())
 	//calculate nonce y,z
 	y, z := GenerateBurnyz(proof.A, proof.S, statement.cLn, statement.cRn, statement.pub, statement.epoch, statement.sender)
 	// generate delta(y,z)

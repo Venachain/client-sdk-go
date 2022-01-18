@@ -618,11 +618,11 @@ func TransferProve(tfStatement *TransferStatement, tfWit *TransferWitness) (*Tra
 	bpV[1] = tfWit.bDiff
 	bpWit.v = bpV
 	instance := AggBp()
-	aL, aR, alpha, BpA, err := GenerateAggA(&instance, bpWit)
+	aL, aR, alpha, BpA, err := GenerateAggA(instance, bpWit)
 	if err != nil {
 		return nil, err
 	}
-	sL, sR, rho, BpS, err := GenerateAggS(&instance)
+	sL, sR, rho, BpS, err := GenerateAggS(instance)
 	if err != nil {
 		return nil, err
 	}
@@ -636,7 +636,7 @@ func TransferProve(tfStatement *TransferStatement, tfWit *TransferWitness) (*Tra
 	}
 	m := int64(bits.Len(uint(N))) - 1
 	//3. many out of many proof: commitments to bits, generate proof A and B
-	A, B, rA, rB, Randa, Witb, err := commitToBits(m, tfWit, &instance)
+	A, B, rA, rB, Randa, Witb, err := commitToBits(m, tfWit, instance)
 	if err != nil {
 		return nil, err
 	}
@@ -692,7 +692,7 @@ func TransferProve(tfStatement *TransferStatement, tfWit *TransferWitness) (*Tra
 	chally := GenerateChallenge(challOmega.Bytes(), ORDER)
 	challz := GenerateChallenge(chally.Bytes(), ORDER)
 	//13. generate T1 and T2
-	T1, T2, tau1, tau2, err := GenerateAggT1T2(&instance, aL, aR, sL, sR, chally, challz)
+	T1, T2, tau1, tau2, err := GenerateAggT1T2(instance, aL, aR, sL, sR, chally, challz)
 	proof.BpT1 = T1
 	proof.BpT2 = T2
 	//14. generate challenge x
@@ -785,7 +785,7 @@ func TransferVerify(tfStatement *TransferStatement, tfProof *TransferProof) (boo
 	m := int64(len(tfProof.Tff)) / 2
 	N := int64(math.Pow(float64(2), float64(m)))
 	instance := AggBp()
-	comVerifier, _ := VerifierCommit(tfProof.Tff, tfProof.A, tfProof.B, m, tfProof.TfzA, challOmega, &instance)
+	comVerifier, _ := VerifierCommit(tfProof.Tff, tfProof.A, tfProof.B, m, tfProof.TfzA, challOmega, instance)
 	if comVerifier == false {
 		return false, errors.New("commitment verify failed")
 	}
@@ -826,7 +826,7 @@ func TransferVerify(tfStatement *TransferStatement, tfProof *TransferProof) (boo
 	AX := new(bn256.G1).Add(new(bn256.G1).ScalarMult(yXline, tfProof.TfSr), new(bn256.G1).ScalarMult(CXline, new(big.Int).Neg(tfProof.Tfc)))
 	delta := ComputeAggDelta(chally, challz, instance.bpParam.n, instance.m)
 	challx := Generatex(tfProof.BpT1, tfProof.BpT2, challz)
-	At := ComputeAt(&instance, tfProof.Tfc, challOmega, tfProof.BpThat, tfProof.TfStau, delta, tfProof.TfSb, challx, m, tfProof.BpT1, tfProof.BpT2)
+	At := ComputeAt(instance, tfProof.Tfc, challOmega, tfProof.BpThat, tfProof.TfStau, delta, tfProof.TfSb, challx, m, tfProof.BpT1, tfProof.BpT2)
 	Gepoch := MapIntoGroup("zether" + tfStatement.Epoch.String())
 	Au := new(bn256.G1).Add(new(bn256.G1).ScalarMult(Gepoch, tfProof.TfSsk), new(bn256.G1).ScalarMult(tfStatement.NonceU, new(big.Int).Neg(tfProof.Tfc)))
 	c := GenerateTfC(challx, Ay, AD, Ab, AX, At, Au)
