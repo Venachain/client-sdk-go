@@ -2,12 +2,11 @@ package bp
 
 import (
 	"errors"
-	"math/big"
-	"sync"
-
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
+	"math/big"
+	"strconv"
 )
 
 type AggBpStatement struct {
@@ -686,6 +685,7 @@ func VerifyAggIpp(proof *AggBulletProof, instance *AggBpStatement) (bool, error)
 
 //only for withdrawproof
 func NewAggBpStatement(m int64, aggbppram AggBpStatement) *AggBpStatement {
+	var aggbpparam AggBpStatement
 	result := &AggBpStatement{
 		m:       m,
 		bpParam: BulletProofParams{},
@@ -703,12 +703,12 @@ func NewAggBpStatement(m int64, aggbppram AggBpStatement) *AggBpStatement {
 func GetGenerator(param AggBpStatement) (*bn256.G1, *bn256.G1, []*bn256.G1, []*bn256.G1) {
 	return param.bpParam.g, param.bpParam.h, param.bpParam.gVector, param.bpParam.hVector
 }
-
-var aggbpparam AggBpStatement
-var agginitbp sync.Once
+//
+//var aggbpparam AggBpStatement
+//var agginitbp sync.Once
 
 func GenerateAggBpStatement(m, n int64) *AggBpStatement {
-	aggbpparam = AggBpStatement{}
+	aggbpparam := AggBpStatement{}
 	aggbpparam.m = m
 	aggbpparam.bpParam.n = n
 	aggbpparam.bpParam.g = MapIntoGroup("g")
@@ -717,14 +717,14 @@ func GenerateAggBpStatement(m, n int64) *AggBpStatement {
 	aggbpparam.bpParam.gVector = make([]*bn256.G1, nm)
 	aggbpparam.bpParam.hVector = make([]*bn256.G1, nm)
 	for i := 0; i < int(nm); i++ {
-		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
-		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
+		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + strconv.Itoa(i))
+		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + strconv.Itoa(i))
 	}
 	return &aggbpparam
 }
 
 func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement {
-	aggbpparam = AggBpStatement{}
+	aggbpparam := AggBpStatement{}
 	aggbpparam.m = m
 	aggbpparam.bpParam.n = n
 
@@ -734,28 +734,31 @@ func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement
 	aggbpparam.bpParam.gVector = make([]*bn256.G1, nm)
 	aggbpparam.bpParam.hVector = make([]*bn256.G1, nm)
 	for i := 0; i < int(nm); i++ {
-		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
-		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
+		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + strconv.Itoa(i))
+		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + strconv.Itoa(i))
 	}
 	return &aggbpparam
 }
 
-func agginitbpparam() {
-	aggbpparam = AggBpStatement{}
-	aggbpparam.m = 2
-	aggbpparam.bpParam.n = 16
-	aggbpparam.bpParam.g = MapIntoGroup("g")
-	aggbpparam.bpParam.h = MapIntoGroup("h")
-	nm := aggbpparam.bpParam.n * aggbpparam.m
-	aggbpparam.bpParam.gVector = make([]*bn256.G1, nm)
-	aggbpparam.bpParam.hVector = make([]*bn256.G1, nm)
-	for i := 0; i < int(nm); i++ {
-		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
-		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
-	}
-}
+//func agginitbpparam() {
+//	aggbpparam = AggBpStatement{}
+//	aggbpparam.m = 2
+//	aggbpparam.bpParam.n = 16
+//	aggbpparam.bpParam.g = MapIntoGroup("g")
+//	aggbpparam.bpParam.h = MapIntoGroup("h")
+//	nm := aggbpparam.bpParam.n * aggbpparam.m
+//	aggbpparam.bpParam.gVector = make([]*bn256.G1, nm)
+//	aggbpparam.bpParam.hVector = make([]*bn256.G1, nm)
+//	for i := 0; i < int(nm); i++ {
+//		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + string(rune(i)))
+//		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + string(rune(i)))
+//	}
+//}
 
-func AggBp() AggBpStatement {
-	agginitbp.Do(agginitbpparam)
-	return aggbpparam
+//func AggBp() AggBpStatement {
+//	agginitbp.Do(agginitbpparam)
+//	return aggbpparam
+//}
+func AggBp() *AggBpStatement{
+	return GenerateAggBpStatement(2,16)
 }
