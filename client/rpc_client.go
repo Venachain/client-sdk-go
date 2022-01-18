@@ -135,9 +135,7 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 		// limit the times of the polling
 		if err != nil {
 			fmt.Println(err.Error())
-			fmt.Printf("try again 2s later...")
-			time.Sleep(2 * sleepTime)
-			fmt.Printf("try again...\n")
+			time.Sleep(1 * sleepTime)
 			continue
 		}
 
