@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="5883f7cb-2888-45d1-a973-108e780447cf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/PlatONE-SDK-Go.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/watcherTasks.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/bp_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/bp_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/aggbulletproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/platone/crypto/bp/aggbulletproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/bulletproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/platone/crypto/bp/bulletproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/transferproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/platone/crypto/bp/transferproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/withdrawproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/platone/crypto/bp/withdrawproof.go" afterDir="false" />
-    </list>
+    <list default="true" id="5883f7cb-2888-45d1-a973-108e780447cf" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +12,11 @@
   </component>
   <component name="GOROOT" url="file:///opt/homebrew/Cellar/go/1.16.5/libexec" />
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GoLibraries">
@@ -43,6 +39,7 @@
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
   </component>
   <component name="RunManager">
     <configuration name="BenchmarkGetProofParallel in git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/crypto" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
@@ -66,6 +63,9 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
