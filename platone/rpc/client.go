@@ -33,7 +33,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 )
 
 var (
@@ -484,7 +484,7 @@ func (c *Client) write(ctx context.Context, msg interface{}) error {
 func (c *Client) reconnect(ctx context.Context) error {
 	newconn, err := c.connectFunc(ctx)
 	if err != nil {
-		log.Trace(fmt.Sprintf("reconnect failed: %v", err))
+		log.Warn(fmt.Sprintf("reconnect failed: %v", err))
 		return err
 	}
 	select {

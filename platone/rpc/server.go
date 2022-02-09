@@ -25,8 +25,8 @@ import (
 	"sync"
 	"sync/atomic"
 
+	log "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	mapset "github.com/deckarep/golang-set"
-	log "github.com/sirupsen/logrus"
 )
 
 const MetadataApi = "rpc"

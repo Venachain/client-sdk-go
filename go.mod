@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/deckarep/golang-set v1.7.1
+	github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b
 	github.com/gin-gonic/gin v1.5.0
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/gorilla/websocket v1.4.2

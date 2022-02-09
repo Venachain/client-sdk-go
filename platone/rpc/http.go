@@ -31,8 +31,7 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/sirupsen/logrus"
-
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"github.com/rs/cors"
 )
 

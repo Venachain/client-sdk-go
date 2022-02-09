@@ -2,6 +2,7 @@ package abi
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"math/big"
 	"reflect"
@@ -39,6 +40,12 @@ func BytesConverter(source []byte, t string) interface{} {
 		return common.CallResAsUint64(source)
 	case "uint32":
 		return common.CallResAsUint32(source)
+	case "bool":
+		var res bool
+		if err := json.Unmarshal(source, &res); err != nil {
+			return nil
+		}
+		return res
 	default:
 		return source
 	}

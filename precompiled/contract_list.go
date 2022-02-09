@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"strings"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 )
 
@@ -41,12 +42,12 @@ var List = map[string]string{
 	GroupManagementAddress:       "syscontracts/groupManager.cpp.abi.json",
 	ContractDataProcessorAddress: "syscontracts/contractData.cpp.abi.json",
 	NFTContractAddress:           "syscontracts/nft.abi.json",
-	EvidenceManagementAddress:    "evidenceManager.cpp.abi.json",
-	BulletProofAddress:           "RangeProof.cpp.abi.json",
+	EvidenceManagementAddress:    "syscontracts/evidenceManager.cpp.abi.json",
+	BulletProofAddress:           "syscontracts/RangeProof.cpp.abi.json",
 
-	CnsInitRegEvent: "cnsInitRegEvent.json",
-	CnsInvokeEvent:  "cnsInvokeEvent.json",
-	PermDeniedEvent: "permissionDeniedEvent.json",
+	CnsInitRegEvent: "syscontracts/cnsInitRegEvent.json",
+	CnsInvokeEvent:  "syscontracts/cnsInvokeEvent.json",
+	PermDeniedEvent: "syscontracts/permissionDeniedEvent.json",
 }
 
 func isWindowsSystem() bool {
@@ -73,10 +74,10 @@ func getCurrentFilePath() string {
 
 func GetContractByte(jsonName string) ([]byte, error) {
 	parentFilePath := getCurrentFilePath()
-	objectPath := parentFilePath + "syscontracts/" + jsonName
+	objectPath := parentFilePath + jsonName
 	file, err := os.Open(objectPath)
 	if err != nil {
-		fmt.Println(err)
+		log.Error("error", err)
 		return nil, err
 	}
 	defer file.Close()

@@ -2,83 +2,123 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
 )
 
 // 如果没有abipath 和codepath 的话，可以设置为空
-func InitCnsClient() (common_sdk.TxParams, CnsClient) {
-	txparam, contract := InitContractClient()
-	contract.AbiPath = ""
-	client := CnsClient{
-		ContractClient: contract,
-		name:           "wxbc1",
+func InitCnsClient() (*CnsClient, error) {
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 6791,
 	}
-	return txparam, client
+	name := "wxbc"
+	return NewCnsClient(context.Background(), url, keyfile, PassPhrase, name)
 }
 
 func TestCnsClient_CnsRegister(t *testing.T) {
-	txparam, client := InitCnsClient()
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
 
-	result, _ := client.CnsRegister(context.Background(), txparam, "1.0.0.0", "0xf2aa70bfcfbc6095f4f9e19d01b79de3604c4447")
-	fmt.Println(result)
+	result, _ := client.CnsRegister(context.Background(), "1.0.0.0", "0x6988decc03a2d38888534ad0b4a33a267b34807d")
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsResolve(t *testing.T) {
-	txparam, client := InitCnsClient()
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
 
-	result, _ := client.CnsResolve(context.Background(), txparam, "1.0.0.0")
-	fmt.Println(result)
+	result, _ := client.CnsResolve(context.Background(), "1.0.0.0")
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsQueryAll(t *testing.T) {
-	txparam, client := InitCnsClient()
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
 
-	result, _ := client.CnsQueryAll(context.Background(), txparam)
-	fmt.Println(result)
+	result, _ := client.CnsQueryAll(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsQueryByName(t *testing.T) {
-	txparam, client := InitCnsClient()
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
 
-	result, _ := client.CnsQueryByName(context.Background(), txparam)
-	fmt.Println(result)
+	result, _ := client.CnsQueryByName(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsQueryByAddress(t *testing.T) {
-	txparam, client := InitCnsClient()
-	address := "0x7311adfe02f1d027c7c896ceeb45e59ec7282a80"
-	result, _ := client.CnsQueryByAddress(context.Background(), txparam, address)
-	fmt.Println(result)
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	address := "0x6988decc03a2d38888534ad0b4a33a267b34807d"
+	result, _ := client.CnsQueryByAddress(context.Background(), address)
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsQueryByAccount(t *testing.T) {
-	txparam, client := InitCnsClient()
-	address := "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"
-	result, _ := client.CnsQueryByAccount(context.Background(), txparam, address)
-	fmt.Println(result)
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	address := "0xdbd41e01e0e4a51fdb03c6152c50df071207a04b"
+	result, _ := client.CnsQueryByAccount(context.Background(), address)
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestCnsClient_CnsStateByAddress(t *testing.T) {
-	txparam, client := InitCnsClient()
-	address := "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"
-	result, _ := client.CnsStateByAddress(context.Background(), txparam, address)
-	fmt.Println(result)
-	assert.True(t, result == 0)
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	address := "0x6988decc03a2d38888534ad0b4a33a267b34807d"
+	result, _ := client.CnsStateByAddress(context.Background(), address)
+	log.Info("result:%v", result)
+	assert.True(t, result == 1)
 }
 
 func TestCnsClient_CnsState(t *testing.T) {
-	txparam, client := InitCnsClient()
-	result, _ := client.CnsState(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitCnsClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.CnsState(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result == 1)
 }

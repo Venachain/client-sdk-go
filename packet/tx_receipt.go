@@ -85,7 +85,7 @@ type RecptLogs []*Log
 func ParseTxReceipt(response interface{}) (*Receipt, error) {
 	var receipt = &Receipt{}
 	if response == nil {
-		return nil, errors.New("response is nil")
+		return nil, errors.New("get receipt response is nil")
 	}
 	temp, err := json.Marshal(response)
 	if err != nil {

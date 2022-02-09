@@ -3,20 +3,45 @@ package client
 import (
 	"encoding/json"
 
-	"golang.org/x/net/context"
-
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+	"golang.org/x/net/context"
 )
 
 type AccountClient struct {
 	ContractClient
-	Address common.Address
+	Address common_platone.Address
 }
 
-func (accountClient AccountClient) UserAdd(ctx context.Context, txparam common_sdk.TxParams, name, phone, email, organization string) (string, error) {
+func NewAccountClient(ctx context.Context, url URL, keyfilePath string, passphrase string, address string) (*AccountClient, error) {
+	client, err := NewContractClient(ctx, url, keyfilePath, passphrase, precompile.UserManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	accountClient := &AccountClient{
+		*client,
+		common_platone.HexToAddress(address),
+	}
+	return accountClient, nil
+}
+
+// 传入key 构造账户客户端
+func NewAccountClientWithKey(ctx context.Context, url URL, key *keystore.Key, address string) (*AccountClient, error) {
+	client, err := NewContractClientWithKey(ctx, url, key, precompile.UserManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	accountClient := &AccountClient{
+		*client,
+		common_platone.HexToAddress(address),
+	}
+	return accountClient, nil
+}
+
+func (accountClient AccountClient) UserAdd(ctx context.Context, name, phone, email, organization string) (string, error) {
 	userdescinfo := syscontracts.UserDescInfo{}
 	var userinfo syscontracts.UserInfo
 	funcName := "addUser"
@@ -33,7 +58,7 @@ func (accountClient AccountClient) UserAdd(ctx context.Context, txparam common_s
 	strJson := string(bytes)
 	funcParams := []string{strJson}
 
-	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWithParams(ctx, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -41,7 +66,7 @@ func (accountClient AccountClient) UserAdd(ctx context.Context, txparam common_s
 	return res[0].(string), nil
 }
 
-func (accountClient AccountClient) UserUpdate(ctx context.Context, txparam common_sdk.TxParams, phone, email, organization string) (string, error) {
+func (accountClient AccountClient) UserUpdate(ctx context.Context, phone, email, organization string) (string, error) {
 	var funcParams []string
 	funcParams = append(funcParams, accountClient.Address.Hex())
 	funcName := "updateUserDescInfo"
@@ -52,7 +77,7 @@ func (accountClient AccountClient) UserUpdate(ctx context.Context, txparam commo
 	desbytes, _ := json.Marshal(userdescinfo)
 	funcParams = append(funcParams, string(desbytes))
 
-	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWithParams(ctx, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -61,16 +86,16 @@ func (accountClient AccountClient) UserUpdate(ctx context.Context, txparam commo
 }
 
 // 根据账户地址或者账户名称查询用户信息，如果传入的name == ""，则为查找所有账户信息
-func (accountClient AccountClient) QueryUser(ctx context.Context, txparam common_sdk.TxParams, user string) (string, error) {
+func (accountClient AccountClient) QueryUser(ctx context.Context, user string) (string, error) {
 	var funcName string
 	var funcParams = make([]string, 0)
 	if user != "" {
-		isAddress, err := common_sdk.ParamParse(user, "user")
+		isAddress, err := packet.ParamParse(user, "user")
 		if err != nil {
 			return "", err
 		}
 		isAddress = isAddress.(int32)
-		if isAddress == common_sdk.CnsIsAddress {
+		if isAddress == packet.CnsIsAddress {
 			funcName = "getUserByAddress"
 		} else {
 			funcName = "getUserByName"
@@ -80,7 +105,7 @@ func (accountClient AccountClient) QueryUser(ctx context.Context, txparam common
 		funcName = "getAllUsers"
 	}
 
-	result, err := accountClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.UserManagementAddress)
+	result, err := accountClient.contractCallWithParams(ctx, funcParams, funcName, precompile.UserManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -105,13 +130,12 @@ func (accountClient AccountClient) Lock(ctx context.Context) (bool, error) {
 	return res, nil
 }
 
-func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
+func (accountClient AccountClient) UnLock(ctx context.Context, passphrase string) (bool, error) {
 	funcName := "personal_unlockAccount"
 	account := accountClient.Address.Hex()
 
 	var res bool
-	result, err := accountClient.RpcClient.CallContext(ctx, funcName, account,accountClient.Passphrase,0)
-	//result, err := accountClient.Client.RPCSend(ctx, funcName, account,accountClient.Passphrase,0)
+	result, err := accountClient.RpcClient.CallContext(ctx, funcName, account, passphrase, 0)
 	if err != nil {
 		return false, err
 	}
@@ -119,4 +143,18 @@ func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
 		return false, err
 	}
 	return res, nil
+}
+
+func (accountClient AccountClient) CreateAccount(ctx context.Context, passphrase string) (*common_platone.Address, error) {
+	funcName := "personal_newAccount"
+	params := passphrase
+	result, err := accountClient.RpcClient.CallContext(ctx, funcName, params)
+	if err != nil {
+		return nil, err
+	}
+	var res common_platone.Address
+	if err = json.Unmarshal(result, &res); err != nil {
+		return nil, err
+	}
+	return &res, nil
 }

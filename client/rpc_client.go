@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
@@ -17,50 +18,40 @@ const (
 	sleepTime = 1000000000 // 1 seconds
 )
 
-func (pc Client) MessageCallV2(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key, isSync bool) ([]interface{}, error) {
+func (pc Client) MessageCallWithSync(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key) ([]interface{}, error) {
 	var result = make([]interface{}, 1)
 	var err error
-
-	// combine the data based on the types of the calls (contract call, inner call or deploy call)
-	tx.Data, err = dataGen.CombineData()
-	if err != nil {
-		return nil, errors.New("packet data err: %s\n")
-	}
-
+	// constant == false 或部署合约的情况
 	if dataGen.GetIsWrite() {
 		res, err := pc.Send(ctx, &tx, key)
 		if err != nil {
 			return nil, err
 		}
 		result[0] = res
-
-		if isSync {
-			polRes, err := pc.GetReceiptByPolling(res)
-			if err != nil {
-				return result, nil
-			}
-
-			receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
-			if err != nil {
-				return nil, err
-			}
-			fmt.Println(string(receiptBytes))
-
-			recpt := dataGen.ReceiptParsing(polRes)
-			// recpt := polRes.Parsing()
-			if recpt.Status != packet.TxReceiptSuccessMsg {
-				result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
-				if len(result) >= 4 {
-					recpt.Err, _ = packet.UnpackError(result)
-				}
-			}
-
-			result[0] = recpt.String()
+		polRes, err := pc.GetReceiptByPolling(res)
+		if err != nil {
+			return result, nil
 		}
-	} else {
-		result, _ = pc.Call(dataGen.GetContractDataDen(), &tx)
-	}
+		receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
+		if err != nil {
+			return nil, err
+		}
+		log.Info(string(receiptBytes))
 
+		recpt := dataGen.ReceiptParsing(polRes)
+		if recpt.Status != packet.TxReceiptSuccessMsg {
+			result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
+			if len(result) >= 4 {
+				recpt.Err, _ = packet.UnpackError(result)
+			}
+		}
+		result[0] = recpt.String()
+	} else {
+		result, err = pc.Call(dataGen.GetContractDataDen(), &tx)
+		if err != nil {
+			return nil, err
+		}
+	}
 	return result, nil
 }
 
@@ -70,7 +61,6 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 	params = append(params, tx)
 	params = append(params, "latest")
 	action := "eth_call"
-
 	// send the RPC calls
 	var resp string
 	result, err := pc.RpcClient.Call(context.Background(), action, params...)
@@ -87,11 +77,10 @@ func (pc *Client) Call(dataGen *packet.ContractDataGen, tx *common.TxParams) ([]
 }
 
 func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keystore.Key) (string, error) {
-	params, action, err := tx.SendModeV2(key)
+	params, action, err := tx.SendMode(key)
 	if err != nil {
 		return "", err
 	}
-
 	// send the RPC calls
 	var resp string
 	result, err := pc.RpcClient.Call(context, action, params...)
@@ -126,12 +115,10 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 
 // todo: end goroutine?
 func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
-
 	var receipt *packet.Receipt
 	for {
 		var err error
 		receipt, err = client.GetTransactionReceipt(txHash)
-
 		// limit the times of the polling
 		if err != nil {
 			fmt.Println(err.Error())
@@ -183,7 +170,8 @@ func (p *Client) GetRevertMsg(msg *common.TxParams, blockNum uint64) ([]byte, er
 	if err != nil {
 		return nil, err
 	}
-	json.Unmarshal(res, &hex)
-
+	if err = json.Unmarshal(res, &hex); err != nil {
+		return nil, err
+	}
 	return *hex, nil
 }

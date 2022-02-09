@@ -2,71 +2,113 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
 )
 
 // 如果没有abipath 和codepath 的话，可以设置为空
-func InitFireWallClient() (common_sdk.TxParams, FireWallClient) {
-	txparam, contract := InitContractClient()
-	contract.AbiPath = ""
-	//contract.CodePath = ""
-	client := FireWallClient{
-		ContractClient:  contract,
-		ContractAddress: "0x26527b41f4a5d9a1e0652c97fd629ced6f7a2263",
+func InitFireWallClient() (*FireWallClient, error) {
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 6791,
 	}
-	return txparam, client
-}
-
-func TestAccountClient_FwStatusFwStatus(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwStatus(context.Background(), txparam)
-	fmt.Println(result)
-	assert.True(t, result != "")
+	accountAddress := "0x6988decc03a2d38888534ad0b4a33a267b34807d"
+	return NewFireWallClient(context.Background(), url, keyfile, PassPhrase, accountAddress)
 }
 
 func TestAccountClient_FwStart(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwStart(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, err := client.FwStart(context.Background())
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	log.Info("result:%v", result)
+	assert.True(t, result != "")
+}
+
+func TestAccountClient_FwStatusFwStatus(t *testing.T) {
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+
+	result, err := client.FwStatus(context.Background())
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_FwClose(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwClose(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.FwClose(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestFireWallClient_FwExport(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwExport(context.Background(), txparam, "./config1")
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.FwExport(context.Background(), "./config1")
+	log.Info("result:%v", result)
 	assert.True(t, result == true)
 }
 
 func TestFireWallClient_FwNew(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwNew(context.Background(), txparam, "accept", "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667", "atransfer")
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.FwNew(context.Background(), "accept", "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667", "atransfer")
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestFireWallClient_FwDelete(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwDelete(context.Background(), txparam, "accept", "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667", "atransfer")
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.FwDelete(context.Background(), "accept", "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667", "atransfer")
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestFireWallClient_FwClear(t *testing.T) {
-	txparam, client := InitFireWallClient()
-	result, _ := client.FwClear(context.Background(), txparam, "accept")
-	fmt.Println(result)
+	client, err := InitFireWallClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.FwClear(context.Background(), "accept")
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }

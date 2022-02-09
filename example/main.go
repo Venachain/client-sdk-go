@@ -1,9 +1,10 @@
 package main
 
 import (
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/ws"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/ws"
 )
 
 // 以下为websocket 测试

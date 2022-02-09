@@ -3,39 +3,62 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"testing"
-	"time"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
-
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 	"github.com/stretchr/testify/assert"
 )
 
-// 通过ethclient 调用，拿到的是json response
-func TestNewClient(t *testing.T) {
-	url := NewURL("127.0.0.1", 6791)
-	client, _ := NewClient(context.Background(), url, "0", "./keystore")
-	var param []interface{}
-	res, _ := client.ClientSend(types.GetblockNumber, param)
-	fmt.Println(res)
-	assert.True(t, res != nil)
-}
-
-// 通过client rpc 调用rpcsend 方法
-func TestRpcSend(t *testing.T) {
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
-	var addresses []string
+func InitClient() (*Client, error) {
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
 	url := URL{
 		IP:      "127.0.0.1",
 		RPCPort: 6791,
 	}
-	client, _ := NewClient(ctx, url, "0", "./keystore")
-	result, _ := client.RPCSend(ctx, "personal_listAccounts")
+	return NewClient(context.Background(), url, keyfile, PassPhrase)
+}
 
-	if err := json.Unmarshal(result, &addresses); err != nil {
-		fmt.Errorf("err")
+func TestRpcCall_newAccount(t *testing.T) {
+	client, err := InitClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
 	}
-	fmt.Println(addresses)
-	assert.True(t, addresses != nil)
+	funcName := "personal_newAccount"
+	params := "0"
+	result, err := client.RpcCall(context.Background(), funcName, params)
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	log.Info("result:%v", result)
+	// 结果转换
+	var res common.Address
+	if err = json.Unmarshal(result, &res); err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	assert.True(t, result != nil)
+}
+
+func TestRpcCall_lockAccount(t *testing.T) {
+	client, err := InitClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	funcName := "personal_lockAccount"
+	params := "0xdbd41e01e0e4a51fdb03c6152c50df071207a04b"
+	result, err := client.RpcCall(context.Background(), funcName, params)
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	log.Info("result:%v", result)
+	// 结果转换，如果是go通用数据类型，可用getRpcResult函数获取
+	res := getRpcResult(result, "bool")
+	log.Info("result:%v", res)
+	assert.True(t, result != nil)
 }

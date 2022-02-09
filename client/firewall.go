@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
 
@@ -24,14 +24,41 @@ type ExportFwStatus struct {
 }
 
 type FwElem struct {
-	Addr     common.Address
+	Addr     common_platone.Address
 	FuncName string
 }
 
-func (firewallClient FireWallClient) FwStatus(ctx context.Context, txparam common_sdk.TxParams) (string, error) {
+func NewFireWallClient(ctx context.Context, url URL, keyfilePath string, passphrase string, contractAddress string) (*FireWallClient, error) {
+	address := getHexAddress(contractAddress)
+	client, err := NewContractClient(ctx, url, keyfilePath, passphrase, precompile.FirewallManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	fireWallClient := &FireWallClient{
+		*client,
+		address,
+	}
+	return fireWallClient, nil
+}
+
+// 传入key 构造FireWall客户端
+func NewFireWallClientWithKey(ctx context.Context, url URL, key *keystore.Key, contractAddress string) (*FireWallClient, error) {
+	address := getHexAddress(contractAddress)
+	client, err := NewContractClientWithKey(ctx, url, key, precompile.FirewallManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	fireWallClient := &FireWallClient{
+		*client,
+		address,
+	}
+	return fireWallClient, nil
+}
+
+func (firewallClient FireWallClient) FwStatus(ctx context.Context) (string, error) {
 	funcName := "__sys_FwStatus"
 	funcParams := []string{firewallClient.ContractAddress}
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -39,10 +66,10 @@ func (firewallClient FireWallClient) FwStatus(ctx context.Context, txparam commo
 	return res[0].(string), nil
 }
 
-func (firewallClient FireWallClient) FwStart(ctx context.Context, txparam common_sdk.TxParams) (string, error) {
+func (firewallClient FireWallClient) FwStart(ctx context.Context) (string, error) {
 	funcName := "__sys_FwOpen"
 	funcParams := []string{firewallClient.ContractAddress}
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -50,10 +77,10 @@ func (firewallClient FireWallClient) FwStart(ctx context.Context, txparam common
 	return res[0].(string), nil
 }
 
-func (firewallClient FireWallClient) FwClose(ctx context.Context, txparam common_sdk.TxParams) (string, error) {
+func (firewallClient FireWallClient) FwClose(ctx context.Context) (string, error) {
 	funcName := "__sys_FwClose"
 	funcParams := []string{firewallClient.ContractAddress}
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -62,11 +89,11 @@ func (firewallClient FireWallClient) FwClose(ctx context.Context, txparam common
 }
 
 // 将指定合约的防火墙规则导出到指定位置的防火墙规则文件中,ture 为导出成功，false 为导出失败
-func (firewallClient FireWallClient) FwExport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (bool, error) {
+func (firewallClient FireWallClient) FwExport(ctx context.Context, filePath string) (bool, error) {
 	var rule = new(ExportFwStatus)
 	funcName := "__sys_FwExport"
 	funcParams := []string{firewallClient.ContractAddress}
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	res := result.([]interface{})
 
 	_ = json.Unmarshal([]byte(res[0].(string)), rule)
@@ -81,7 +108,7 @@ func (firewallClient FireWallClient) FwExport(ctx context.Context, txparam commo
 	return true, nil
 }
 
-func (firewallClient FireWallClient) FwImport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (string, error) {
+func (firewallClient FireWallClient) FwImport(ctx context.Context, filePath string) (string, error) {
 	funcName := "__sys_FwImport"
 	fileBytes, err := packet.ParseFileToBytes(filePath)
 	if err != nil {
@@ -89,7 +116,7 @@ func (firewallClient FireWallClient) FwImport(ctx context.Context, txparam commo
 	}
 	funcParams := []string{firewallClient.ContractAddress, string(fileBytes)}
 
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -101,31 +128,31 @@ func (firewallClient FireWallClient) FwImport(ctx context.Context, txparam commo
 //<action>: 防火墙操作：允许accept或拒绝reject
 //<account>: 指定被过滤的一个或多个用户账户地址，'*'表示防火墙规则对所有用户账户地址生效。格式["<address1>","<address2>"]，单个账户地址可省略[]。
 //<api>: 指定过滤的合约接口名。格式["<funcname1>","<funcname2>"]，单个接口名可省略[]。示例--api "getName"
-func (firewallClient FireWallClient) FwNew(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error) {
+func (firewallClient FireWallClient) FwNew(ctx context.Context, action, targetAddr, api string) (string, error) {
 	funcName := "__sys_FwAdd"
-	return firewallClient.fwCommon(ctx, txparam, action, targetAddr, api, funcName)
+	return firewallClient.fwCommon(ctx, action, targetAddr, api, funcName)
 }
 
 // 删除一条防火墙规则
-func (firewallClient FireWallClient) FwDelete(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error) {
+func (firewallClient FireWallClient) FwDelete(ctx context.Context, action, targetAddr, api string) (string, error) {
 	funcName := "__sys_FwDel"
-	return firewallClient.fwCommon(ctx, txparam, action, targetAddr, api, funcName)
+	return firewallClient.fwCommon(ctx, action, targetAddr, api, funcName)
 }
 
 // 重置防火墙规则
-func (firewallClient FireWallClient) FwReset(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error) {
+func (firewallClient FireWallClient) FwReset(ctx context.Context, action, targetAddr, api string) (string, error) {
 	funcName := "__sys_FwSet"
-	return firewallClient.fwCommon(ctx, txparam, action, targetAddr, api, funcName)
+	return firewallClient.fwCommon(ctx, action, targetAddr, api, funcName)
 }
 
-func (firewallClient FireWallClient) fwCommon(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api, funcName string) (string, error) {
-	common_sdk.ParamValid(action, "action")
-	common_sdk.ParamValid(targetAddr, "fw")
-	common_sdk.ParamValid(api, "name")
-	rules := common_sdk.CombineRule(targetAddr, api) //TODO batch rules
+func (firewallClient FireWallClient) fwCommon(ctx context.Context, action, targetAddr, api, funcName string) (string, error) {
+	packet.ParamValid(action, "action")
+	packet.ParamValid(targetAddr, "fw")
+	packet.ParamValid(api, "name")
+	rules := packet.CombineRule(targetAddr, api) //TODO batch rules
 
-	funcParams := common_sdk.CombineFuncParams(firewallClient.ContractAddress, action, rules)
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	funcParams := packet.CombineFuncParams(firewallClient.ContractAddress, action, rules)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -135,17 +162,17 @@ func (firewallClient FireWallClient) fwCommon(ctx context.Context, txparam commo
 
 // 清空指定合约的防火墙的approve操作或reject操作的全部规则
 // 如果action 为""，默认清除所有规则
-func (firewallClient FireWallClient) FwClear(ctx context.Context, txparam common_sdk.TxParams, action string) (string, error) {
+func (firewallClient FireWallClient) FwClear(ctx context.Context, action string) (string, error) {
 	if action == "" {
-		result1, err := firewallClient.clearCommon(ctx, txparam, "reject")
-		result2, err := firewallClient.clearCommon(ctx, txparam, "accept")
+		result1, err := firewallClient.clearCommon(ctx, "reject")
+		result2, err := firewallClient.clearCommon(ctx, "accept")
 		if err != nil {
 			return "", err
 		} else {
 			return fmt.Sprintf(result1 + "/d" + result2), nil
 		}
 	}
-	result, err := firewallClient.clearCommon(ctx, txparam, action)
+	result, err := firewallClient.clearCommon(ctx, action)
 	if err != nil {
 		return "", err
 	}
@@ -153,15 +180,22 @@ func (firewallClient FireWallClient) FwClear(ctx context.Context, txparam common
 
 }
 
-func (firewallClient FireWallClient) clearCommon(ctx context.Context, txparam common_sdk.TxParams, action string) (string, error) {
+func (firewallClient FireWallClient) clearCommon(ctx context.Context, action string) (string, error) {
 	funcName := "__sys_FwClear"
-	common_sdk.ParamValid(action, "action")
+	packet.ParamValid(action, "action")
 	funcParams := []string{firewallClient.ContractAddress, action}
 
-	result, err := firewallClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.FirewallManagementAddress)
+	result, err := firewallClient.contractCallWithParams(ctx, funcParams, funcName, precompile.FirewallManagementAddress)
 	if err != nil {
 		return "", err
 	}
 	res := result.([]interface{})
 	return res[0].(string), nil
+}
+
+func getHexAddress(address string) string {
+	if !strings.HasPrefix(address, "0x") {
+		address = "0x" + address
+	}
+	return address
 }

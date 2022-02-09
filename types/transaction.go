@@ -24,13 +24,13 @@ import (
 	"math/big"
 	"sync/atomic"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto/sha3"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 	lru "github.com/hashicorp/golang-lru"
-	log "github.com/sirupsen/logrus"
 )
 
 //go:generate gencodec -type txdata -field-override txdataMarshaling -out gen_tx_json.go

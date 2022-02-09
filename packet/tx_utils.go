@@ -24,14 +24,14 @@ type FuncDesc struct {
 	StateMutability string                   `json:"stateMutability,omitempty"` // tag for solidity ver > 0.6.0
 }
 
-type ContractAbi []*FuncDesc
+type ContractContent []*FuncDesc
 
 // ParseAbiFromJson parses the application binary interface(abi) files to []FuncDesc object array
-func ParseAbiFromJson(abiBytes []byte) (ContractAbi, error) {
-	var a ContractAbi
+func ParseAbiFromJson(abiBytes []byte) (ContractContent, error) {
+	var a ContractContent
 
 	if abiBytes == nil {
-		return nil, errors.New("abiBytes are null")
+		return nil, errors.New("contract abiBytes are null")
 	}
 
 	if err := json.Unmarshal(abiBytes, &a); err != nil {
@@ -42,7 +42,7 @@ func ParseAbiFromJson(abiBytes []byte) (ContractAbi, error) {
 }
 
 // ParseFuncFromAbi searches the function (or event) names in the []FuncDesc object array
-func (funcs ContractAbi) GetFuncFromAbi(name string) (*FuncDesc, error) {
+func (funcs ContractContent) GetFuncFromAbi(name string) (*FuncDesc, error) {
 	for _, value := range funcs {
 		if strings.EqualFold(value.Name, name) {
 			return value, nil
@@ -57,7 +57,7 @@ func (funcs ContractAbi) GetFuncFromAbi(name string) (*FuncDesc, error) {
 	return nil, fmt.Errorf("function/event %s is not found in\n%s", name, funcList)
 }
 
-func (funcs ContractAbi) GetConstructor() *FuncDesc {
+func (funcs ContractContent) GetConstructor() *FuncDesc {
 	for _, value := range funcs {
 		if strings.EqualFold(value.Type, "constructor") {
 			return value
@@ -67,7 +67,7 @@ func (funcs ContractAbi) GetConstructor() *FuncDesc {
 	return nil
 }
 
-func (funcs ContractAbi) GetEvents() []*FuncDesc {
+func (funcs ContractContent) GetEvents() []*FuncDesc {
 	var events = make([]*FuncDesc, 0)
 
 	for _, value := range funcs {
@@ -80,7 +80,7 @@ func (funcs ContractAbi) GetEvents() []*FuncDesc {
 }
 
 // 把abi文件中函数的列表转换为string 格式
-func (abiFuncs ContractAbi) ListAbiFuncName() string {
+func (abiFuncs ContractContent) ListAbiFuncName() string {
 	var result string
 	for _, function := range abiFuncs {
 		strInput := []string{}
@@ -139,7 +139,6 @@ func (abiFunc *FuncDesc) getParamType() []string {
 	return paramTypes
 }
 
-//// todo: move to packet.go ?
 var errorSig = crypto.Keccak256([]byte("Error(string)"))[:4]
 
 func UnpackError(res []byte) (string, error) {

@@ -26,7 +26,7 @@ import (
 	"strings"
 	"sync"
 
-	log "github.com/sirupsen/logrus"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 )
 
 const (
