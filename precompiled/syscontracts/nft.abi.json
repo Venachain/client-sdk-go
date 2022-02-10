@@ -80,6 +80,31 @@
         "type": "function"
     },
     {
+        "name": "balanceOfDetail",
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "string"
+            },
+            {
+                "name": "pagesize",
+                "type": "int32"
+            },
+            {
+                "name": "pagenum",
+                "type": "int32"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "constant": "true",
+        "type": "function"
+    },
+    {
         "name": "ownerOf",
         "inputs": [
             {
