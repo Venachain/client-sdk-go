@@ -13,11 +13,11 @@ type DeployDataGen struct {
 	/// ConstructorParams []string
 	Interpreter deployInter
 
-	conAbi ContractAbi
+	conAbi ContractContent
 }
 
 // NewDeployCall new a DeployCall object
-func NewDeployDataGen(conAbi ContractAbi) *DeployDataGen {
+func NewDeployDataGen(conAbi ContractContent) *DeployDataGen {
 	var dataGen = new(DeployDataGen)
 	dataGen.conAbi = conAbi
 
@@ -49,15 +49,15 @@ func parseAbiConstructor(abiBytes []byte, funcParams []string) ([]byte, error) {
 }
 
 // SetInterpreter set the interpreter of DeployCall object
-func (dataGen *DeployDataGen) SetInterpreter(vm string, abiBytes, codeBytes []byte, consParams []interface{}, methodAbi *FuncDesc) {
+func (dataGen *DeployDataGen) SetInterpreter(vmType string, abiBytes, codeBytes []byte, consParams []interface{}, methodAbi *FuncDesc) {
 
 	if IsWasmContract(codeBytes) {
 		// packet.Fatalf("the input  is not evm byte code")
 		// return errors.New("the input is not evm byte code")
-		vm = "wasm"
+		vmType = "wasm"
 	}
 
-	switch vm {
+	switch vmType {
 	case "evm":
 		dataGen.Interpreter = &EvmDeployInterpreter{
 			codeBytes:        codeBytes,

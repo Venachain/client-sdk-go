@@ -3,6 +3,10 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deckarep/golang-set v1.7.1 h1:SCQV0S6gTtp6itiFrTqI+pfmJ4LN85S1YzhDf9rTHJQ=
 github.com/deckarep/golang-set v1.7.1/go.mod h1:93vsz/8Wt4joVM7c2AVqh+YRMiUSc14yDtF28KmMOgQ=
+github.com/gggwvg/crontab v1.0.0 h1:9xO+wP/ww6jsKVzJVCcogHg/5+34+TUjRT7PgKVAbv4=
+github.com/gggwvg/crontab v1.0.0/go.mod h1:ssMJcuUJJrKnYDQx9axiUdbGaR/cb0bA6Ooc0lQ7KbE=
+github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b h1:pbE9I6ia99uikSLO2YIndInvHLKTbJ1V354I4jwekno=
+github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b/go.mod h1:Kl1YW3avny76weFIyF2OruUKG3dE2m439Asy5fk84Ho=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
 github.com/gin-gonic/gin v1.5.0 h1:fi+bqFAx/oLK54somfCtEZs9HeH1LHVoEPUgARpTqyc=

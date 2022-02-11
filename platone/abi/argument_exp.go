@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"strings"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 )
 
@@ -221,7 +222,7 @@ func (arguments Arguments) ReturnBytesUnpack(data string) []interface{} {
 
 	if err != nil {
 		// todo: error handle
-		fmt.Printf("the error is %v\n", err)
+		log.Error("the error is %v\n", err)
 	}
 
 	return list

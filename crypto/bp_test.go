@@ -31,4 +31,3 @@ func BenchmarkGetProofParallel(b *testing.B) {
 		}
 	})
 }
-

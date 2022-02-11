@@ -1,4 +1,4 @@
-package common
+package packet
 
 import (
 	"errors"
@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/vm"
 	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
@@ -49,9 +49,9 @@ func AbiParse(abiFilePath, address string) []byte {
 		}
 	}
 
-	abiBytes, err = packet.ParseFileToBytes(abiFilePath)
+	abiBytes, err = ParseFileToBytes(abiFilePath)
 	if err != nil {
-		fmt.Errorf("abiParse fail")
+		log.Error("abiParse fail")
 	}
 
 	return abiBytes
@@ -141,10 +141,10 @@ func ParamParse(param, paramName string) (interface{}, error) {
 	case "contract", "user":
 		i = IsNameOrAddress(param)
 		if i == CnsIsUndefined {
-			err = fmt.Errorf(packet.ErrParamInValidSyntax, "name or contract address")
+			err = fmt.Errorf(ErrParamInValidSyntax, "name or contract address")
 		}
 	case "delayNum", "p2pPort", "rpcPort":
-		if packet.IsInRange(param, 65535) {
+		if IsInRange(param, 65535) {
 			i, err = strconv.ParseInt(param, 10, 0)
 		} else {
 			err = errors.New("value out of range")
@@ -152,7 +152,7 @@ func ParamParse(param, paramName string) (interface{}, error) {
 	case "operation", "status", "type":
 		i, err = ConvertSelect(param, paramName)
 	case "code", "abi":
-		i, err = packet.ParseFileToBytes(param)
+		i, err = ParseFileToBytes(param)
 	default:
 		i, err = param, nil
 	}
@@ -186,16 +186,16 @@ func NewCns(name string, txType uint64) *Cns {
 
 // CnsParse judge whether the input string is contract address or contract name
 // and return the corresponding infos
-func CnsParse(contract string) (*Cns, common.Address, error) {
+func CnsParse(contract string) (*Cns, common_platone.Address, error) {
 	isAddress := IsNameOrAddress(contract)
 
 	switch isAddress {
 	case CnsIsAddress:
-		return NewCns("", defaultTxType), common.HexToAddress(contract), nil
+		return NewCns("", defaultTxType), common_platone.HexToAddress(contract), nil
 	case CnsIsName:
-		return NewCns(contract, defaultTxType), common.HexToAddress(precompile.CnsInvokeAddress), nil
+		return NewCns(contract, defaultTxType), common_platone.HexToAddress(precompile.CnsInvokeAddress), nil
 	default:
-		return nil, common.Address{}, fmt.Errorf(packet.ErrParamInValidSyntax, "contract address")
+		return nil, common_platone.Address{}, fmt.Errorf(ErrParamInValidSyntax, "contract address")
 	}
 }
 
@@ -204,9 +204,9 @@ func IsNameOrAddress(str string) int32 {
 	var valid int32
 
 	switch {
-	case packet.IsMatch(str, "address"):
+	case IsMatch(str, "address"):
 		valid = CnsIsAddress
-	case packet.IsMatch(str, "name") &&
+	case IsMatch(str, "name") &&
 		!strings.HasPrefix(strings.ToLower(str), "0x"):
 		valid = CnsIsName
 	default:
@@ -224,35 +224,35 @@ func ParamValidWrap(param, paramName string) bool {
 	switch paramName {
 	case "fw":
 		if param != "*" {
-			valid = packet.IsMatch(param, "address")
+			valid = IsMatch(param, "address")
 		}
 	case "to":
-		valid = param == "" || packet.IsMatch(param, "address")
+		valid = param == "" || IsMatch(param, "address")
 	case "contract":
-		valid = packet.IsMatch(param, "address") || packet.IsMatch(param, "name")
+		valid = IsMatch(param, "address") || IsMatch(param, "name")
 	case "action":
 		valid = strings.EqualFold(param, "accept") || strings.EqualFold(param, "reject")
 	case "vm":
 		valid = param == "" || strings.EqualFold(param, "evm") || strings.EqualFold(param, "wasm")
 	case "ipAddress":
-		valid = packet.IsUrl(param)
+		valid = IsUrl(param)
 	case "externalIP", "internalIP":
-		valid = packet.IsUrl(param + ":0")
+		valid = IsUrl(param + ":0")
 	//case "version":
 	//	valid = utl.IsVersion(param)
 	case "role":
-		valid = packet.IsRoleMatch(param)
+		valid = IsRoleMatch(param)
 	case "roles":
-		valid = packet.IsValidRoles(param)
+		valid = IsValidRoles(param)
 	case "email", "mobile", "version", "num":
-		valid = packet.IsMatch(param, paramName)
+		valid = IsMatch(param, paramName)
 
 	// newly added for restful server
 	// todo; fix the toLower problem
 	case "orgin", "address":
-		valid = packet.IsMatch(param, "address")
+		valid = IsMatch(param, "address")
 	case "contractname", "name":
-		valid = packet.IsMatch(param, "name")
+		valid = IsMatch(param, "name")
 	case "sysparam":
 		valid = strings.EqualFold(param, "0") || strings.EqualFold(param, "1")
 	case "blockgaslimit":

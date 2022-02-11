@@ -28,7 +28,7 @@ type MsgDataGen interface {
 type deployInter interface {
 	combineData() (string, error)
 
-	ReceiptParsingV2(*Receipt, ContractAbi) *ReceiptParsingReturn
+	ReceiptParsingV2(*Receipt, ContractContent) *ReceiptParsingReturn
 }
 
 type contractInter interface {
@@ -38,7 +38,7 @@ type contractInter interface {
 	setIsWrite(*FuncDesc) bool
 	ParseNonConstantResponse(respStr string, outputType []abi.ArgumentMarshaling) []interface{}
 
-	ReceiptParsingV2(*Receipt, ContractAbi) *ReceiptParsingReturn
+	ReceiptParsingV2(*Receipt, ContractContent) *ReceiptParsingReturn
 	encodeFunctionV2(*FuncDesc, []interface{}) ([][]byte, error)
 }
 
@@ -190,7 +190,7 @@ func (i EvmContractInterpreter) ReceiptParsing(receipt *Receipt, abiBytes []byte
 	return recpParsing
 }
 
-func (i EvmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractAbi) *ReceiptParsingReturn {
+func (i EvmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
 	var sysEvents = []string{precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
 	receiptParse := receipt.Parsing()
@@ -307,7 +307,7 @@ func (i WasmContractInterpreter) ReceiptParsing(receipt *Receipt, abiBytes []byt
 	return recpParsing
 }
 
-func (i WasmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractAbi) *ReceiptParsingReturn {
+func (i WasmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
 	var fn = WasmEventParsingPerLogV2
 	var sysEvents = []string{precompile.CnsInvokeEvent, precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
@@ -380,7 +380,7 @@ func (i EvmDeployInterpreter) ReceiptParsing(receipt *Receipt, abiBytes []byte) 
 	return recpParsing
 }
 
-func (i EvmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractAbi) *ReceiptParsingReturn {
+func (i EvmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
 	var sysEvents = []string{precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
 	receiptParse := receipt.Parsing()
@@ -434,7 +434,7 @@ func (i WasmDeployInterpreter) ReceiptParsing(receipt *Receipt, abiBytes []byte)
 	return recpParsing
 }
 
-func (i WasmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractAbi) *ReceiptParsingReturn {
+func (i WasmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
 
 	var fn = WasmEventParsingPerLogV2
 	var sysEvents = []string{precompile.PermDeniedEvent, precompile.CnsInitRegEvent}

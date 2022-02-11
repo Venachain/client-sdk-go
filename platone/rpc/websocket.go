@@ -30,9 +30,8 @@ import (
 	"strings"
 	"time"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	mapset "github.com/deckarep/golang-set"
-	//"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	log "github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )
 

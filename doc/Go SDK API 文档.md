@@ -185,7 +185,7 @@ var host = "ws://127.0.0.1:8888/api/ws/head/mygroup1"
 type ContractClient struct {
    *Client
    AbiPath string
-   Vm      string
+   VmType      string
 }
 ```
 
@@ -195,7 +195,7 @@ type ContractClient struct {
 // client/types.go:22
 type IContract interface {
    Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) ([]interface{}, error)
-   ListContractMethods() (packet.ContractAbi, error)
+   ListContractMethods() (packet.ContractContent, error)
    Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error)
    IsFuncNameInContract(funcName string) (bool, error)
    GetReceipt(txhash string) (*packet.Receipt, error)

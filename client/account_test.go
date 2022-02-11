@@ -2,61 +2,104 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
-
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 )
 
 // 如果没有abipath 和codepath 的话，可以设置为空
-func InitAccountClient() (common_sdk.TxParams, AccountClient) {
-	txparam, contract := InitContractClient()
-	contract.AbiPath = ""
-	client := AccountClient{
-		ContractClient: contract,
-		Address:        common.HexToAddress("5e07f69a324b711dc7efbc7d4c2fb91429b5ec89"),
+func InitAccountClient() (*AccountClient, error) {
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 6791,
 	}
-	return txparam, client
+	accountAddress := "0xdbd41e01e0e4a51fdb03c6152c50df071207a04b"
+	return NewAccountClient(context.Background(), url, keyfile, PassPhrase, accountAddress)
 }
 
-
 func TestAccountClient_UserAdd(t *testing.T) {
-	txparam, client := InitAccountClient()
-	result, err := client.UserAdd(context.Background(), txparam, "Alice1", "110", "", "")
+	client, err := InitAccountClient()
 	if err != nil {
-		fmt.Println("err:", err)
+		log.Info("error:%v", err)
+		return
 	}
-	fmt.Println(result)
+	defer client.RpcClient.Close()
+	result, err := client.UserAdd(context.Background(), "Alice", "110", "", "")
+	if err != nil {
+		log.Info("err:%v", err)
+	}
+	log.Info(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_UserUpdate(t *testing.T) {
-	txparam, client := InitAccountClient()
-	result, _ := client.UserUpdate(context.Background(), txparam, "13556672653", "test@163.com", "wxbc2")
-	fmt.Println(result)
+	client, err := InitAccountClient()
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.UserUpdate(context.Background(), "13556672653", "test@163.com", "wxbc2")
+	log.Info(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_QueryUser(t *testing.T) {
-	txparam, client := InitAccountClient()
-	result, _ := client.QueryUser(context.Background(), txparam, "Alice")
-	fmt.Println(result)
+	client, err := InitAccountClient()
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, err := client.QueryUser(context.Background(), "Alice")
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	log.Info(result)
 	assert.True(t, result != "")
 }
 
 func TestAccountClient_Lock(t *testing.T) {
-	_, client := InitAccountClient()
+	client, err := InitAccountClient()
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
 	result, _ := client.Lock(context.Background())
-	fmt.Println(result)
+	log.Info("result:%v", result)
 	assert.True(t, result == true)
 }
 
 func TestAccountClient_UnLock(t *testing.T) {
-	_, client := InitAccountClient()
-	result, _ := client.UnLock(context.Background())
-	fmt.Println(result)
+	client, err := InitAccountClient()
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	passphrase := "0"
+	result, _ := client.UnLock(context.Background(), passphrase)
+	log.Info("result:%v", result)
 	assert.True(t, result == true)
+}
+
+func TestAccountClient_CreateAccountk(t *testing.T) {
+	client, err := InitAccountClient()
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, err := client.CreateAccount(context.Background(), "0")
+	if err != nil {
+		log.Info("error:%v", err)
+		return
+	}
+	log.Info(result.Hex())
+	assert.True(t, result != nil)
 }

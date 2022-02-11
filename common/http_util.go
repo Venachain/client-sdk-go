@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
@@ -26,12 +26,12 @@ type JsonParam struct {
 }
 
 type TxParams struct {
-	From     common.Address  `json:"from"` // the address used to send the transaction
-	To       *common.Address `json:"to"`   // the address receives the transactions
-	Gas      string          `json:"gas"`
-	GasPrice string          `json:"gasPrice"`
-	Value    string          `json:"value"`
-	Data     string          `json:"data"`
+	From     common_platone.Address  `json:"from"` // the address used to send the transaction
+	To       *common_platone.Address `json:"to"`   // the address receives the transactions
+	Gas      string                  `json:"gas"`
+	GasPrice string                  `json:"gasPrice"`
+	Value    string                  `json:"value"`
+	Data     string                  `json:"data"`
 }
 
 func Send(params interface{}, action string, url string) (string, error) {
@@ -90,7 +90,7 @@ func ParseResponse(r string) (*Response, error) {
 	return &resp, nil
 }
 
-func (tx *TxParams) SendModeV2(key *keystore.Key) ([]interface{}, string, error) {
+func (tx *TxParams) SendMode(key *keystore.Key) ([]interface{}, string, error) {
 	var action string
 	var params = make([]interface{}, 0)
 
@@ -111,7 +111,7 @@ func (tx *TxParams) SendModeV2(key *keystore.Key) ([]interface{}, string, error)
 }
 
 // GetSignedTx gets the signed transaction
-func (tx *TxParams) GetSignedTx(keyfile *keystore.Key) (string, error) {
+func (tx *TxParams) GetSignedTx(key *keystore.Key) (string, error) {
 
 	var txSign *types.Transaction
 
@@ -129,7 +129,7 @@ func (tx *TxParams) GetSignedTx(keyfile *keystore.Key) (string, error) {
 	}
 
 	// todo: choose the correct signer
-	txSign, _ = types.SignTx(txSign, types.HomesteadSigner{}, keyfile.PrivateKey)
+	txSign, _ = types.SignTx(txSign, types.HomesteadSigner{}, key.PrivateKey)
 	/// txSign, _ = types.SignTx(txSign, types.NewEIP155Signer(big.NewInt(300)), priv)
 	/// utl.Logger.Printf("the signed transaction is %v\n", txSign)
 

@@ -5,71 +5,106 @@ import (
 	"fmt"
 	"testing"
 
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
 )
 
-// 如果没有abipath 和codepath 的话，可以设置为空
-func InitSysconfigClient() (common_sdk.TxParams, SysConfigClient) {
-	txparam, contract := InitContractClient()
-	contract.AbiPath = ""
-	//contract.CodePath = ""
-	client := SysConfigClient{
-		ContractClient: contract,
+func InitSysconfigClient() (*SysConfigClient, error) {
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 6791,
 	}
-	return txparam, client
+	return NewSysConfigClient(context.Background(), url, keyfile, PassPhrase)
 }
 
 func TestSysConfigClient_SetSysConfig(t *testing.T) {
-	txparam, client := InitSysconfigClient()
+	client, err := InitSysconfigClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	defer client.RpcClient.Close()
+
 	request := SysConfigParam{
 		Tx_gaslimit:    "1900000000",
 		Block_gaslimit: "20000000000",
 		Empty_block:    "notallow-empty",
 	}
-	result, _ := client.SetSysConfig(context.Background(), txparam, request)
-	fmt.Println(result)
+	result, _ := client.SetSysConfig(context.Background(), request)
+	log.Info("result:%v", result)
 	assert.True(t, result != nil)
 }
 
 func TestSysConfigClient_GetIsApproveDeployedContract(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsApproveDeployedContract(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetIsApproveDeployedContract(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetVRFParams(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetVRFParams(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetVRFParams(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != "")
 }
 
 func TestSysConfigClient_GetIsTxUseGas(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsTxUseGas(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetIsTxUseGas(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetIsProduceEmptyBlock(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetIsProduceEmptyBlock(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetIsProduceEmptyBlock(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result == 0)
 }
 
 func TestSysConfigClient_GetBlockGasLimit(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetBlockGasLimit(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetBlockGasLimit(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != 0)
 }
 
 func TestSysConfigClient_GetTxGasLimit(t *testing.T) {
-	txparam, client := InitSysconfigClient()
-	result, _ := client.GetTxGasLimit(context.Background(), txparam)
-	fmt.Println(result)
+	client, err := InitSysconfigClient()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer client.RpcClient.Close()
+	result, _ := client.GetTxGasLimit(context.Background())
+	log.Info("result:%v", result)
 	assert.True(t, result != 0)
 }

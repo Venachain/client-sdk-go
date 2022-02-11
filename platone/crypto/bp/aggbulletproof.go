@@ -2,6 +2,9 @@ package bp
 
 import (
 	"errors"
+	"math/big"
+	"strconv"
+
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
@@ -703,6 +706,7 @@ func NewAggBpStatement(m int64, aggbppram AggBpStatement) *AggBpStatement {
 func GetGenerator(param AggBpStatement) (*bn256.G1, *bn256.G1, []*bn256.G1, []*bn256.G1) {
 	return param.bpParam.g, param.bpParam.h, param.bpParam.gVector, param.bpParam.hVector
 }
+
 //
 //var aggbpparam AggBpStatement
 //var agginitbp sync.Once
@@ -759,6 +763,6 @@ func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement
 //	agginitbp.Do(agginitbpparam)
 //	return aggbpparam
 //}
-func AggBp() *AggBpStatement{
-	return GenerateAggBpStatement(2,16)
+func AggBp() *AggBpStatement {
+	return GenerateAggBpStatement(2, 16)
 }

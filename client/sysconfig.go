@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"strconv"
 
-	common_sdk "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/vm"
 	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
 )
@@ -40,6 +42,29 @@ type SysConfigParam struct {
 	VrfParams                       string
 }
 
+func NewSysConfigClient(ctx context.Context, url URL, keyfilePath string, passphrase string) (*SysConfigClient, error) {
+	client, err := NewContractClient(ctx, url, keyfilePath, passphrase, precompile.ParameterManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	sysConfigClient := &SysConfigClient{
+		*client,
+	}
+	return sysConfigClient, nil
+}
+
+// 传入key 构造 SysConfig 客户端
+func NewSysConfigClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*SysConfigClient, error) {
+	client, err := NewContractClientWithKey(ctx, url, key, precompile.ParameterManagementAddress, "wasm")
+	if err != nil {
+		return nil, err
+	}
+	sysConfigClient := &SysConfigClient{
+		*client,
+	}
+	return sysConfigClient, nil
+}
+
 // 	TxGasLimitMinValue        uint64 = 12771596 * 100 // 12771596 大致相当于 0.012772s
 //	TxGasLimitMaxValue        uint64 = 2e9            // 相当于 2s
 //	BlockGasLimitMinValue     uint64 = 12771596 * 100 // 12771596 大致相当于 0.012772s
@@ -51,59 +76,59 @@ type SysConfigParam struct {
 //--check-perm : check the sender permission when deploying contracts, 'with-perm' for checking permission, 'without-perm' for not
 //--empty-block : consensus produces empty block, 'allow-empty' for allowing to produce empty block, 'notallow-empty' for not
 //--gas-contract : register the gas contract by contract name
-func (sysConfigClient SysConfigClient) SetSysConfig(ctx context.Context, txparam common_sdk.TxParams, request SysConfigParam) ([]string, error) {
+func (sysConfigClient SysConfigClient) SetSysConfig(ctx context.Context, request SysConfigParam) ([]string, error) {
 	var result []string
 	if request.Tx_gaslimit != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.Tx_gaslimit, vm.TxGasLimitKey)
+		res, err := setConfig(sysConfigClient, ctx, request.Tx_gaslimit, vm.TxGasLimitKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.Block_gaslimit != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.Block_gaslimit, vm.BlockGasLimitKey)
+		res, err := setConfig(sysConfigClient, ctx, request.Block_gaslimit, vm.BlockGasLimitKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.Tx_use_gas != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.Tx_use_gas, vm.IsTxUseGasKey)
+		res, err := setConfig(sysConfigClient, ctx, request.Tx_use_gas, vm.IsTxUseGasKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.IsApproveDeployedContract != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.IsApproveDeployedContract, vm.IsApproveDeployedContractKey)
+		res, err := setConfig(sysConfigClient, ctx, request.IsApproveDeployedContract, vm.IsApproveDeployedContractKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.IsCheckContractDeployPermission != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.IsCheckContractDeployPermission, vm.IsCheckContractDeployPermissionKey)
+		res, err := setConfig(sysConfigClient, ctx, request.IsCheckContractDeployPermission, vm.IsCheckContractDeployPermissionKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.Empty_block != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.Empty_block, vm.IsProduceEmptyBlockKey)
+		res, err := setConfig(sysConfigClient, ctx, request.Empty_block, vm.IsProduceEmptyBlockKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.Gas_contract != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.Gas_contract, vm.GasContractNameKey)
+		res, err := setConfig(sysConfigClient, ctx, request.Gas_contract, vm.GasContractNameKey)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, res)
 	}
 	if request.VrfParams != "" {
-		res, err := setConfig(sysConfigClient, ctx, txparam, request.VrfParams, vm.VrfParamsKey)
+		res, err := setConfig(sysConfigClient, ctx, request.VrfParams, vm.VrfParamsKey)
 		if err != nil {
 			return nil, err
 		}
@@ -113,9 +138,9 @@ func (sysConfigClient SysConfigClient) SetSysConfig(ctx context.Context, txparam
 }
 
 // 系统参数获取 sysconfig get
-func (sysConfigClient SysConfigClient) GetTxGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error) {
+func (sysConfigClient SysConfigClient) GetTxGasLimit(ctx context.Context) (uint64, error) {
 	funcName := "getTxGasLimit"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -123,9 +148,9 @@ func (sysConfigClient SysConfigClient) GetTxGasLimit(ctx context.Context, txpara
 	return res[0].(uint64), nil
 }
 
-func (sysConfigClient SysConfigClient) GetBlockGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error) {
+func (sysConfigClient SysConfigClient) GetBlockGasLimit(ctx context.Context) (uint64, error) {
 	funcName := "getBlockGasLimit"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -133,9 +158,9 @@ func (sysConfigClient SysConfigClient) GetBlockGasLimit(ctx context.Context, txp
 	return res[0].(uint64), nil
 }
 
-func (sysConfigClient SysConfigClient) GetGasContractName(ctx context.Context, txparam common_sdk.TxParams) (string, error) {
+func (sysConfigClient SysConfigClient) GetGasContractName(ctx context.Context) (string, error) {
 	funcName := "getGasContractName"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -143,9 +168,9 @@ func (sysConfigClient SysConfigClient) GetGasContractName(ctx context.Context, t
 	return res[0].(string), nil
 }
 
-func (sysConfigClient SysConfigClient) GetIsProduceEmptyBlock(ctx context.Context, txparam common_sdk.TxParams) (uint32, error) {
+func (sysConfigClient SysConfigClient) GetIsProduceEmptyBlock(ctx context.Context) (uint32, error) {
 	funcName := "getIsProduceEmptyBlock"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -153,9 +178,9 @@ func (sysConfigClient SysConfigClient) GetIsProduceEmptyBlock(ctx context.Contex
 	return res[0].(uint32), nil
 }
 
-func (sysConfigClient SysConfigClient) GetCheckContractDeployPermission(ctx context.Context, txparam common_sdk.TxParams) (uint32, error) {
+func (sysConfigClient SysConfigClient) GetCheckContractDeployPermission(ctx context.Context) (uint32, error) {
 	funcName := "getCheckContractDeployPermission"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -163,9 +188,9 @@ func (sysConfigClient SysConfigClient) GetCheckContractDeployPermission(ctx cont
 	return res[0].(uint32), nil
 }
 
-func (sysConfigClient SysConfigClient) GetAllowAnyAccountDeployContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error) {
+func (sysConfigClient SysConfigClient) GetAllowAnyAccountDeployContract(ctx context.Context) (uint32, error) {
 	funcName := "getAllowAnyAccountDeployContract"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -173,9 +198,9 @@ func (sysConfigClient SysConfigClient) GetAllowAnyAccountDeployContract(ctx cont
 	return res[0].(uint32), nil
 }
 
-func (sysConfigClient SysConfigClient) GetIsApproveDeployedContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error) {
+func (sysConfigClient SysConfigClient) GetIsApproveDeployedContract(ctx context.Context) (uint32, error) {
 	funcName := "getIsApproveDeployedContract"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -183,9 +208,9 @@ func (sysConfigClient SysConfigClient) GetIsApproveDeployedContract(ctx context.
 	return res[0].(uint32), nil
 }
 
-func (sysConfigClient SysConfigClient) GetIsTxUseGas(ctx context.Context, txparam common_sdk.TxParams) (uint32, error) {
+func (sysConfigClient SysConfigClient) GetIsTxUseGas(ctx context.Context) (uint32, error) {
 	funcName := "getIsTxUseGas"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return 0, err
 	}
@@ -193,9 +218,9 @@ func (sysConfigClient SysConfigClient) GetIsTxUseGas(ctx context.Context, txpara
 	return res[0].(uint32), nil
 }
 
-func (sysConfigClient SysConfigClient) GetVRFParams(ctx context.Context, txparam common_sdk.TxParams) (string, error) {
+func (sysConfigClient SysConfigClient) GetVRFParams(ctx context.Context) (string, error) {
 	funcName := "getVRFParams"
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, nil, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, nil, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -203,7 +228,7 @@ func (sysConfigClient SysConfigClient) GetVRFParams(ctx context.Context, txparam
 	return res[0].(string), nil
 }
 
-func setConfig(sysConfigClient SysConfigClient, ctx context.Context, txparam common_sdk.TxParams, param string, name string) (string, error) {
+func setConfig(sysConfigClient SysConfigClient, ctx context.Context, param string, name string) (string, error) {
 	// todo: optimize the code, param check, param convert
 	var funcName string
 	if !checkConfigParam(param, name) {
@@ -219,10 +244,9 @@ func setConfig(sysConfigClient SysConfigClient, ctx context.Context, txparam com
 	} else {
 		funcName = "set" + name
 	}
-	//funcName = "set" + name
-	funcParams := common_sdk.CombineFuncParams(newParam)
+	funcParams := packet.CombineFuncParams(newParam)
 
-	result, err := sysConfigClient.contractCallWrap(ctx, txparam, funcParams, funcName, precompile.ParameterManagementAddress)
+	result, err := sysConfigClient.contractCallWithParams(ctx, funcParams, funcName, precompile.ParameterManagementAddress)
 	if err != nil {
 		return "", err
 	}
@@ -238,7 +262,7 @@ func checkConfigParam(param string, key string) bool {
 		// number check
 		num, err := strconv.ParseUint(param, 10, 0)
 		if err != nil {
-			fmt.Println("param invalid")
+			log.Error("param invalid")
 
 			return false
 		}
@@ -257,7 +281,6 @@ func checkConfigParam(param string, key string) bool {
 
 			return false
 		}
-
 		isInRange := vm.BlockGasLimitMinValue <= num && vm.BlockGasLimitMaxValue >= num
 		if !isInRange {
 			fmt.Printf("the block gas limit should be within (%d, %d)\n",
@@ -269,7 +292,6 @@ func checkConfigParam(param string, key string) bool {
 			return false
 		}
 	}
-
 	return true
 }
 
@@ -284,23 +306,21 @@ func sysConfigConvert(param, paramName string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	return result.(string), nil
 }
 
-func genConfigConverter(paramName string) *common_sdk.Convert {
-
+func genConfigConverter(paramName string) *packet.Convert {
 	switch paramName {
 	case vm.IsTxUseGasKey:
-		return common_sdk.NewConvert(txUseGas, txNotUseGas, "1", "0", paramName)
+		return packet.NewConvert(txUseGas, txNotUseGas, "1", "0", paramName)
 	case vm.IsApproveDeployedContractKey:
-		return common_sdk.NewConvert(conAudit, conNotAudit, "1", "0", paramName)
+		return packet.NewConvert(conAudit, conNotAudit, "1", "0", paramName)
 	case vm.IsCheckContractDeployPermissionKey:
-		return common_sdk.NewConvert(checkPerm, notCheckPerm, "1", "0", paramName)
+		return packet.NewConvert(checkPerm, notCheckPerm, "1", "0", paramName)
 	case vm.IsProduceEmptyBlockKey:
-		return common_sdk.NewConvert(prodEmp, notProdEmp, "1", "0", paramName)
+		return packet.NewConvert(prodEmp, notProdEmp, "1", "0", paramName)
 	default:
-		fmt.Errorf("invalid system configuration %v", paramName)
+		log.Error("invalid system configuration %v", paramName)
 	}
 	return nil
 }

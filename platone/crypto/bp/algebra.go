@@ -3,9 +3,9 @@ package bp
 import (
 	"crypto/rand"
 	"crypto/sha256"
-	"fmt"
 	"math/big"
 
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
@@ -308,7 +308,7 @@ func MapIntoGroup(s string) *bn256.G1 {
 			tmp = append(x32, y32...)
 			_, err := result.Unmarshal(tmp)
 			if err != nil {
-				fmt.Println(err)
+				log.Error("err", err)
 				x.Add(x, big.NewInt(1))
 				continue
 			}

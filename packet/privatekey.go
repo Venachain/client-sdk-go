@@ -42,13 +42,6 @@ func (k *Keyfile) GetPrivateKey() *ecdsa.PrivateKey {
 
 // GetPrivateKey gets the private key by decrypting the keystore file
 func (k *Keyfile) ParsePrivateKey() error {
-
-	// Decrypt key with passphrase.
-	/*
-		if k.Passphrase == "" {
-			return nil, ErrNullPassphrase
-		}*/
-
 	key, err := keystore.DecryptKey(k.Json, k.Passphrase)
 	if err != nil {
 		return fmt.Errorf("Error decrypting key: %v", err)

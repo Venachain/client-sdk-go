@@ -2,10 +2,9 @@ package bp
 
 import (
 	"errors"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
-	//"errors"
 	"math/big"
-	//"test"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/bn256"
 )
 
 /*
@@ -450,6 +449,7 @@ func (proof *BulletProof) Verify(param BulletProofParams) (bool, error) {
 }
 
 var bpparam BulletProofParams
+
 //var initbp sync.Once
 
 /*
@@ -486,6 +486,6 @@ func GenerateBpParam(n int64) *BulletProofParams {
 //	initbp.Do(initbpparam)
 //	return bpparam
 //}
-func Bp() *BulletProofParams{
+func Bp() *BulletProofParams {
 	return GenerateBpParam(16)
 }

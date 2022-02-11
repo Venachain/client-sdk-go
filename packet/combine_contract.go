@@ -1,6 +1,12 @@
 package packet
 
-import "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+import (
+	"errors"
+
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+	common_plaone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+)
 
 type RawData struct {
 	funcParams []interface{}
@@ -18,13 +24,13 @@ func NewData(funcParams []interface{}, funcAbi *FuncDesc) *RawData {
 // ContractDataGen is used for combining the data of contract execution
 type ContractDataGen struct {
 	data   *RawData
-	conAbi ContractAbi
+	conAbi ContractContent
 	TxType uint64
-	/// name   string
 	Interp contractInter
+	To     common_plaone.Address
 }
 
-func NewContractDataGen(data *RawData, conAbi ContractAbi, txType uint64) *ContractDataGen {
+func NewContractDataGen(data *RawData, conAbi ContractContent, txType uint64) *ContractDataGen {
 	dataGen := &ContractDataGen{
 		data:   data,
 		conAbi: conAbi,
@@ -35,8 +41,8 @@ func NewContractDataGen(data *RawData, conAbi ContractAbi, txType uint64) *Contr
 }
 
 // SetInterpreter set the interpreter of ContractDataGen object
-func (dataGen *ContractDataGen) SetInterpreter(vm, name string, txType uint64) {
-	switch vm {
+func (dataGen *ContractDataGen) SetInterpreter(vmType, name string, txType uint64) {
+	switch vmType {
 	case "evm":
 		dataGen.Interp = &EvmContractInterpreter{}
 	// the default interpreter is "wasm"
@@ -64,6 +70,22 @@ func (dataGen *ContractDataGen) CombineData() (string, error) {
 
 	// packet contract data
 	return dataGen.combineContractData(funcBytes)
+}
+
+func (dataGenerator *ContractDataGen) MakeTxparamForContract(from *common_plaone.Address, to *common_plaone.Address) (*common.TxParams, error) {
+	txparam := common.TxParams{}
+	var err error
+	if from != nil {
+		txparam.From = *from
+	} else {
+		return nil, errors.New("the from of the transaction is empty")
+	}
+	txparam.To = to
+	txparam.Data, err = dataGenerator.CombineData()
+	if err != nil {
+		return nil, errors.New("packet data err: %s\n")
+	}
+	return &txparam, nil
 }
 
 // combineFunc of Contractcall data struct is used for combining the
