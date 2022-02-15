@@ -160,7 +160,7 @@ func EventParsingV2(logs RecptLogs, events []*FuncDesc, fn eventParsingFuncV2) [
 		result := fn(logData, events)
 		if result != "" {
 			res = append(res, result)
-			break
+			//break
 		}
 	}
 
