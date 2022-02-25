@@ -10,6 +10,8 @@ import (
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
 )
 
+var aggbpparam AggBpStatement
+
 type AggBpStatement struct {
 	//m is the number of values
 	m       int64
@@ -726,7 +728,7 @@ func GenerateAggBpStatement(m, n int64) *AggBpStatement {
 }
 
 func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement {
-	aggbpparam := AggBpStatement{}
+	aggbpparam = AggBpStatement{}
 	aggbpparam.m = m
 	aggbpparam.bpParam.n = n
 
@@ -736,8 +738,8 @@ func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement
 	aggbpparam.bpParam.gVector = make([]*bn256.G1, nm)
 	aggbpparam.bpParam.hVector = make([]*bn256.G1, nm)
 	for i := 0; i < int(nm); i++ {
-		aggbpparam.bpParam.gVector[i] = MapIntoGroup("platone" + "g" + strconv.Itoa(i))
-		aggbpparam.bpParam.hVector[i] = MapIntoGroup("platone" + "h" + strconv.Itoa(i))
+		aggbpparam.bpParam.gVector[i] = MapIntoGroup("venachain" + "g" + string(rune(i)))
+		aggbpparam.bpParam.hVector[i] = MapIntoGroup("venachain" + "h" + string(rune(i)))
 	}
 	return &aggbpparam
 }
