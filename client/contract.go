@@ -303,7 +303,7 @@ func genContractContent(contract string) (packet.ContractContent, error) {
 		if err != nil {
 			return nil, err
 		}
-	} else if strings.Contains(contract, ".json") {
+	} else if strings.Contains(contract, ".json") || strings.Contains(contract, ".abi") {
 		contractContent, err = GetContractByAbiPath(contract)
 		if err != nil {
 			return nil, err
