@@ -30,6 +30,7 @@ func (pc Client) MessageCallWithSync(ctx context.Context, dataGen packet.MsgData
 		result[0] = res
 		polRes, err := pc.GetReceiptByPolling(res)
 		if err != nil {
+			log.Error("error:%s,you can try get receipt again", err)
 			return result, nil
 		}
 		receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
@@ -107,8 +108,8 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 	case receipt := <-ch:
 		return receipt.(*packet.Receipt), nil
 
-	case <-time.After(time.Second * 10):
-		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 10)
+	case <-time.After(time.Second * 30):
+		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 30)
 		return nil, errors.New(errStr)
 	}
 }

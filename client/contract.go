@@ -199,6 +199,7 @@ func (contractClient ContractClient) SendTxparam(ctx context.Context, txparam *c
 	}
 	polRes, err := contractClient.GetReceiptByPolling(res)
 	if err != nil {
+		log.Error("error:%s", err)
 		return res, nil
 	}
 	receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
