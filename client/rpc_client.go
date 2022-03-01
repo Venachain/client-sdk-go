@@ -99,7 +99,7 @@ func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keysto
 }
 
 func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
-	//time := time.Second * 10
+	timeWait := time.Second * 20
 	ch := make(chan interface{}, 1)
 	go pc.getReceiptByPolling(txHash, ch)
 
@@ -107,8 +107,8 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 	case receipt := <-ch:
 		return receipt.(*packet.Receipt), nil
 
-	case <-time.After(time.Second * 10):
-		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 10)
+	case <-time.After(timeWait):
+		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 20)
 		return nil, errors.New(errStr)
 	}
 }
@@ -122,12 +122,12 @@ func (client *Client) getReceiptByPolling(txHash string, ch chan interface{}) {
 		// limit the times of the polling
 		if err != nil {
 			fmt.Println(err.Error())
-			time.Sleep(1 * sleepTime)
+			time.Sleep(2 * sleepTime)
 			continue
 		}
 
 		if receipt == nil {
-			time.Sleep(1 * sleepTime)
+			time.Sleep(2 * sleepTime)
 			continue
 		}
 		ch <- receipt
