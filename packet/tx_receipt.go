@@ -140,7 +140,7 @@ func receiptStatusReturn(status string) (result string) {
 
 type eventParsingFuncV2 func(*Log, []*FuncDesc) string
 
-func getSysEvents(SysEventList []string) []*FuncDesc {
+func GetSysEvents(SysEventList []string) []*FuncDesc {
 	var events = make([]*FuncDesc, 0)
 
 	for _, data := range SysEventList {

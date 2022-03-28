@@ -31,7 +31,7 @@ func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, co
 	if err != nil {
 		return nil, err
 	}
-	contractContent, err := genContractContent(contract)
+	contractContent, err := GenContractContent(contract)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func NewContractClientWithKey(ctx context.Context, url URL, key *keystore.Key, c
 	if err != nil {
 		return nil, err
 	}
-	contractContent, err := genContractContent(contract)
+	contractContent, err := GenContractContent(contract)
 	if err != nil {
 		return nil, err
 	}
@@ -67,14 +67,14 @@ func NewContractClientWithKey(ctx context.Context, url URL, key *keystore.Key, c
 
 // execute a method in the contract(evm or wasm)
 // contract 可以为合约地址或cns 名字
-func (contractClient ContractClient) Execute(ctx context.Context, funcName string, funcParams []string, contract string) (interface{}, error) {
+func (contractClient ContractClient) Execute(ctx context.Context, funcName string, funcParams []string, contract string, sync bool) (interface{}, error) {
 	funcName, funcParams = packet.FuncParse(funcName, funcParams)
 	// 构造dataGenerator
 	dataGenerator, err := contractClient.MakeContractGenerator(contract, funcParams, funcName)
 	if err != nil {
 		return nil, err
 	}
-	result, err := contractClient.contractCall(ctx, dataGenerator)
+	result, err := contractClient.contractCall(ctx, dataGenerator, sync)
 	if err != nil {
 		return nil, err
 	}
@@ -82,17 +82,17 @@ func (contractClient ContractClient) Execute(ctx context.Context, funcName strin
 }
 
 // consParams 为solidyty 合约中constructor的相关参数
-func (contractClient ContractClient) Deploy(ctx context.Context, abipath string, codepath string, consParams []string) (interface{}, error) {
+func (contractClient ContractClient) Deploy(ctx context.Context, abipath string, codepath string, consParams []string, sync bool) (interface{}, error) {
 	// 构造dataGenerator
 	dataGenerator, err := contractClient.MakeDeployGenerator(abipath, codepath, consParams)
 	if err != nil {
 		return nil, err
 	}
-	txParams, err := makeTxparamForDeploy(dataGenerator, &contractClient.Key.Address)
+	txParams, err := MakeTxparamForDeploy(dataGenerator, &contractClient.Key.Address)
 	if err != nil {
 		return nil, err
 	}
-	result, err := contractClient.MessageCallWithSync(ctx, dataGenerator, *txParams, contractClient.Key)
+	result, err := contractClient.MessageCall(ctx, dataGenerator, *txParams, contractClient.Key, sync)
 	if err != nil {
 		return nil, err
 	}
@@ -230,13 +230,13 @@ func (contractClient ContractClient) CallTxparam(ctx context.Context, txparam *c
 }
 
 // 封装合约的方法,同步获取receipt
-func (contractClient ContractClient) contractCall(ctx context.Context, dataGenerator *packet.ContractDataGen) (interface{}, error) {
+func (contractClient ContractClient) contractCall(ctx context.Context, dataGenerator *packet.ContractDataGen, sync bool) (interface{}, error) {
 	// 构造txparam
 	txparam, err := dataGenerator.MakeTxparamForContract(&contractClient.Key.Address, &dataGenerator.To)
 	if err != nil {
 		return nil, err
 	}
-	result, err := contractClient.MessageCallWithSync(ctx, dataGenerator, *txparam, contractClient.Key)
+	result, err := contractClient.MessageCall(ctx, dataGenerator, *txparam, contractClient.Key, sync)
 	if err != nil {
 		return nil, err
 	}
@@ -254,7 +254,7 @@ func (contractClient ContractClient) contractCallWithParams(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	result, err := contractClient.MessageCallWithSync(ctx, dataGenerator, *txparam, contractClient.Key)
+	result, err := contractClient.MessageCall(ctx, dataGenerator, *txparam, contractClient.Key, true)
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +280,7 @@ func getCodeBytes(codepath string) ([]byte, error) {
 	return codeBytes, nil
 }
 
-func makeTxparamForDeploy(dataGenerator *packet.DeployDataGen, from *common_plaone.Address) (*common.TxParams, error) {
+func MakeTxparamForDeploy(dataGenerator *packet.DeployDataGen, from *common_plaone.Address) (*common.TxParams, error) {
 	txparam := common.TxParams{}
 	var err error
 	if from != nil {
@@ -294,7 +294,7 @@ func makeTxparamForDeploy(dataGenerator *packet.DeployDataGen, from *common_plao
 	}
 	return &txparam, nil
 }
-func genContractContent(contract string) (packet.ContractContent, error) {
+func GenContractContent(contract string) (packet.ContractContent, error) {
 	var contractContent packet.ContractContent
 	var err error
 	if contract == "" {
@@ -335,5 +335,3 @@ func getContractContent(abiPath string, contract string) (packet.ContractContent
 	}
 	return contractContent, nil
 }
-
-// 异步获取receipt

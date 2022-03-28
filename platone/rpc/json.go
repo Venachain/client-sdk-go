@@ -85,17 +85,6 @@ type jsonCodec struct {
 	rw     io.ReadWriteCloser        // connection
 }
 
-func (err *jsonError) Error() string {
-	if err.Message == "" {
-		return fmt.Sprintf("json-rpc error %d", err.Code)
-	}
-	return err.Message
-}
-
-func (err *jsonError) ErrorCode() int {
-	return err.Code
-}
-
 // NewCodec creates a new RPC server codec with support for JSON-RPC 2.0 based
 // on explicitly given encoding and decoding methods.
 func NewCodec(rwc io.ReadWriteCloser, encode, decode func(v interface{}) error) ServerCodec {

@@ -9,6 +9,7 @@ import (
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rpc"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 )
 
 // Client 链 RPC 连接客户端
@@ -92,4 +93,18 @@ func (c *URL) GetEndpoint() string {
 
 func (c *URL) GetEndpointAddr() string {
 	return fmt.Sprintf("%v:%v", c.IP, c.RPCPort)
+}
+
+func (client Client) GetBlockByHash(hash string) (*types.GetBlockResponse, error) {
+	funcName := types.GetBlockByHash
+	result, err := client.RpcClient.Call(context.Background(), funcName, hash, false)
+	if err != nil {
+		return nil, err
+	}
+	var res types.GetBlockResponse
+	err = json.Unmarshal(result, &res)
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
 }

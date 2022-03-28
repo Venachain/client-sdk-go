@@ -194,7 +194,7 @@ func (i EvmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi Contra
 	var sysEvents = []string{precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
 	receiptParse := receipt.Parsing()
-	receiptParse.Logs = EventParsingV2(receipt.Logs, getSysEvents(sysEvents), WasmEventParsingPerLogV2)
+	receiptParse.Logs = EventParsingV2(receipt.Logs, GetSysEvents(sysEvents), WasmEventParsingPerLogV2)
 	receiptParse.Logs = append(receiptParse.Logs, EventParsingV2(receipt.Logs, conAbi.GetEvents(), EvmEventParsingPerLogV2)...)
 
 	return receiptParse
@@ -311,7 +311,7 @@ func (i WasmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi Contr
 	var fn = WasmEventParsingPerLogV2
 	var sysEvents = []string{precompile.CnsInvokeEvent, precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
-	events := getSysEvents(sysEvents)
+	events := GetSysEvents(sysEvents)
 	events = append(events, conAbi.GetEvents()...)
 
 	return receipt.ParsingWrap(events, fn)
@@ -384,7 +384,7 @@ func (i EvmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi Contract
 	var sysEvents = []string{precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
 
 	receiptParse := receipt.Parsing()
-	receiptParse.Logs = EventParsingV2(receipt.Logs, getSysEvents(sysEvents), WasmEventParsingPerLogV2)
+	receiptParse.Logs = EventParsingV2(receipt.Logs, GetSysEvents(sysEvents), WasmEventParsingPerLogV2)
 	receiptParse.Logs = append(receiptParse.Logs, EventParsingV2(receipt.Logs, conAbi.GetEvents(), EvmEventParsingPerLogV2)...)
 
 	return receiptParse
@@ -439,7 +439,7 @@ func (i WasmDeployInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi Contrac
 	var fn = WasmEventParsingPerLogV2
 	var sysEvents = []string{precompile.PermDeniedEvent, precompile.CnsInitRegEvent}
 
-	events := getSysEvents(sysEvents)
+	events := GetSysEvents(sysEvents)
 	events = append(events, conAbi.GetEvents()...)
 
 	return receipt.ParsingWrap(events, fn)

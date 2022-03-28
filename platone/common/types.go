@@ -413,6 +413,12 @@ func RlpHash(x interface{}) (h Hash) {
 	return h
 }
 
+// Error wraps RPC errors, which contain an error code in addition to the message.
+type Error interface {
+	Error() string  // returns the message
+	ErrorCode() int // returns the code
+}
+
 type DBItem struct {
 	Key   []byte
 	Value []byte

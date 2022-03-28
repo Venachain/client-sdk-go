@@ -52,6 +52,21 @@ type JsonError struct {
 	Message string `json:"message"`
 }
 
+func (j JsonError) Error() string {
+	return j.Message
+}
+
+func (err *jsonError) Error() string {
+	if err.Message == "" {
+		return fmt.Sprintf("json-rpc error %d", err.Code)
+	}
+	return err.Message
+}
+
+func (err *jsonError) ErrorCode() int {
+	return err.Code
+}
+
 // callback is a method callback which was registered in the server
 type callback struct {
 	rcvr        reflect.Value  // receiver of method

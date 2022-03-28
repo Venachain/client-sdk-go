@@ -3,18 +3,17 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
 
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
 	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rpc"
 	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
 )
 
 type IClient interface {
-	GetRpcClient() *rpc.Client
-	RPCSend(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error)
-	ClientSend(action string, params []interface{}) (interface{}, error)
+	RpcCall(ctx context.Context, funcName string, funcParam interface{}) (json.RawMessage, error)
+	GetBlockByHash(hash string) (*types.GetBlockResponse, error)
 }
 
 type IContract interface {

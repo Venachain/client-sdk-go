@@ -141,7 +141,7 @@ type Backend interface {
 	// subsequent retrievals.
 	Wallets() []Wallet
 
-	// Subscribe creates an async subscription to receive notifications when the
+	// Subscribe creates an asyn subscription to receive notifications when the
 	// backend detects the arrival or departure of a wallet.
 	//Subscribe(sink chan<- WalletEvent) event.Subscription
 }
