@@ -193,7 +193,7 @@ func EvmEventParsingLog(eLog *Log, events []*FuncDesc) []string {
 		return nil
 	}
 
-	result = append(result, fmt.Sprintf("Event %s: ", eventName))
+	result = append(result, fmt.Sprintf("Event%s: ", eventName))
 	rlpList := arguments.ReturnBytesUnpack(eLog.Data)
 
 	for _, data := range rlpList {
