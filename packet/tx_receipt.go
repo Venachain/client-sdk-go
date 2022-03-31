@@ -186,6 +186,25 @@ func EvmEventParsingPerLogV2(eLog *Log, events []*FuncDesc) string {
 	return result
 }
 
+func EvmEventParsingLog(eLog *Log, events []*FuncDesc) []string {
+	var result []string
+	eventName, arguments := findEvmLogTopicV2(eLog.Topics[0], events)
+	if arguments == nil {
+		return nil
+	}
+
+	result = append(result, fmt.Sprintf("Event %s: ", eventName))
+	rlpList := arguments.ReturnBytesUnpack(eLog.Data)
+
+	for _, data := range rlpList {
+		if data != nil && !reflect.ValueOf(data).IsZero() {
+			result = append(result, fmt.Sprintf("%v ", data))
+		}
+	}
+
+	return result
+}
+
 func findEvmLogTopicV2(topic string, events []*FuncDesc) (string, abi.Arguments) {
 
 	for _, data := range events {
