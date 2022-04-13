@@ -1,16 +1,15 @@
 # Go SDK API 文档
 
 ```go
-// Go SDK Client 接口
+// Client 链 RPC 连接客户端
 type Client struct {
-   RpcClient   *rpc.Client
-   Passphrase  string
-   KeyfilePath string
-   URL         *URL
+	RpcClient *rpc.Client
+	Key       *keystore.Key  //初始化后的key
+	URL       *URL
 }
 ```
 
-通用的Client 结构体包括RpcClient，可以继承 PlatONE 中RpcClient 的方法，Passphrase 和 KeyfilePath 为必须参数，URL 为要使用的 PlatONE 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
+通用的Client 结构体包括RpcClient，可以继承 Venachain 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachain 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
 
 ```go
 NewURL(ip string, port uint64) URL
@@ -25,8 +24,222 @@ type URL struct {
 
 可以使用NewClient 方法初始化一个Client。
 ```go
-NewClient(ctx context.Context, url URL, passphrase, keyfilePath string) (*Client, error)
+NewClient(ctx context.Context, url URL, keyfilePath string, passphrase string)
 ```
+
+也可以通过传入key 来初始化Client。
+
+```go
+// 初始化keystore.Key
+NewKey(KeyfilePath, Passphrase string) (*keystore.Key, error)
+```
+
+```go
+// 通过keystore.Key构建Client
+NewClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*Client, error) 
+```
+
+## 使用方法
+
+由于初始化keystore.Key 时会消耗一部分比较大的内存，因此在使用时建议使用单例模式，通过定义一个全局的DefaultContractClient变量去调用Client 的方法。或者可以调用`NewKey(KeyfilePath, Passphrase string)` 将key定义为全局变量，然后使用`NewClientWithKey`去构建Client。具体的使用方法如下：
+
+### 一. 合约客户端 ContractClient
+
+```go
+# 合约客户端数据结构
+type ContractClient struct {
+	*Client  
+	ContractContent *packet.ContractContent
+	VmType          string
+}
+```
+初始化合约客户端
+
+```go
+// 入参：
+// url: 链的IP 和RPC 地址
+// keyfilePath: keyfile.json 文件的路径
+// passphrase: keyfile 文件对应的密码
+// contract: 调用合约的abi文件或预编译合约地址
+// vmType: 虚拟机类型
+func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, contract, vmType string)(*ContractClient, error) {...}
+```
+
+1. **定义默认的合约客户端**
+
+```go
+var DefaultContractClient *ContractClient
+```
+
+2. **初始化默认合约客户端**
+
+使用NewContractClient()初始化合约客户端。
+
+**示例：**
+
+```go
+// initContractClient 函数可放到main()函数中调用
+// 调用成功后步骤1中的DefaultContractClient会被初始化
+func initContractClient() {
+	var err error
+	contract := "0x0000000000000000000000000000000000000099" //存证合约
+	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	PassPhrase := "0"
+	vm := "wasm"
+	url := URL{
+		IP:      "127.0.0.1",
+		RPCPort: 6791,
+	}
+	DefaultContractClient, err = NewContractClient(context.Background(), url, keyfile, PassPhrase, contract, vm)
+	if err != nil {
+		log.Error("%s", err)
+    return
+	}
+}
+```
+
+#### 1. 调用合约 Execute
+
+调用合约能够实现所有预编译合约合约调用的功能。
+
+使用`DefaultContractClient.Execute()` 调用合约。
+
+```go
+// 入参：
+// funcName: 合约调用的函数名
+// funcParams： 合约调用的参数
+// contract：合约地址或cns名字
+// 输出：上链的receipt结果
+func Execute(ctx context.Context, funcName string, funcParams []string, contract string) (interface{}, error){...}
+```
+
+**SaveEvidence 示例**
+
+```go
+func SaveEvidence(key string,value string) {
+	funcname := "saveEvidence"
+	funcparam := []string{}
+	funcparam = append(funcparam, key)
+	funcparam = append(funcparam, value)
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	if err != nil {
+		log.Error("%s", err)
+		return
+	}
+	log.Info("result:%v", result)
+	DefaultContractClient.Client.RpcClient.Close()
+}
+```
+
+**GetEvidence 示例**
+
+```go
+func GetEvidence(key string) {
+	funcname := "getEvidence"
+	funcparam := []string{}
+	funcparam = append(funcparam, key)
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	if err != nil {
+		log.Error("%s", err)
+		return
+	}
+	log.Info("result:%v", result)
+	DefaultContractClient.Client.RpcClient.Close()
+}
+```
+**VerifyProofByRange 示例**
+
+```go
+func VerifyProofByRange(userid, proof, pid, rang string) {
+	funcname := "verifyProofByRange"
+	funcparam := []string{}
+	funcparam = append(funcparam, userid)
+	funcparam = append(funcparam, proof)
+	funcparam = append(funcparam, pid)
+	funcparam = append(funcparam, rang)
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	if err != nil {
+		log.Error("%s", err)
+		return
+	}
+	log.Info("result:%v", result)
+	DefaultContractClient.Client.RpcClient.Close()
+}
+```
+
+**BpGetResult 示例**
+
+```go
+func VerifyProofByRange(pid string) {
+	funcname := "getResult"
+	funcparam := []string{}
+	funcparam = append(funcparam, pid)
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	if err != nil {
+		log.Error("%s", err)
+		return
+	}
+	log.Info("result:%v", result)
+	DefaultContractClient.Client.RpcClient.Close()
+}
+```
+
+#### 2. 部署合约 Deploy
+
+##### 2.1 同步获取reciept
+
+使用`DefaultContractClient.Deploy()` 调用合约。
+```go
+// 入参：
+// abipath: 部署合约的abi 文件路径
+// codepath： 部署合约的code 文件路径，比如wasm合约以.wasm结尾的文件的绝对路径
+// consParams：solidity 合约的contractor参数
+// 输出：上链的receipt结果
+func Deploy(ctx context.Context, abipath string, codepath string, consParams []string) (interface{}, error){...}
+```
+
+部署合约需要使用codePath 和 ContractClient中的AbiPath (此时初始化AbiPath 时不能设置为空)。 consParams 为合约的某个参数。执行该测试函数后，成功部署了一个合约。得到返回的事件和合约地址：
+
+```go
+// 同步过去部署结果的示例
+func TestContractClient_Deploy(t *testing.T) {
+	codePath := "/Users/cxh/Downloads/example/example.wasm"
+	abiPath := "/Users/cxh/Downloads/example/example.cpp.abi.json"
+	contract, err := InitContractClient("")
+	if err != nil {
+		log.Error("error is:%v", err)
+	}
+	var consParams []string
+	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams)
+	if err != nil {
+		log.Error("error:%v", err)
+	}
+	log.Info("result:%v", result)
+	assert.True(t, result != nil)
+}
+```
+
+```json
+// 部署合约成功的结果
+{
+	"status": "Operation Succeeded",
+	"contractAddress": "0x35853e5643104cd96bd4590f5d4466c577786cfe",
+	"logs": [
+		"Event init: init success... "
+	],
+	"blockNumber": 198,
+	"GasUsed": 1911684,
+	"From": "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667",
+	"To": "",
+	"TxHash": "0xacdc551f2539068eab227f112ebaeade286d75852aa27e63ecb53176489bee3f"
+}
+```
+
+##### 2.1 异步获取reciept
+
+
+
+
 
 ## 以太坊通用接口
 
@@ -93,7 +306,7 @@ func TestNewClient(t *testing.T) {
 
 ## WebSocket 接口
 
-Websocket 包连接了Client 前端和PlatONE 的websocket 接口。为前端Client 提供订阅区块头和订阅事件的功能。
+Websocket 包连接了Client 前端和Venachain 的websocket 接口。为前端Client 提供订阅区块头和订阅事件的功能。
 
 其相应的代码在`ws`中。
 
@@ -113,25 +326,43 @@ type Client struct {
 }
 ```
 
-`ws_subscriber.go `中的 `wsSubscriber` 负责向PlatONE 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
+`ws_subscriber.go `中的 `wsSubscriber` 负责向Venachain 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
 
 ### 使用指南：
 
-`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于PlatONE 的运行环境创建一个 `wsSubscriber` ：
+`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于Venachain 的运行环境创建一个 `wsSubscriber` ：
 
 ```go
-// ws/ws_subscriber.go:31
-func newWSSubscriber() *wsSubscriber {
-	return &wsSubscriber{
+// 相关的ws/ws_subscriber.go:39
+func NewWSSubscriber(ip string, port int64, group string) *WsSubscriber {
+	return &WsSubscriber{
 		wsManager: DefaultWebsocketManager,
-		ip:        "127.0.0.1",
-		port:      26791,
-		group: "platone",
+		ip:        ip,
+		port:      port,
+		group:     group,
 	}
 }
 ```
+使用方法，使用NewWSSubscriber方法定义一个全局DefaultWSSubscriber变量，后续调用DefaultWSSubscriber 
+```go
+// 定义全局WS订阅对象
+var (
+	// DefaultWSSubscriber 默认的 websocket 订阅器
+	DefaultWSSubscriber *ws.WsSubscriber
+)
 
-其中 PlatONE-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
+// 使用NewWSSubscriber创建WS全局对象
+DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"venachain")
+
+// 使用 DefaultWebsocketManager 订阅Log事件
+DefaultWebsocketManager.WsClientForLog
+
+// 使用 DefaultWebsocketManager 订阅NewHeads事件
+DefaultWebsocketManager.WsClientForNewHeads
+```
+
+其中 Venachain-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
+
 ```go
 type Subscription interface {
 	SubHeadForChain() error
@@ -164,7 +395,7 @@ func main() {
 }
 ```
 
-可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在PlatONE 中发送交易，该订阅的结果会返回到前端页面。
+可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在Venachain 中发送交易，该订阅的结果会返回到前端页面。
 
 说明：
 
@@ -219,24 +450,7 @@ func TestContractClient_Deploy(t *testing.T) {
 }
 ```
 
-在完成ContractClient 的初始化之后，部署合约需要使用codePath 和 ContractClient中的AbiPath (此时初始化AbiPath 时不能设置为空)。同时还需要传入交易的参数txparam，该参数可以不传入任何值，但是需要初始化。当该结构体中的参数为默认值时，会被赋值一个默认值。 consParams 为合约的某个参数。执行该测试函数后，成功部署了一个合约。得到返回的事件和合约地址：
 
-```json
-{
-	"status": "Operation Succeeded",
-	"contractAddress": "0x35853e5643104cd96bd4590f5d4466c577786cfe",
-	"logs": [
-		"Event init: init success... "
-	],
-	"blockNumber": 198,
-	"GasUsed": 1911684,
-	"From": "0x3fcaa0a86dfbbe105c7ed73ca505c7a59c579667",
-	"To": "",
-	"TxHash": "0xacdc551f2539068eab227f112ebaeade286d75852aa27e63ecb53176489bee3f"
-}
-```
-
-我们用以上得到的合约地址进行合约的相关测试。
 
 ### 展示合约方法
 

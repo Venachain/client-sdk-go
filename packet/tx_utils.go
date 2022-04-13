@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
 )
 
 //

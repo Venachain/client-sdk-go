@@ -7,18 +7,19 @@ import (
 	"fmt"
 	"time"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 )
 
 const (
 	sleepTime = 1000000000 // 1 seconds
 )
 
-func (pc Client) MessageCallWithSync(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key) ([]interface{}, error) {
+// syn从：true 时会返回交易的receipt，false 时只返回交易hash
+func (pc Client) MessageCall(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key, sync bool) ([]interface{}, error) {
 	var result = make([]interface{}, 1)
 	var err error
 	// constant == false 或部署合约的情况
@@ -27,25 +28,29 @@ func (pc Client) MessageCallWithSync(ctx context.Context, dataGen packet.MsgData
 		if err != nil {
 			return nil, err
 		}
-		result[0] = res
-		polRes, err := pc.GetReceiptByPolling(res)
-		if err != nil {
-			return result, nil
-		}
-		receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
-		if err != nil {
-			return nil, err
-		}
-		log.Info(string(receiptBytes))
-
-		recpt := dataGen.ReceiptParsing(polRes)
-		if recpt.Status != packet.TxReceiptSuccessMsg {
-			result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
-			if len(result) >= 4 {
-				recpt.Err, _ = packet.UnpackError(result)
+		if sync {
+			polRes, err := pc.GetReceiptByPolling(res)
+			if err != nil {
+				log.Error("error:%s,you can try get receipt again", err)
+				return result, nil
 			}
+			receiptBytes, err := json.MarshalIndent(polRes, "", "\t")
+			if err != nil {
+				return nil, err
+			}
+			log.Info(string(receiptBytes))
+
+			recpt := dataGen.ReceiptParsing(polRes)
+			//if recpt.Status != packet.TxReceiptSuccessMsg {
+			//	result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
+			//	if len(result) >= 4 {
+			//		recpt.Err, _ = packet.UnpackError(result)
+			//	}
+			//}
+			result[0] = recpt.String()
+		} else {
+			result[0] = res
 		}
-		result[0] = recpt.String()
 	} else {
 		result, err = pc.Call(dataGen.GetContractDataDen(), &tx)
 		if err != nil {
@@ -107,8 +112,8 @@ func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
 	case receipt := <-ch:
 		return receipt.(*packet.Receipt), nil
 
-	case <-time.After(timeWait):
-		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 20)
+	case <-time.After(time.Second * 30):
+		errStr := fmt.Sprintf("get contract receipt timeout...more than %d second.", 30)
 		return nil, errors.New(errStr)
 	}
 }

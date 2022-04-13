@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
 )
 
 type JsonParam struct {
@@ -26,12 +26,12 @@ type JsonParam struct {
 }
 
 type TxParams struct {
-	From     common_platone.Address  `json:"from"` // the address used to send the transaction
-	To       *common_platone.Address `json:"to"`   // the address receives the transactions
-	Gas      string                  `json:"gas"`
-	GasPrice string                  `json:"gasPrice"`
-	Value    string                  `json:"value"`
-	Data     string                  `json:"data"`
+	From     common_venachain.Address  `json:"from"` // the address used to send the transaction
+	To       *common_venachain.Address `json:"to"`   // the address receives the transactions
+	Gas      string                    `json:"gas"`
+	GasPrice string                    `json:"gasPrice"`
+	Value    string                    `json:"value"`
+	Data     string                    `json:"data"`
 }
 
 func Send(params interface{}, action string, url string) (string, error) {

@@ -3,15 +3,16 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"testing"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 	"github.com/stretchr/testify/assert"
 )
 
 func InitClient() (*Client, error) {
-	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	keyfile := "/Users/cxh/go/src/VenaChain/venachain/release/linux/conf/keyfile.json"
 	PassPhrase := "0"
 	url := URL{
 		IP:      "127.0.0.1",
@@ -61,4 +62,31 @@ func TestRpcCall_lockAccount(t *testing.T) {
 	res := getRpcResult(result, "bool")
 	log.Info("result:%v", res)
 	assert.True(t, result != nil)
+}
+
+func TestRpcCall_getBlockByHash(t *testing.T) {
+	client, err := InitClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	res, err := client.GetBlockByHash("0xe8413de3f95aa00fb219e3f62af483e05ebb7c90d11bb33a144b6dc3b5e491cf")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("res", res.Transactions)
+}
+
+func TestRpcCall_getBlockByNumber(t *testing.T) {
+	client, err := InitClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	funcName := "eth_getBlockByNumber"
+	result, err := client.RpcClient.Call(context.Background(), funcName, "latest", false)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(string(result))
 }

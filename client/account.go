@@ -3,17 +3,17 @@ package client
 import (
 	"encoding/json"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
-	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
+	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 	"golang.org/x/net/context"
 )
 
 type AccountClient struct {
 	ContractClient
-	Address common_platone.Address
+	Address common_venachain.Address
 }
 
 func NewAccountClient(ctx context.Context, url URL, keyfilePath string, passphrase string, address string) (*AccountClient, error) {
@@ -23,7 +23,7 @@ func NewAccountClient(ctx context.Context, url URL, keyfilePath string, passphra
 	}
 	accountClient := &AccountClient{
 		*client,
-		common_platone.HexToAddress(address),
+		common_venachain.HexToAddress(address),
 	}
 	return accountClient, nil
 }
@@ -36,7 +36,7 @@ func NewAccountClientWithKey(ctx context.Context, url URL, key *keystore.Key, ad
 	}
 	accountClient := &AccountClient{
 		*client,
-		common_platone.HexToAddress(address),
+		common_venachain.HexToAddress(address),
 	}
 	return accountClient, nil
 }
@@ -145,14 +145,14 @@ func (accountClient AccountClient) UnLock(ctx context.Context, passphrase string
 	return res, nil
 }
 
-func (accountClient AccountClient) CreateAccount(ctx context.Context, passphrase string) (*common_platone.Address, error) {
+func (accountClient AccountClient) CreateAccount(ctx context.Context, passphrase string) (*common_venachain.Address, error) {
 	funcName := "personal_newAccount"
 	params := passphrase
 	result, err := accountClient.RpcClient.CallContext(ctx, funcName, params)
 	if err != nil {
 		return nil, err
 	}
-	var res common_platone.Address
+	var res common_venachain.Address
 	if err = json.Unmarshal(result, &res); err != nil {
 		return nil, err
 	}

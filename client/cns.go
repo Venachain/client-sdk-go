@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
-	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
 )
 
 type CnsClient struct {

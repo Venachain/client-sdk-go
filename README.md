@@ -1,5 +1,5 @@
-# PlatONE-SDK-GO
-PlatONE Go SDK是面向go开发者，提供的PlatONE联盟链的go开发工具包，提供了在应用层访问区块链节点并获取服务的接口，比如部署合约、调用合约、查询链上数据等。
+# Venachain-SDK-GO
+Venachain Go SDK是面向go开发者，提供的Venachain联盟链的go开发工具包，提供了在应用层访问区块链节点并获取服务的接口，比如部署合约、调用合约、查询链上数据等。
 
 
 ## SDK 下载
@@ -15,7 +15,7 @@ PlatONE Go SDK是面向go开发者，提供的PlatONE联盟链的go开发工具�
 添加go私有仓库
 ```bash
 export GOPRIVATE=git-c.i.wxblockchain.com
-go get git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go
+go get git-c.i.wxblockchain.com/vena/src/client-sdk-go
 ```
 
 **对于gitlab多级子group的情况，需要设置如下**

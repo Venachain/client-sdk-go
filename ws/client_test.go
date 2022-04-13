@@ -6,7 +6,7 @@ import (
 )
 
 func TestManager_WsClient(t *testing.T) {
-
+	InitWsSubscriber()
 	DefaultWSSubscriber.SubHeadForChain()
 	time.Sleep(time.Second * 100)
 }

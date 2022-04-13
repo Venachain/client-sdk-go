@@ -1,2 +1,0 @@
-# PlatONE-Client-SDK-Go
-

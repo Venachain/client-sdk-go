@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
 )
 
 const (

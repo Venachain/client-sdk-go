@@ -4,15 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"testing"
-
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 // contract 为调用的合约abi文件路径或合约地址
 func InitContractClient(contract string) (*ContractClient, error) {
-	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
+	keyfile := "/Users/cxh/go/src/VenaChain/venachain/release/linux/conf/keyfile.json"
 	PassPhrase := "0"
 	vm := "wasm"
 	url := URL{
@@ -31,7 +30,7 @@ func TestContractClient_SaveEvident(t *testing.T) {
 	funcparam := []string{}
 	funcparam = append(funcparam, "key1")
 	funcparam = append(funcparam, "value")
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099", true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 	assert.True(t, result != nil)
@@ -45,7 +44,7 @@ func TestContractClient_GetEvident(t *testing.T) {
 	funcname := "getEvidence"
 	funcparam := []string{}
 	funcparam = append(funcparam, "key1")
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099", true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 	assert.True(t, result != nil)
@@ -58,7 +57,7 @@ func TestContractClient_verifyProofByRange(t *testing.T) {
 	}
 	funcname := "verifyProofByRange"
 	funcparam := []string{}
-	funcparam = append(funcparam, "cxh")
+	funcparam = append(funcparam, "cx1h")
 	funcparam = append(funcparam, "0xf904bbb88025688c60d9d76c78f49250f23e737d80c2837c47550a94bee565b9"+
 		"52385edb441904f32b67f0af1e7142c2ed5a3eab789315d6f204d6900a86edb01e7ab3efde0d8e955fcfab1396f034db0491c5"+
 		"a3c0697020c664af95f930f9bbaf283d095c204ace0000efb16f22243a17c3f19bd8232b8f98e2847ba01a9a6ceb54131eceb840"+
@@ -81,9 +80,9 @@ func TestContractClient_verifyProofByRange(t *testing.T) {
 		"0d68df659b86dffccb6a24ac95230322142e5c218296ffc0e367a70250c141347adff292b7e2f210000f2aa78e22e3ba8a81482fb3f14a9763f04c269"+
 		"487201d394d270376b898ef6a0cd82f90a0e6a4695c44bdf8b8f30ea9c041be6e9293a8d43d72c005dad7b3ea9c6d02db00ce227ab022cdb072a23880df"+
 		"fa64816517dfbb3b8bc2fc8b160f38a57e2a06d0859e369ec6f41fbea2556ef885eb1aebc5d960d415e328dfb0d330f6f9afdd6")
-	funcparam = append(funcparam, "1")
+	funcparam = append(funcparam, "121")
 	funcparam = append(funcparam, "test")
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100", true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 	assert.True(t, result != nil)
@@ -97,7 +96,7 @@ func TestContractClient_bpGetResult(t *testing.T) {
 	funcname := "getResult"
 	funcparam := []string{}
 	funcparam = append(funcparam, "1")
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100", true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 	assert.True(t, result != nil)
@@ -113,7 +112,7 @@ func TestContractClient_NFTMint(t *testing.T) {
 	funcparam = append(funcparam, "{\"method\":\"mint\", \"data\":[{\"name\":\"abcd\",\"symbol\":\"ab\","+
 		"\"description\":\"abcdf1\",\"iprice\": 100, \"price\":100,\"url\":\"ww.qwe.com\",\"property\":\"p11210187\",\"others\":\"123\"}]}")
 	funcparam = append(funcparam, "")
-	result, err := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000012")
+	result, err := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000012", true)
 	if err != nil {
 		fmt.Println("error is:", err)
 	}
@@ -130,7 +129,7 @@ func TestContractClient_NFTGet(t *testing.T) {
 	funcname := "getNFTById"
 	funcparam := []string{}
 	funcparam = append(funcparam, "ac09810740600c31fa69f9db79ed6fc3e3281f758a950fe1fb254a3a3ae571b6")
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000012")
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000012", true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 	assert.True(t, result != nil)
@@ -159,7 +158,7 @@ func TestContractClient_CnsExecute(t *testing.T) {
 	funcname := "setEvidence"
 	funcparam := []string{"11", "123"}
 	cns := "test"
-	result, _ := contract.Execute(context.Background(), funcname, funcparam, cns)
+	result, _ := contract.Execute(context.Background(), funcname, funcparam, cns, true)
 	log.Info("result:%v", result)
 	contract.Client.RpcClient.Close()
 
@@ -172,7 +171,10 @@ func TestContractClient_GetReceipt(t *testing.T) {
 		fmt.Println("error is:", err)
 	}
 	txhash := "0x0f3c6328d0212b9ff2ec9b0f5063750b44fd0d58438d183c89dd121573e113e1"
-	result, _ := contract.GetReceipt(txhash)
+	result, err := contract.GetReceipt(txhash)
+	if err != nil{
+		fmt.Println(err)
+	}
 	if result != nil {
 		resultBytes, _ := json.MarshalIndent(result, "", "\t")
 		fmt.Printf("result:\n%s\n", resultBytes)
@@ -200,7 +202,7 @@ func TestContractClient_Deploy(t *testing.T) {
 		log.Error("error is:%v", err)
 	}
 	var consParams []string
-	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams)
+	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams, true)
 	if err != nil {
 		log.Error("error:%v", err)
 	}

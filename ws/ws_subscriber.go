@@ -11,34 +11,42 @@ import (
 
 var (
 	// DefaultWSSubscriber 默认的 websocket 订阅器
-	DefaultWSSubscriber *wsSubscriber
+	DefaultWSSubscriber *WsSubscriber
 )
 
-func init() {
+type WsSubscriber struct {
+	wsManager *Manager
+	ip        string
+	port      int64
+	group     string
+}
+
+func InitWsSubscriber() {
 	logrus.Debugf("DefaultWSSubscriber init [start]")
 	DefaultWSSubscriber = newWSSubscriber()
 	logrus.Debugf("DefaultWSSubscriber init [end]")
 }
 
-type wsSubscriber struct {
-	wsManager *Manager
-	ip        string
-	port      int64
-	//path      string
-	group string
-}
-
-func newWSSubscriber() *wsSubscriber {
-	return &wsSubscriber{
+func newWSSubscriber() *WsSubscriber {
+	return &WsSubscriber{
 		wsManager: DefaultWebsocketManager,
 		ip:        "127.0.0.1",
 		port:      26791,
-		group:     "platone",
+		group:     "venachain",
+	}
+}
+
+func NewWSSubscriber(ip string, port int64, group string) *WsSubscriber {
+	return &WsSubscriber{
+		wsManager: DefaultWebsocketManager,
+		ip:        ip,
+		port:      port,
+		group:     group,
 	}
 }
 
 // SubHeadForChain 为指定的链订阅它所配置的所有 websocket topics
-func (s *wsSubscriber) SubHeadForChain() error {
+func (s *WsSubscriber) SubHeadForChain() error {
 	// 1、获取 websocket 客户端连接
 	client, err := s.getWSClientByChain()
 	if err != nil {
@@ -62,8 +70,33 @@ func (s *wsSubscriber) SubHeadForChain() error {
 	return nil
 }
 
+//// 获取
+//func SubNewHeadForChain() error {
+//	// 1、获取 websocket 客户端连接
+//	client, err := s.getWSClientByChain()
+//	if err != nil {
+//		return err
+//	}
+//
+//	// 2、提取当前链订阅的 topics 配置信息
+//	topics := getNewHeadTopic()
+//	logrus.Debug(topics)
+//
+//	// 3 处理 topics 订阅
+//	for _, topic := range topics {
+//		topicName := topic.(map[string]interface{})["name"]
+//		topicParams := topic.(map[string]interface{})["params"]
+//		topics := []string{"newHeads"}
+//		err := s.wsSubTopicProcessor(client, topicName.(string), topicParams.(string), topics)
+//		if err != nil {
+//			logrus.Warningln(err)
+//		}
+//	}
+//	return nil
+//}
+
 // SubHeadForChain 为指定的链订阅它所配置的所有 websocket topics
-func (s *wsSubscriber) SubLogForChain(address, topic string) error {
+func (s *WsSubscriber) SubLogForChain(address, topic string) error {
 	// 1、获取 websocket 客户端连接
 	client, err := s.getWSClientByChain()
 	if err != nil {
@@ -88,7 +121,7 @@ func (s *wsSubscriber) SubLogForChain(address, topic string) error {
 }
 
 // topic 订阅处理器
-func (s *wsSubscriber) wsSubTopicProcessor(client *Client, topic string, params string, topics []string) error {
+func (s *WsSubscriber) wsSubTopicProcessor(client *Client, topic string, params string, topics []string) error {
 	// 获取到该链所配置订阅的所有 topic
 
 	exist := false
@@ -125,7 +158,7 @@ func (s *wsSubscriber) wsSubTopicProcessor(client *Client, topic string, params 
 }
 
 // NewHeads newHeads 事件的订阅处理
-func (s *wsSubscriber) NewHeads(client *Client, topic string, params string) error {
+func (s *WsSubscriber) NewHeads(client *Client, topic string, params string) error {
 	// 1、处理参数信息
 	paramsStr, err := s.wsSubParamsProcess(topic, params)
 	if err != nil {
@@ -139,12 +172,12 @@ func (s *wsSubscriber) NewHeads(client *Client, topic string, params string) err
 		Message: paramsStr,
 	}
 	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
-	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "platone")
+	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
 
 // Log log 事件的订阅处理
-func (s *wsSubscriber) Log(client *Client, topic string, params string) error {
+func (s *WsSubscriber) Log(client *Client, topic string, params string) error {
 	// 1、处理参数信息
 	paramsStr, err := s.wsSubParamsProcess(topic, params)
 	if err != nil {
@@ -158,12 +191,12 @@ func (s *wsSubscriber) Log(client *Client, topic string, params string) error {
 		Message: paramsStr,
 	}
 	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
-	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "platone")
+	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
 
 // 处理 websocket 事件订阅的参数
-func (s *wsSubscriber) wsSubParamsProcess(topic string, params string) (string, error) {
+func (s *WsSubscriber) wsSubParamsProcess(topic string, params string) (string, error) {
 	data := make(map[string]interface{})
 	err := json.Unmarshal([]byte(params), &data)
 	if err != nil {
@@ -183,10 +216,9 @@ func (s *wsSubscriber) wsSubParamsProcess(topic string, params string) (string, 
 	return params, nil
 }
 
-func (s *wsSubscriber) getWSClientByChain() (*Client, error) {
+func (s *WsSubscriber) getWSClientByChain() (*Client, error) {
 	ip := s.ip
 	port := s.port
-	//path := s.path
 	group := s.group
 	client, err := s.wsManager.Dial(ip, port, group)
 	url := fmt.Sprintf("ws://%s:%v", ip, port)

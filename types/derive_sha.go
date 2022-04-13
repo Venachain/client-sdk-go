@@ -17,7 +17,7 @@
 package types
 
 import (
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 )
 
 type DerivableList interface {

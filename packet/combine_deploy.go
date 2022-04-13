@@ -1,9 +1,11 @@
 package packet
 
 import (
+	"encoding/json"
 	"errors"
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
 )
 
 // DeployCall, used for combining the data of contract deployment
@@ -97,4 +99,19 @@ func (dataGen *DeployDataGen) GetContractDataDen() *ContractDataGen {
 
 func (dataGen *DeployDataGen) ParseNonConstantResponse(respStr string, outputType []abi.ArgumentMarshaling) []interface{} {
 	return nil
+}
+
+func getReceiptByte(receipt *Receipt) ([]byte, error) {
+	return json.MarshalIndent(receipt, "", "\t")
+}
+
+func ReceiptParsing(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
+
+	var fn = WasmEventParsingPerLogV2
+	var sysEvents = []string{precompile.PermDeniedEvent, precompile.CnsInitRegEvent}
+
+	events := GetSysEvents(sysEvents)
+	events = append(events, conAbi.GetEvents()...)
+
+	return receipt.ParsingWrap(events, fn)
 }

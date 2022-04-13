@@ -8,13 +8,15 @@ import (
 	"reflect"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/byteutil"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/crypto"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/rlp"
-	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/byteutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
 )
 
 const (
@@ -140,7 +142,7 @@ func receiptStatusReturn(status string) (result string) {
 
 type eventParsingFuncV2 func(*Log, []*FuncDesc) string
 
-func getSysEvents(SysEventList []string) []*FuncDesc {
+func GetSysEvents(SysEventList []string) []*FuncDesc {
 	var events = make([]*FuncDesc, 0)
 
 	for _, data := range SysEventList {
@@ -180,6 +182,25 @@ func EvmEventParsingPerLogV2(eLog *Log, events []*FuncDesc) string {
 	for _, data := range rlpList {
 		if data != nil && !reflect.ValueOf(data).IsZero() {
 			result += fmt.Sprintf("%v ", data)
+		}
+	}
+
+	return result
+}
+
+func EvmEventParsingLog(eLog *Log, events []*FuncDesc) []string {
+	var result []string
+	_, arguments := findEvmLogTopicV2(eLog.Topics[0], events)
+	if arguments == nil {
+		return nil
+	}
+
+	//result = append(result, fmt.Sprintf("Event%s: ", eventName))
+	rlpList := arguments.ReturnBytesUnpack(eLog.Data)
+
+	for _, data := range rlpList {
+		if data != nil && !reflect.ValueOf(data).IsZero() {
+			result = append(result, fmt.Sprintf("%v", data))
 		}
 	}
 
@@ -327,4 +348,41 @@ func RlpBytesToBool(b []byte) bool {
 		return true
 	}
 	return false
+}
+
+type Proof struct {
+	ChainID        string              // 链ID
+	Txhash         string              // 跨链交易的哈希
+	TxStatus       string              // 跨链交易的执行状态，表示该交易是否执行成功
+	ContractStatus string              // 业务合约的执行状态
+	BlockNumber    uint64              // 该交易所在的区块号
+	TxIndex        int                 // 交易所在区块的下标
+	TxKey          string              // 交易维护在跨链状态表中的下标
+	Signature      []map[string][]byte // bridge 对proof的签名
+	ProofSig       map[string][]byte   // 主bridge收集好的签名
+}
+
+type DealProof interface {
+	LisenBlock() ([]byte, error)                                   //监听区块
+	GetBlock(BlockHeader types.Header) (*types.Block, error)       //获取区块信息
+	VerifyTx(Block types.Block) (bool, error)                      //交易验证
+	GenNodeProof(block types.Block, Txhash string) ([]byte, error) // 节点生成 Proof
+	SignProof(proof []byte) ([]byte, error)                        // Proof签名
+	BroadcastProof(proof []byte) error                             //广播proof
+	Collectsignatures(proof []byte, nodeId string) ([]byte, error) //签名收集
+	GenProof(proof []byte, threshold int) ([]byte, error)          // 封装proof
+	SendProof(proof []byte) error                                  // 将Proof发送到链上
+	SendTx(tx types.Transaction) error                             //交易路由
+	//VerifyProof(pub *PublicKey, hash []byte, r, s *big.Int)
+	//(bool, error) //验证签名
+}
+
+type NodeTimer interface {
+	StartTimer() error                                   // 启动计时器
+	StopTimer() error                                    // 停止计时器
+	ResetTimer() error                                   // 重置计时器
+	StartRaft(msg string, NodeID string)                 // 触发raft重新选主
+	RequestProof(NodeId string, msg string) error        //计时器到时，触发重新向节点请求Proof，并收集Proof
+	ReSendProof(proof []byte, chainId string) error      // 重新发送Proof
+	ReSendTx(Tx types.Transaction, chainID string) error // 重新发送Tx
 }
