@@ -2,13 +2,13 @@ package asyn
 
 import (
 	"context"
-	"github.com/gorilla/websocket"
 
-	rpcClient "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	rpcClient "git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"github.com/gorilla/websocket"
 )
 
 type AsynContractClient struct {

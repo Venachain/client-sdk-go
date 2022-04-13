@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"time"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 )
 
 const (
@@ -41,12 +41,12 @@ func (pc Client) MessageCall(ctx context.Context, dataGen packet.MsgDataGen, tx 
 			log.Info(string(receiptBytes))
 
 			recpt := dataGen.ReceiptParsing(polRes)
-			if recpt.Status != packet.TxReceiptSuccessMsg {
-				result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
-				if len(result) >= 4 {
-					recpt.Err, _ = packet.UnpackError(result)
-				}
-			}
+			//if recpt.Status != packet.TxReceiptSuccessMsg {
+			//	result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
+			//	if len(result) >= 4 {
+			//		recpt.Err, _ = packet.UnpackError(result)
+			//	}
+			//}
 			result[0] = recpt.String()
 		} else {
 			result[0] = res

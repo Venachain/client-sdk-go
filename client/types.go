@@ -3,12 +3,12 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/types"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
+	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 )
 
 type IClient interface {
@@ -30,7 +30,7 @@ type IAccount interface {
 	QueryUser(ctx context.Context, user string) (string, error)
 	Lock(ctx context.Context) (bool, error)
 	UnLock(ctx context.Context, passphrase string) (bool, error)
-	CreateAccount(ctx context.Context, passphrase string) (*common_platone.Address, error)
+	CreateAccount(ctx context.Context, passphrase string) (*common_venachain.Address, error)
 }
 
 type ICns interface {

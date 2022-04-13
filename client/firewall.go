@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
-	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 )
 
 type FireWallClient struct {
@@ -24,7 +24,7 @@ type ExportFwStatus struct {
 }
 
 type FwElem struct {
-	Addr     common_platone.Address
+	Addr     common_venachain.Address
 	FuncName string
 }
 

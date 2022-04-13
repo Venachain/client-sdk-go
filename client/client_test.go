@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 	"github.com/stretchr/testify/assert"
 )
 

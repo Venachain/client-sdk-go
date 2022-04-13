@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
-	common_platone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/vm"
-	precompile "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
+	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/vm"
 )
 
 const defaultTxType = 2
@@ -186,16 +186,16 @@ func NewCns(name string, txType uint64) *Cns {
 
 // CnsParse judge whether the input string is contract address or contract name
 // and return the corresponding infos
-func CnsParse(contract string) (*Cns, common_platone.Address, error) {
+func CnsParse(contract string) (*Cns, common_venachain.Address, error) {
 	isAddress := IsNameOrAddress(contract)
 
 	switch isAddress {
 	case CnsIsAddress:
-		return NewCns("", defaultTxType), common_platone.HexToAddress(contract), nil
+		return NewCns("", defaultTxType), common_venachain.HexToAddress(contract), nil
 	case CnsIsName:
-		return NewCns(contract, defaultTxType), common_platone.HexToAddress(precompile.CnsInvokeAddress), nil
+		return NewCns(contract, defaultTxType), common_venachain.HexToAddress(precompile.CnsInvokeAddress), nil
 	default:
-		return nil, common_platone.Address{}, fmt.Errorf(ErrParamInValidSyntax, "contract address")
+		return nil, common_venachain.Address{}, fmt.Errorf(ErrParamInValidSyntax, "contract address")
 	}
 }
 

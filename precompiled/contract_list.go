@@ -8,22 +8,22 @@ import (
 	"runtime"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/precompiled/syscontracts"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
 )
 
 var (
-	UserManagementAddress        = syscontracts.UserManagementAddress.String()        // The PlatONE Precompiled contract addr for user management
-	NodeManagementAddress        = syscontracts.NodeManagementAddress.String()        // The PlatONE Precompiled contract addr for node management
-	CnsManagementAddress         = syscontracts.CnsManagementAddress.String()         // The PlatONE Precompiled contract addr for CNS
-	ParameterManagementAddress   = syscontracts.ParameterManagementAddress.String()   // The PlatONE Precompiled contract addr for parameter management
-	FirewallManagementAddress    = syscontracts.FirewallManagementAddress.String()    // The PlatONE Precompiled contract addr for fire wall management
-	GroupManagementAddress       = syscontracts.GroupManagementAddress.String()       // The PlatONE Precompiled contract addr for group management
-	ContractDataProcessorAddress = syscontracts.ContractDataProcessorAddress.String() // The PlatONE Precompiled contract addr for group management
-	CnsInvokeAddress             = syscontracts.CnsInvokeAddress.String()             // The PlatONE Precompiled contract addr for group management
+	UserManagementAddress        = syscontracts.UserManagementAddress.String()        // The Venachain Precompiled contract addr for user management
+	NodeManagementAddress        = syscontracts.NodeManagementAddress.String()        // The Venachain Precompiled contract addr for node management
+	CnsManagementAddress         = syscontracts.CnsManagementAddress.String()         // The Venachain Precompiled contract addr for CNS
+	ParameterManagementAddress   = syscontracts.ParameterManagementAddress.String()   // The Venachain Precompiled contract addr for parameter management
+	FirewallManagementAddress    = syscontracts.FirewallManagementAddress.String()    // The Venachain Precompiled contract addr for fire wall management
+	GroupManagementAddress       = syscontracts.GroupManagementAddress.String()       // The Venachain Precompiled contract addr for group management
+	ContractDataProcessorAddress = syscontracts.ContractDataProcessorAddress.String() // The Venachain Precompiled contract addr for group management
+	CnsInvokeAddress             = syscontracts.CnsInvokeAddress.String()             // The Venachain Precompiled contract addr for group management
 	NFTContractAddress           = syscontracts.NFTContractAddress.String()
-	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String() // The PlatONE Precompiled contract addr for evidence management
-	BulletProofAddress           = syscontracts.BulletProofAddress.String()        // The PlatONE Precompiled contract addr for Bullet proof
+	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String() // The Venachain Precompiled contract addr for evidence management
+	BulletProofAddress           = syscontracts.BulletProofAddress.String()        // The Venachain Precompiled contract addr for Bullet proof
 )
 
 const (

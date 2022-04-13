@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/ws"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/ws"
 )
 
 var (
@@ -14,7 +14,7 @@ var (
 
 func InitWsSubscriber() {
 	logrus.Debugf("DefaultWSSubscriber init [start]")
-	DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1", 26791, "platone")
+	DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1", 26791, "venachain")
 	logrus.Debugf("DefaultWSSubscriber init [end]")
 }
 

@@ -1,4 +1,4 @@
-module git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go
+module git-c.i.wxblockchain.com/vena/src/client-sdk-go
 
 go 1.16
 

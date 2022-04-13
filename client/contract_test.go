@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -171,7 +171,10 @@ func TestContractClient_GetReceipt(t *testing.T) {
 		fmt.Println("error is:", err)
 	}
 	txhash := "0x0f3c6328d0212b9ff2ec9b0f5063750b44fd0d58438d183c89dd121573e113e1"
-	result, _ := contract.GetReceipt(txhash)
+	result, err := contract.GetReceipt(txhash)
+	if err != nil{
+		fmt.Println(err)
+	}
 	if result != nil {
 		resultBytes, _ := json.MarshalIndent(result, "", "\t")
 		fmt.Printf("result:\n%s\n", resultBytes)

@@ -1,6 +1,6 @@
 package types
 
-import "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+import "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 
 type GetBlockResponse struct {
 	ParentHash   common.Hash    `json:"parentHash"       gencodec:"required"`

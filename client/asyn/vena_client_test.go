@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 )
 
 var (

@@ -7,8 +7,8 @@ import (
 	"errors"
 	"math/big"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common/hexutil"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
 )
 
 var _ = (*txdataMarshaling)(nil)

@@ -9,7 +9,7 @@ type Client struct {
 }
 ```
 
-通用的Client 结构体包括RpcClient，可以继承 PlatONE 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 PlatONE 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
+通用的Client 结构体包括RpcClient，可以继承 Venachain 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachain 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
 
 ```go
 NewURL(ip string, port uint64) URL
@@ -306,7 +306,7 @@ func TestNewClient(t *testing.T) {
 
 ## WebSocket 接口
 
-Websocket 包连接了Client 前端和PlatONE 的websocket 接口。为前端Client 提供订阅区块头和订阅事件的功能。
+Websocket 包连接了Client 前端和Venachain 的websocket 接口。为前端Client 提供订阅区块头和订阅事件的功能。
 
 其相应的代码在`ws`中。
 
@@ -326,11 +326,11 @@ type Client struct {
 }
 ```
 
-`ws_subscriber.go `中的 `wsSubscriber` 负责向PlatONE 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
+`ws_subscriber.go `中的 `wsSubscriber` 负责向Venachain 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
 
 ### 使用指南：
 
-`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于PlatONE 的运行环境创建一个 `wsSubscriber` ：
+`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于Venachain 的运行环境创建一个 `wsSubscriber` ：
 
 ```go
 // 相关的ws/ws_subscriber.go:39
@@ -352,7 +352,7 @@ var (
 )
 
 // 使用NewWSSubscriber创建WS全局对象
-DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"platone")
+DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"venachain")
 
 // 使用 DefaultWebsocketManager 订阅Log事件
 DefaultWebsocketManager.WsClientForLog
@@ -361,7 +361,7 @@ DefaultWebsocketManager.WsClientForLog
 DefaultWebsocketManager.WsClientForNewHeads
 ```
 
-其中 PlatONE-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
+其中 Venachain-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
 
 ```go
 type Subscription interface {
@@ -395,7 +395,7 @@ func main() {
 }
 ```
 
-可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在PlatONE 中发送交易，该订阅的结果会返回到前端页面。
+可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在Venachain 中发送交易，该订阅的结果会返回到前端页面。
 
 说明：
 

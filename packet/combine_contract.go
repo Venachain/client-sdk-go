@@ -2,9 +2,9 @@ package packet
 
 import (
 	"errors"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/abi"
-	common_plaone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
+	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 )
 
 type RawData struct {

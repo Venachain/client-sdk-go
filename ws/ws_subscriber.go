@@ -32,7 +32,7 @@ func newWSSubscriber() *WsSubscriber {
 		wsManager: DefaultWebsocketManager,
 		ip:        "127.0.0.1",
 		port:      26791,
-		group:     "platone",
+		group:     "venachain",
 	}
 }
 
@@ -172,7 +172,7 @@ func (s *WsSubscriber) NewHeads(client *Client, topic string, params string) err
 		Message: paramsStr,
 	}
 	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
-	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "platone")
+	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
 
@@ -191,7 +191,7 @@ func (s *WsSubscriber) Log(client *Client, topic string, params string) error {
 		Message: paramsStr,
 	}
 	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
-	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "platone")
+	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
 

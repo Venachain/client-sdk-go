@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/packet"
-	common_plaone "git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/common"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
+	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 )
 
 type ContractClient struct {
@@ -129,9 +129,11 @@ func (contractClient ContractClient) GetReceipt(txhash string) (*packet.Receipt,
 	if response == nil {
 		return nil, nil
 	}
-	err = json.Unmarshal(response, &res)
-	if err != nil {
+	if err := json.Unmarshal(response, &res);err != nil{
 		return nil, err
+	}
+	if res == nil{
+		return nil, nil
 	}
 	// parse the rpc response
 	receipt, err := packet.ParseTxReceipt(res)

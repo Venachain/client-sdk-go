@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/platone/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 )
 
 var ErrNullPassphrase = errors.New("passphrase is null")
