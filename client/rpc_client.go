@@ -104,7 +104,6 @@ func (pc *Client) Send(context context.Context, tx *common.TxParams, key *keysto
 }
 
 func (pc *Client) GetReceiptByPolling(txHash string) (*packet.Receipt, error) {
-	timeWait := time.Second * 20
 	ch := make(chan interface{}, 1)
 	go pc.getReceiptByPolling(txHash, ch)
 

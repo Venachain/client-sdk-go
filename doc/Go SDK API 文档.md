@@ -1,5 +1,9 @@
 # Go SDK API 文档
 
+|    时间    | 修改人 | 修改事项 | 版本  |
+| :--------: | :----: | :------: | :---: |
+| 2022.04.19 | 陈炫慧 | 初次整理 | 1.0.0 |
+
 ```go
 // Client 链 RPC 连接客户端
 type Client struct {
@@ -9,10 +13,10 @@ type Client struct {
 }
 ```
 
-通用的Client 结构体包括RpcClient，可以继承 Venachain 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachain 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
+通用的Client 结构体包括RpcClient，可以继承 Venachian 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachian 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
 
 ```go
-NewURL(ip string, port uint64) URL
+func NewURL(ip string, port uint64) URL {...}
 ```
 
 ```go
@@ -24,26 +28,26 @@ type URL struct {
 
 可以使用NewClient 方法初始化一个Client。
 ```go
-NewClient(ctx context.Context, url URL, keyfilePath string, passphrase string)
+func NewClient(ctx context.Context, url URL, keyfilePath string, passphrase string) (*Client, error) {...}
 ```
 
 也可以通过传入key 来初始化Client。
 
 ```go
 // 初始化keystore.Key
-NewKey(KeyfilePath, Passphrase string) (*keystore.Key, error)
+func NewKey(KeyfilePath, Passphrase string) (*keystore.Key, error){...}
 ```
 
 ```go
 // 通过keystore.Key构建Client
-NewClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*Client, error) 
+func NewClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*Client, error) {...}
 ```
 
-## 使用方法
+## 使用方法: 同步获取交易回执
 
 由于初始化keystore.Key 时会消耗一部分比较大的内存，因此在使用时建议使用单例模式，通过定义一个全局的DefaultContractClient变量去调用Client 的方法。或者可以调用`NewKey(KeyfilePath, Passphrase string)` 将key定义为全局变量，然后使用`NewClientWithKey`去构建Client。具体的使用方法如下：
 
-### 一. 合约客户端 ContractClient
+### 合约客户端 ContractClient
 
 ```go
 # 合约客户端数据结构
@@ -53,7 +57,7 @@ type ContractClient struct {
 	VmType          string
 }
 ```
-初始化合约客户端
+#### 1. 初始化合约客户端
 
 ```go
 // 入参：
@@ -65,13 +69,24 @@ type ContractClient struct {
 func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, contract, vmType string)(*ContractClient, error) {...}
 ```
 
-1. **定义默认的合约客户端**
+或者可以直接使用keystore.Key初始化合约客户端
+
+```go
+// 入参：
+// url: 链的IP 和RPC 地址
+// key: 用户的密钥，可以用NewKey(KeyfilePath, Passphrase string)函数构造
+// contract: 调用合约的abi文件或预编译合约地址
+// vmType: 虚拟机类型
+func NewContractClientWithKey(ctx context.Context, url URL, key *keystore.Key, contract, vmType string) (*ContractClient, error){...}
+```
+
+#### **2. 定义默认的合约客户端**
 
 ```go
 var DefaultContractClient *ContractClient
 ```
 
-2. **初始化默认合约客户端**
+**初始化默认合约客户端示例**
 
 使用NewContractClient()初始化合约客户端。
 
@@ -98,7 +113,7 @@ func initContractClient() {
 }
 ```
 
-#### 1. 调用合约 Execute
+#### 3.1 调用合约 Execute
 
 调用合约能够实现所有预编译合约合约调用的功能。
 
@@ -110,7 +125,7 @@ func initContractClient() {
 // funcParams： 合约调用的参数
 // contract：合约地址或cns名字
 // 输出：上链的receipt结果
-func Execute(ctx context.Context, funcName string, funcParams []string, contract string) (interface{}, error){...}
+func Execute(ctx context.Context, funcName string, funcParams []string, contract string,sync bool) (interface{}, error){...}
 ```
 
 **SaveEvidence 示例**
@@ -121,7 +136,7 @@ func SaveEvidence(key string,value string) {
 	funcparam := []string{}
 	funcparam = append(funcparam, key)
 	funcparam = append(funcparam, value)
-	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099",true)
 	if err != nil {
 		log.Error("%s", err)
 		return
@@ -138,7 +153,7 @@ func GetEvidence(key string) {
 	funcname := "getEvidence"
 	funcparam := []string{}
 	funcparam = append(funcparam, key)
-	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099")
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000099",true)
 	if err != nil {
 		log.Error("%s", err)
 		return
@@ -157,7 +172,7 @@ func VerifyProofByRange(userid, proof, pid, rang string) {
 	funcparam = append(funcparam, proof)
 	funcparam = append(funcparam, pid)
 	funcparam = append(funcparam, rang)
-	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100",true)
 	if err != nil {
 		log.Error("%s", err)
 		return
@@ -174,7 +189,7 @@ func VerifyProofByRange(pid string) {
 	funcname := "getResult"
 	funcparam := []string{}
 	funcparam = append(funcparam, pid)
-	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	result, err := DefaultContractClient.Execute(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100",true)
 	if err != nil {
 		log.Error("%s", err)
 		return
@@ -184,9 +199,7 @@ func VerifyProofByRange(pid string) {
 }
 ```
 
-#### 2. 部署合约 Deploy
-
-##### 2.1 同步获取reciept
+#### 3.2 部署合约 Deploy
 
 使用`DefaultContractClient.Deploy()` 调用合约。
 ```go
@@ -194,8 +207,9 @@ func VerifyProofByRange(pid string) {
 // abipath: 部署合约的abi 文件路径
 // codepath： 部署合约的code 文件路径，比如wasm合约以.wasm结尾的文件的绝对路径
 // consParams：solidity 合约的contractor参数
+// sync：是否是同步获取receipt，如果是true，执行结束可得到交易的回执，如果false，执行结束可获取交易的哈希，之后再异步获取回执
 // 输出：上链的receipt结果
-func Deploy(ctx context.Context, abipath string, codepath string, consParams []string) (interface{}, error){...}
+func Deploy(ctx context.Context, abipath string, codepath string, consParams []string, sync bool) (interface{}, error){...}
 ```
 
 部署合约需要使用codePath 和 ContractClient中的AbiPath (此时初始化AbiPath 时不能设置为空)。 consParams 为合约的某个参数。执行该测试函数后，成功部署了一个合约。得到返回的事件和合约地址：
@@ -210,12 +224,11 @@ func TestContractClient_Deploy(t *testing.T) {
 		log.Error("error is:%v", err)
 	}
 	var consParams []string
-	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams)
+	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams, true)
 	if err != nil {
 		log.Error("error:%v", err)
 	}
 	log.Info("result:%v", result)
-	assert.True(t, result != nil)
 }
 ```
 
@@ -235,35 +248,162 @@ func TestContractClient_Deploy(t *testing.T) {
 }
 ```
 
-##### 2.1 异步获取reciept
+## 使用方法: 异步获取交易回执
 
+### 合约客户端 ContractClient
 
+#### 1. 初始化异步合约客户端
 
-
-
-## 以太坊通用接口
-
-Client 实现的接口如下：
+异步获取receipt提供websocket 订阅区块头来为用户查询receipt的接口，sdk会在后台与链建立连接，订阅区块头的信息，再从区块hash中查找交易，再去查找交易的回执。
 
 ```go
-// client/types.go:16
-type IClient interface {
-	GetRpcClient() *rpc.Client
-	RPCSend(ctx context.Context, result interface{}, method string, args ...interface{}) error
+// 异步获取回执的合约客户端
+type AsynContractClient struct {
+	RpcContractClient *rpcClient.ContractClient // 用于RPC连接的合约客户端
+	WsClient          *WsClient                 //websocket 客户端
+	Result            chan interface{}          // 获取返回的结果
+	Txhash            chan string               // 存储交易hash
 }
 ```
 
- 其中  ```RPCSend ```  可以使用[以太坊RPC API手册](http://cw.hubwiz.com/card/c/parity-rpc-api/)中的方法。例如以下使用方法：
+```go
+// 入参：
+// ip: 链的ip地址
+// rpcPort： 链的rpc端口号
+// wsPort：链的websocket端口号
+// keyfilePath：keyfile 文件的路径
+// passphrase: keyfile 对应的密码
+// contract: 要调用的合约的abi文件路径
+// vmType：虚拟机的类型，wasm或者evm
+// buffSize: 可处理回执的信道缓存大小，设为100即为一次可以监听100个回执
+func NewAsynContractClient(ctx context.Context, ip string, rpcPort uint64, wsPort uint64, keyfilePath, passphrase, contract, vmType string, buffSize int) (*AsynContractClient, error) {...}
+```
+
+```go
+// 也可以使用key来创建
+func NewAsynContractClientWithKey(ctx context.Context, ip string, rpcPort uint64, wsPort uint64, key *keystore.Key, contract, vmType string, buffSize int) (*AsynContractClient, error){...}
+```
+
+#### 2.  定义默认的异步合约客户端
+
+```go
+var DefaultVenaContractClient *AsynContractClient
+```
+
+```go
+// 初始化默认异步合约客户端的示例
+func init() {
+   var err error
+   wsPort := uint64(26791)
+   keyfile := "/Users/cxh/go/src/VenaChain/venachain/release/linux/conf/keyfile.json"
+   PassPhrase := "0"
+   key, _ := client.NewKey(keyfile, PassPhrase)
+   DefaultVenaContractClient, err = NewAsynContractClientWithKey(context.Background(), "127.0.0.1", uint64(6791), wsPort, key, "0x0000000000000000000000000000000000000100", "wasm", 100)
+   if err != nil {
+      log.Error("err%v", err)
+   }
+}
+```
+
+#### 3.1 调用合约 Execute
+
+```go
+// 入参：
+// funcName: 调用合约的函数名字
+// funcParams: 调用合约的函数参数
+// contract: 合约的地址
+func ExecuteAsyncGetReceipt(ctx context.Context, funcName string, funcParams []string, contract string) error {...}
+```
+
+```go
+func TestContractClient_bpAsynGetResult(t *testing.T) {
+	funcname := "verifyProofByRange"
+	funcparam := []string{}
+	funcparam = append(funcparam, "cx1h")
+	funcparam = append(funcparam,"bp param")
+	funcparam = append(funcparam, "121")
+	funcparam = append(funcparam, "test")
+	go DefaultVenaContractClient.SubNewHeads()
+	// 程序执行后关闭socket 消息
+	defer DefaultVenaContractClient.WsClient.Socket.Close()
+	// 处理receipt,获取结果,结果存储在AsynContractClient的result中
+	go DefaultVenaContractClient.GetTxsReceipt()
+	// receipt 结果放在result channel中，以下为输出result的示例
+	go DefaultVenaContractClient.GetResultWithChan()
+	err := DefaultVenaContractClient.ExecuteAsyncGetReceipt(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	if err != nil {
+		log.Error("error:%v", err)
+	}
+	time.Sleep(time.Second)
+	err = DefaultVenaContractClient.ExecuteAsyncGetReceipt(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
+	if err != nil {
+		log.Error("error:%v", err)
+	}
+	time.Sleep(300 * time.Second)
+}
+```
+
+#### 3.2 部署合约 Deploy
+
+```go
+// 入参：
+// abipath: 合约abi 文件路径
+// codepath: 合约code 文件路径
+// consParams: solidity 合约的构造参数
+func DeployAsyncGetReceipt(ctx context.Context, abipath string, codepath string, consParams []string) error{...}
+```
+
+```go
+func TestContractClient_DeployAsyncGetReceipt(t *testing.T) {
+   codePath := "/Users/cxh/Downloads/example/example.wasm"
+   abiPath := "/Users/cxh/Downloads/example/example.cpp.abi.json"
+   // 在wsClient 的Message 中存储收到的区块头，监听区块
+   go DefaultVenaContractClient.SubNewHeads()
+   // 程序执行后关闭socket 消息
+   defer DefaultVenaContractClient.WsClient.Socket.Close()
+   // 处理receipt,获取结果
+   go DefaultVenaContractClient.GetTxsReceipt()
+   // receipt 结果放在result channel中，以下为输出result的示例
+   go DefaultVenaContractClient.GetResultWithChan()
+   var consParams []string
+   err := DefaultVenaContractClient.DeployAsyncGetReceipt(context.Background(), abiPath, codePath, consParams)
+   if err != nil {
+      log.Error("error:%v", err)
+   }
+   time.Sleep(time.Second)
+   err = DefaultVenaContractClient.DeployAsyncGetReceipt(context.Background(), abiPath, codePath, consParams)
+   if err != nil {
+      log.Error("error:%v", err)
+   }
+   time.Sleep(300 * time.Second)
+}
+```
+
+## 以太坊通用接口
+
+```go
+// 使用NewClient构建一个Client
+func NewClient(ctx context.Context, url URL, keyfilePath string, passphrase string) (*Client, error) {...}
+```
+
+```go
+// 入参：
+// method：调用接口的方法
+// args：调用接口的参数
+func CallContext(ctx context.Context, method string, args ...interface{}) (json.RawMessage, error){...}
+```
+
+调用以太坊通用方法可参考[以太坊RPC API手册](http://cw.hubwiz.com/card/c/parity-rpc-api/)中的方法。例如以下使用方法：
 
 该方法表示解锁一个账户，函数名字为"personal_unlockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
 
 ```go
-// client/account.go:105
-func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
-	funcName := "personal_unlockAccount"
+// 使用NewClient()构建了一个Client后可调用Client.RpcClient.CallContext()
+func Lock(ctx context.Context) (bool, error) {
+	funcName := "personal_lockAccount"
 	funcParams := accountClient.Address.Hex()
 	var res bool
-	result, err := accountClient.Client.RPCSend(ctx, funcName, funcParams)
+	result, err := Client.RpcClient.CallContext(ctx, funcName, funcParams)
 	if err != nil {
 		return false, err
 	}
@@ -271,36 +411,6 @@ func (accountClient AccountClient) UnLock(ctx context.Context) (bool, error) {
 		return false, err
 	}
 	return res, nil
-}
-```
-
-或者可以参考以下test 的使用
-```go
-// 通过client rpc 调用rpcsend 方法
-func TestRpcSend(t *testing.T) {
-	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
-	var addresses []string
-	url := URL{
-		IP:      "127.0.0.1",
-		RPCPort: 6791,
-	}
-	client, _ := NewClient(ctx, url, "0", "./keystore")
-	client.RPCSend(ctx, &addresses, "personal_listAccounts")
-	fmt.Println(addresses)
-	assert.True(t, addresses != nil)
-}
-```
-
-如果不确定返回参数的类型，也可以使用ClientSend 发送交易。
-
-```go
-func TestNewClient(t *testing.T) {
-   url := NewURL("127.0.0.1", 6791)
-   //client, _ := NewClient(context.Background(), url, "0", "./keystore")
-   var param []interface{}
-   res, _ := url.EthSend("eth_blockNumber", param)
-   fmt.Println(res)
-   assert.True(t, res != nil)
 }
 ```
 
@@ -328,7 +438,7 @@ type Client struct {
 
 `ws_subscriber.go `中的 `wsSubscriber` 负责向Venachain 发送订阅消息。`sub_msg_processor.go` 中的 `SubMsgProcessor` 负责向前端推送消息。
 
-### 使用指南：
+**使用示例：**
 
 `example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于Venachain 的运行环境创建一个 `wsSubscriber` ：
 
@@ -352,7 +462,7 @@ var (
 )
 
 // 使用NewWSSubscriber创建WS全局对象
-DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"venachain")
+DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"platone")
 
 // 使用 DefaultWebsocketManager 订阅Log事件
 DefaultWebsocketManager.WsClientForLog
@@ -407,345 +517,5 @@ var host = "ws://127.0.0.1:8888/api/ws/head/mygroup1"
 
 如果不使用测试页，可以使用例如 http://coolaf.com/tool/chattest 这样的websocket 测试网页，与 `ws://127.0.0.1:8888/api/ws/head/mygroup1  `建立连接，也可查看到订阅的结果。
 
-## 合约部署和合约调用接口
 
-合约客户端定义如下：
-
-```go
-// client/contract.go:13
-type ContractClient struct {
-   *Client
-   AbiPath string
-   VmType      string
-}
-```
-
-实现的接口如下：
-
-```go
-// client/types.go:22
-type IContract interface {
-   Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) ([]interface{}, error)
-   ListContractMethods() (packet.ContractContent, error)
-   Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) ([]interface{}, error)
-   IsFuncNameInContract(funcName string) (bool, error)
-   GetReceipt(txhash string) (*packet.Receipt, error)
-}
-```
-
-### 合约部署
-
-在` client/contract_test.go `中的`initContractClient()` 展示了初始化合约客户端的例子：
-
-以下测试用例展示了如何部署合约：
-
-```
-func TestContractClient_Deploy(t *testing.T) {
-   codePath := "/Users/cxh/Downloads/example/example.wasm"
-   txparam, contract := InitContractClient()
-   var consParams []string
-   result, _ := contract.Deploy(context.Background(), txparam, codePath, consParams)
-   fmt.Println(result)
-   assert.True(t, result != nil)
-}
-```
-
-
-
-### 展示合约方法
-
- ListContractMethods()  可以展示合约的所有方法。
-
-```go
-// client/contract_test.go:48
-func TestContractClient_ListContractMethods(t *testing.T) {
-	_, contract := InitContractClient()
-	result, _ := contract.ListContractMethods()
-	fmt.Println(result.ListAbiFuncName())
-	assert.True(t, result != nil)
-}
-```
-
-显示该合约的所有方法为：
-
-```shell
-function: init()
-function: setEvidence(key string,msg string)
-function: deleteEvidence(key string)
-function: getEvidence(key string) string
-event: setName( string)
-event: init( string)
-```
-
-### 合约调用
-
-上传合约数据：
-
-```go
-// client/contract_test.go:55
-func TestContractClient_Execute(t *testing.T) {
-   txparam, contract := InitContractClient()
-   funcname := "setEvidence"
-   funcparam := []string{"1", "data"}
-   addr := "0x35853e5643104cd96bd4590f5d4466c577786cfe"
-   result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, addr)
-   assert.True(t, result != nil)
-}
-```
-
-存证合约传入的参数是`"data"`，此时可以得到该交易的receipt。合约调用的核心是需要知道所要调用合约的函数，根据函数需要的input 类型构造函数的传入参数。
-
-此外，还可以通过cns 调用合约，此时Execute 传入的最后一个参数为cns 名字。例如：
-
-```go
-// client/contract_test.go:74
-func TestContractClient_CnsExecute(t *testing.T) {
-   txparam, contract := InitContractClient()
-   funcname := "setEvidence"
-   funcparam := []string{"1", "23"}
-   cns := "wxbc1"
-   result, _ := contract.Execute(context.Background(), txparam, funcname, funcparam, cns)
-   fmt.Println(result)
-   assert.True(t, result != nil)
-}
-```
-
-### 查询合约方法是否属于该合约
-
-```go
-// client/contract_test.go:84
-func TestContractClient_IsFuncNameInContract(t *testing.T) {
-   _, contract := InitContractClient()
-   funcname := "setEvidence"
-   result, _ := contract.IsFuncNameInContract(funcname)
-   fmt.Println(result)
-   assert.True(t, result != false)
-}
-```
-
-返回 true 则表示该合约中存在该方法。
-
-### 根据交易hash 查询交易的receipt
-
-```go
-GetReceipt(txhash string) (*packet.Receipt, error)
-```
-
-```go
-// client/contract_test.go:64 
-func TestContractClient_GetReceipt(t *testing.T) {
-   txhash := "0x35972a847e8c29148976e8a1884665732c862706c71bbaaf573e8cbd432ba921"
-   _, contractClient := InitContractClient()
-   result, _ := contractClient.GetReceipt(txhash)
-   if result != nil {
-      resultBytes, _ := json.MarshalIndent(result, "", "\t")
-      fmt.Printf("result:\n%s\n", resultBytes)
-   }
-   assert.True(t, result != nil)
-}
-```
-
-## 预编译合约接口
-
-因为预编译合约需要调用合约，因此各个预编译合约的结构体都需要包含`ContractClient`。 并且预编译合约不需要传入合约的 abi 文件，因此在对各个合约初始化时，可以将contract 的AbiPath 设置为空。
-
-### 账户合约 Account
-
-账户客户端的数据结构如下，其中需要包括账户地址Address。
-
-```go
-// client/account.go:14
-type AccountClient struct {
-   ContractClient
-   Address common.Address
-}
-```
-
-账户的接口分别包括新增用户，更新用户，用户查询                                                                                                                                                                 
-
-```go
-// client/types.go:30
-type IAccount interface {
-   UserAdd(ctx context.Context, txparam common_sdk.TxParams, name, phone, email, organization string) (string, error)
-   UserUpdate(ctx context.Context, txparam common_sdk.TxParams, phone, email, organization string) (string, error)
-   QueryUser(ctx context.Context, txparam common_sdk.TxParams, user string) (string, error)
-   Lock(ctx context.Context) (bool, error)
-   UnLock(ctx context.Context) (bool, error)
-}
-```
-
-#### 新增账户
-
-以下为账户合约新增账户的示例：
-
-```go
-// client/account_test.go:15
-// 如果没有abipath 和codepath 的话，可以设置为空
-func InitAccountClient() (common_sdk.TxParams, AccountClient) {
-   txparam, contract := InitContractClient()
-   contract.AbiPath = ""
-   client := AccountClient{
-      ContractClient: contract,
-      Address:        common.HexToAddress("3fcaa0a86dfbbe105c7ed73ca505c7a59c579667"),
-   }
-   return txparam, client
-}
-```
-
-首先需要初始化账户客户端，以下展示添加账户的例子，需要的参数分别代表name, phone, email, organization。如果不需要可以设置为“ ”。
-
-```go
-// client/account_test.go:25
-func TestAccountClient_UserAdd(t *testing.T) {
-   txparam, client := InitAccountClient()
-   result, _ := client.UserAdd(context.Background(), txparam, "Alice", "110", "", "")
-   fmt.Println(result)
-   assert.True(t, result != "")
-}
-```
-
-#### 更新账户
-
-传入需要更新的账户phone, email, organization。注意只能更新这些信息，账户的名字是不能更改的。
-
-```go
-// client/account_test.go:32
-func TestAccountClient_UserUpdate(t *testing.T) {
-   txparam, client := InitAccountClient()
-   result, _ := client.UserUpdate(context.Background(), txparam, "13556672653", "test@163.com", "wxbc2")
-   fmt.Println(result)
-   assert.True(t, result != "")
-}
-```
-
-#### 查询账户信息
-
-传入账户的名字即可查询到该账户的相关信息
-
-```go
-// func TestAccountClient_QueryUser(t *testing.T) {
-func TestAccountClient_QueryUser(t *testing.T) {
-   txparam, client := InitAccountClient()
-   result, _ := client.QueryUser(context.Background(), txparam, "Alice")
-   fmt.Println(result)
-   assert.True(t, result != "")
-}
-```
-
-#### 账户锁定和解锁
-
-在账户客户端，sdk 还提供了账户锁定和解锁的功能。调用以下函数即可：
-
-```go
-client.UnLock(context.Background())
-client.Lock(context.Background())
-```
-
-### 剩下的预编译合约
-
-#### CnsClient
-
- 需要指定cns 的名字
-
-```go
-type CnsClient struct {
-   ContractClient
-   name string
-}
-```
-#### FireWallClient
-
-防火墙客户端管理合约的防火墙，需要指定合约地址。
-
-```go
-type FireWallClient struct {
-   ContractClient
-   ContractAddress string
-}
-```
-
-#### NodeClient
-
-节点客户端需要指定节点的名字
-
-```go
-type NodeClient struct {
-   ContractClient
-   NodeName string
-}
-```
-
-SysConfigClient 和 RoleClient 则使用合约的方法。
-
-剩下的预编译合约相关接口如下，相关的test 已在client 包中。可查看使用：
-
-```go
-type ICns interface {
-   CnsExecute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, cns string) ([]interface{}, error)
-   CnsRegister(ctx context.Context, txparam common_sdk.TxParams, version, address string) (string, error)
-   CnsResolve(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)
-   CnsRedirect(ctx context.Context, txparam common_sdk.TxParams, version string) (string, error)
-   CnsQueryAll(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   CnsQueryByName(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   CnsQueryByAddress(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   CnsQueryByAccount(ctx context.Context, txparam common_sdk.TxParams, account string) (string, error)
-   CnsStateByAddress(ctx context.Context, txparam common_sdk.TxParams, address string) (int32, error)
-   CnsState(ctx context.Context, txparam common_sdk.TxParams) (int32, error)
-}
-
-type IFireWall interface {
-   FwStatus(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   FwStart(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   FwClose(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   FwExport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (bool, error)
-   FwImport(ctx context.Context, txparam common_sdk.TxParams, filePath string) (string, error)
-   FwNew(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
-   FwDelete(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
-   FwReset(ctx context.Context, txparam common_sdk.TxParams, action, targetAddr, api string) (string, error)
-   FwClear(ctx context.Context, txparam common_sdk.TxParams, action string) (string, error)
-}
-
-type INode interface {
-   NodeAdd(ctx context.Context, txparam common_sdk.TxParams, requestNodeInfo syscontracts.NodeInfo) (string, error)
-   NodeDelete(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   NodeUpdate(ctx context.Context, txparam common_sdk.TxParams, request syscontracts.NodeUpdateInfo) (string, error)
-   NodeQuery(ctx context.Context, txparam common_sdk.TxParams, request *syscontracts.NodeQueryInfo) (string, error)
-   NodeStat(ctx context.Context, txparam common_sdk.TxParams, request *syscontracts.NodeStatInfo) (int32, error)
-}
-
-type IRole interface {
-   SetSuperAdmin(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   TransferSuperAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   AddChainAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   DelChainAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   AddGroupAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   DelGroupAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   AddNodeAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   DelNodeAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   AddContractAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   DelContractAdmin(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   AddContractDeployer(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   DelContractDeployer(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   GetAddrListOfRole(ctx context.Context, txparam common_sdk.TxParams, role string) (string, error)
-   GetRoles(ctx context.Context, txparam common_sdk.TxParams, address string) (string, error)
-   HasRole(ctx context.Context, txparam common_sdk.TxParams, address, role string) (int32, error)
-}
-
-type ISysconfig interface {
-   SetSysConfig(ctx context.Context, txparam common_sdk.TxParams, request SysConfigParam) ([]string, error)
-   GetTxGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error)
-   GetBlockGasLimit(ctx context.Context, txparam common_sdk.TxParams) (uint64, error)
-   GetGasContractName(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-   GetIsProduceEmptyBlock(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
-   GetCheckContractDeployPermission(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
-   GetAllowAnyAccountDeployContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
-   GetIsApproveDeployedContract(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
-   GetIsTxUseGas(ctx context.Context, txparam common_sdk.TxParams) (uint32, error)
-   GetVRFParams(ctx context.Context, txparam common_sdk.TxParams) (string, error)
-}
-```
-
-相关预编译合约的使用可以查看以下文档：
-
-https://git-c.i.wxblockchain.com/PlatONE/doc/Dev/blob/develop/PlatONE%20%E6%96%87%E6%A1%A3%E9%9B%86%E5%90%88/platoneCli/%E9%93%BE%E4%BA%A4%E4%BA%92%E5%B7%A5%E5%85%B7%20platonecli%20%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97.md
 
