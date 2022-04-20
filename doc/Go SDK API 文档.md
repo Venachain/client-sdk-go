@@ -13,6 +13,8 @@ type Client struct {
 }
 ```
 
+在 `git-c.i.wxblockchain.com/vena/src/client-sdk-go/client` 包下:
+
 通用的Client 结构体包括RpcClient，可以继承 Venachian 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachian 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
 
 ```go
@@ -44,6 +46,8 @@ func NewClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*Client,
 ```
 
 ## 使用方法: 同步获取交易回执
+
+在 `git-c.i.wxblockchain.com/vena/src/client-sdk-go/client` 包下:
 
 由于初始化keystore.Key 时会消耗一部分比较大的内存，因此在使用时建议使用单例模式，通过定义一个全局的DefaultContractClient变量去调用Client 的方法。或者可以调用`NewKey(KeyfilePath, Passphrase string)` 将key定义为全局变量，然后使用`NewClientWithKey`去构建Client。具体的使用方法如下：
 
@@ -101,11 +105,11 @@ func initContractClient() {
 	keyfile := "/Users/cxh/go/src/github.com/PlatONE_Network/PlatONE-Go/release/linux/conf/keyfile.json"
 	PassPhrase := "0"
 	vm := "wasm"
-	url := URL{
+	url := client.URL{
 		IP:      "127.0.0.1",
 		RPCPort: 6791,
 	}
-	DefaultContractClient, err = NewContractClient(context.Background(), url, keyfile, PassPhrase, contract, vm)
+	DefaultContractClient, err = client.NewContractClient(context.Background(), url, keyfile, PassPhrase, contract, vm)
 	if err != nil {
 		log.Error("%s", err)
     return
@@ -116,6 +120,9 @@ func initContractClient() {
 #### 3.1 调用合约 Execute
 
 调用合约能够实现所有预编译合约合约调用的功能。
+
+预编译合约abi 文件的路径为：`/client-sdk-go/precompiled/syscontracts`。可以根据abi文件中函数的名字和参数调用相应的预编译合约。相关的说明可参考：[链交互工具 platonecli 操作指南](https://git-c.i.wxblockchain.com/PlatONE/doc/Dev/blob/develop/PlatONE%20%E6%96%87%E6%A1%A3%E9%9B%86%E5%90%88/platoneCli/%E9%93%BE%E4%BA%A4%E4%BA%92%E5%B7%A5%E5%85%B7%20platonecli%20%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97.md)查看各个预编译合约的功能。
+
 
 使用`DefaultContractClient.Execute()` 调用合约。
 
@@ -219,12 +226,8 @@ func Deploy(ctx context.Context, abipath string, codepath string, consParams []s
 func TestContractClient_Deploy(t *testing.T) {
 	codePath := "/Users/cxh/Downloads/example/example.wasm"
 	abiPath := "/Users/cxh/Downloads/example/example.cpp.abi.json"
-	contract, err := InitContractClient("")
-	if err != nil {
-		log.Error("error is:%v", err)
-	}
 	var consParams []string
-	result, err := contract.Deploy(context.Background(), abiPath, codePath, consParams, true)
+	result, err := DefaultContractClient.Deploy(context.Background(), abiPath, codePath, consParams, true)
 	if err != nil {
 		log.Error("error:%v", err)
 	}
@@ -253,6 +256,8 @@ func TestContractClient_Deploy(t *testing.T) {
 ### 合约客户端 ContractClient
 
 #### 1. 初始化异步合约客户端
+
+在`	git-c.i.wxblockchain.com/vena/src/client-sdk-go/client/asyn`包下.
 
 异步获取receipt提供websocket 订阅区块头来为用户查询receipt的接口，sdk会在后台与链建立连接，订阅区块头的信息，再从区块hash中查找交易，再去查找交易的回执。
 
@@ -298,7 +303,7 @@ func init() {
    keyfile := "/Users/cxh/go/src/VenaChain/venachain/release/linux/conf/keyfile.json"
    PassPhrase := "0"
    key, _ := client.NewKey(keyfile, PassPhrase)
-   DefaultVenaContractClient, err = NewAsynContractClientWithKey(context.Background(), "127.0.0.1", uint64(6791), wsPort, key, "0x0000000000000000000000000000000000000100", "wasm", 100)
+   DefaultVenaContractClient, err = asyn.NewAsynContractClientWithKey(context.Background(), "127.0.0.1", uint64(6791), wsPort, key, "0x0000000000000000000000000000000000000100", "wasm", 100)
    if err != nil {
       log.Error("err%v", err)
    }
@@ -401,7 +406,7 @@ func CallContext(ctx context.Context, method string, args ...interface{}) (json.
 // 使用NewClient()构建了一个Client后可调用Client.RpcClient.CallContext()
 func Lock(ctx context.Context) (bool, error) {
 	funcName := "personal_lockAccount"
-	funcParams := accountClient.Address.Hex()
+	funcParams := "address"
 	var res bool
 	result, err := Client.RpcClient.CallContext(ctx, funcName, funcParams)
 	if err != nil {
