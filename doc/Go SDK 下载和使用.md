@@ -28,8 +28,8 @@ replace git-c.i.wxblockchain.com/vena/src/client-sdk-go => git clone 后sdk所�
 ```go
 // 导入sdk包
 import (
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/PlatONE/src/node/client-sdk-go/client/asyn"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client/asyn"
 )
 ```
 
