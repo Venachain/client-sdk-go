@@ -15,10 +15,10 @@ var (
 )
 
 type WsSubscriber struct {
-	wsManager *Manager
-	ip        string
-	port      int64
-	group     string
+	WsManager *Manager
+	Ip        string
+	Port      int64
+	Group     string
 }
 
 func InitWsSubscriber() {
@@ -29,19 +29,19 @@ func InitWsSubscriber() {
 
 func newWSSubscriber() *WsSubscriber {
 	return &WsSubscriber{
-		wsManager: DefaultWebsocketManager,
-		ip:        "127.0.0.1",
-		port:      26791,
-		group:     "venachain",
+		WsManager: DefaultWebsocketManager,
+		Ip:        "127.0.0.1",
+		Port:      26791,
+		Group:     "venachain",
 	}
 }
 
 func NewWSSubscriber(ip string, port int64, group string) *WsSubscriber {
 	return &WsSubscriber{
-		wsManager: DefaultWebsocketManager,
-		ip:        ip,
-		port:      port,
-		group:     group,
+		WsManager: DefaultWebsocketManager,
+		Ip:        ip,
+		Port:      port,
+		Group:     group,
 	}
 }
 
@@ -171,7 +171,7 @@ func (s *WsSubscriber) NewHeads(client *Client, topic string, params string) err
 		Group:   client.Group,
 		Message: paramsStr,
 	}
-	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
+	s.WsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
 	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
@@ -190,7 +190,7 @@ func (s *WsSubscriber) Log(client *Client, topic string, params string) error {
 		Group:   client.Group,
 		Message: paramsStr,
 	}
-	s.wsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
+	s.WsManager.Send(dto.ID, dto.Group, []byte(dto.Message))
 	logrus.Infof("subscribe topic[newHead] from websocket for chain[%v] [success]", "venachain")
 	return nil
 }
@@ -217,10 +217,10 @@ func (s *WsSubscriber) wsSubParamsProcess(topic string, params string) (string, 
 }
 
 func (s *WsSubscriber) getWSClientByChain() (*Client, error) {
-	ip := s.ip
-	port := s.port
-	group := s.group
-	client, err := s.wsManager.Dial(ip, port, group)
+	ip := s.Ip
+	port := s.Port
+	group := s.Group
+	client, err := s.WsManager.Dial(ip, port, group)
 	url := fmt.Sprintf("ws://%s:%v", ip, port)
 	if err != nil {
 		msg := fmt.Sprintf("chain[%s][%s:%v] websocket dial [%s] error: %v",
