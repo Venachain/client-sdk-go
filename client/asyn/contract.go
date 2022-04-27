@@ -2,13 +2,13 @@ package asyn
 
 import (
 	"context"
-
 	rpcClient "git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 	"github.com/gorilla/websocket"
+	"time"
 )
 
 type AsynContractClient struct {
@@ -75,7 +75,26 @@ func (asynContractClient AsynContractClient) SubNewHeads() {
 		log.Error("error is %v", err)
 	}
 	// 监听订阅到的消息
-	//asynContractClient.WsReadMsg()
+	asynContractClient.WsReadMsg()
+}
+
+// 定时去查看sockct 的状态，订阅区块头和读取区块头的消息
+func (asynContractClient AsynContractClient) SubNewHeadsWithPing(tryGetClientInterval int64) {
+	// 订阅区块头
+	message := []byte("{\"jsonrpc\":\"2.0\",\"method\":\"eth_subscribe\", \"params\": [\"newHeads\"],\"id\":\"subscription\"}")
+	err := asynContractClient.WsClient.Socket.WriteMessage(websocket.BinaryMessage, message)
+	if err != nil {
+		log.Error("error is %v", err)
+	}
+	ticker := time.NewTicker(time.Duration(tryGetClientInterval) * time.Millisecond)
+	for range ticker.C {
+		if err := asynContractClient.WsClient.Socket.WriteMessage(websocket.PingMessage, nil); err != nil {
+			msg := []byte("CloseMessage")
+			asynContractClient.WsClient.Message <- msg
+			ticker.Stop()
+			return
+		}
+	}
 }
 
 // 读取从ws订阅到到消息
