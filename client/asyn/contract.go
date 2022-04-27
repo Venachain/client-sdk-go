@@ -75,7 +75,7 @@ func (asynContractClient AsynContractClient) SubNewHeads() {
 		log.Error("error is %v", err)
 	}
 	// 监听订阅到的消息
-	asynContractClient.WsReadMsg()
+	//asynContractClient.WsReadMsg()
 }
 
 // 读取从ws订阅到到消息
@@ -83,10 +83,12 @@ func (asynContractClient AsynContractClient) WsReadMsg() {
 	for {
 		messageType, message, err := asynContractClient.WsClient.Socket.ReadMessage()
 		if err != nil || messageType == websocket.CloseMessage {
+			msg := []byte("CloseMessage")
+			asynContractClient.WsClient.Message <- msg
 			log.Error("error is%v", err)
 			break
 		}
-		//log.Info("sub message is %v",message)
+		log.Info("sub message is %v", string(message))
 		asynContractClient.WsClient.Message <- message
 	}
 }
