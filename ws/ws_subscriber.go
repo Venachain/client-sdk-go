@@ -21,9 +21,9 @@ type WsSubscriber struct {
 	Group     string
 }
 
-func InitWsSubscriber() {
+func InitWsSubscriber(ip string, port int64, group string) {
 	logrus.Debugf("DefaultWSSubscriber init [start]")
-	DefaultWSSubscriber = newWSSubscriber()
+	DefaultWSSubscriber = NewWSSubscriber(ip, port, group)
 	logrus.Debugf("DefaultWSSubscriber init [end]")
 }
 

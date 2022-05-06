@@ -339,11 +339,6 @@ func TestContractClient_bpAsynGetResult(t *testing.T) {
 	if err != nil {
 		log.Error("error:%v", err)
 	}
-	time.Sleep(time.Second)
-	err = DefaultVenaContractClient.ExecuteAsyncGetReceipt(context.Background(), funcname, funcparam, "0x0000000000000000000000000000000000000100")
-	if err != nil {
-		log.Error("error:%v", err)
-	}
 	time.Sleep(300 * time.Second)
 }
 ```
@@ -400,15 +395,39 @@ func CallContext(ctx context.Context, method string, args ...interface{}) (json.
 
 调用以太坊通用方法可参考[以太坊RPC API手册](http://cw.hubwiz.com/card/c/parity-rpc-api/)中的方法。例如以下使用方法：
 
-该方法表示解锁一个账户，函数名字为"personal_unlockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
+**示例1:**
+
+该方法表示锁定一个账户，函数名字为"personal_lockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
 
 ```go
 // 使用NewClient()构建了一个Client后可调用Client.RpcClient.CallContext()
-func Lock(ctx context.Context) (bool, error) {
+func Lock() (bool, error) {
 	funcName := "personal_lockAccount"
 	funcParams := "address"
-	var res bool
-	result, err := Client.RpcClient.CallContext(ctx, funcName, funcParams)
+	var res bool //需要根据rpc调用函数的返回结果的类型，传入json.Unmarshal 解析为结果。
+	result, err := Client.RpcClient.CallContext(context.Background(), funcName, funcParams)
+	if err != nil {
+		return false, err
+	}
+	if err = json.Unmarshal(result, &res); err != nil {
+		return false, err
+	}
+	return res, nil
+}
+```
+
+**示例2:**
+
+该方法表示解锁一个账户，函数名字为"personal_unlockAccount"， 参数为账户地址，调用解锁账户返回的是一个bool 类型的参数，表示该账户的状态。
+
+```go
+func UnLock() (bool, error) {
+	funcName := "personal_unlockAccount"
+	account := "0x85a4b8ad3a023fab30146fed114ea7cd6f8a4193"
+  passphrase := "0"
+  time := 0 // 0表示永久解锁
+	var res bool 
+	result, err := accountClient.RpcClient.CallContext(context.Background(), funcName, account, passphrase, time)
 	if err != nil {
 		return false, err
 	}
@@ -445,7 +464,7 @@ type Client struct {
 
 **使用示例：**
 
-`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。首先需要基于Venachain 的运行环境创建一个 `wsSubscriber` ：
+`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。
 
 ```go
 // 相关的ws/ws_subscriber.go:39
@@ -459,22 +478,6 @@ func NewWSSubscriber(ip string, port int64, group string) *WsSubscriber {
 }
 ```
 使用方法，使用NewWSSubscriber方法定义一个全局DefaultWSSubscriber变量，后续调用DefaultWSSubscriber 
-```go
-// 定义全局WS订阅对象
-var (
-	// DefaultWSSubscriber 默认的 websocket 订阅器
-	DefaultWSSubscriber *ws.WsSubscriber
-)
-
-// 使用NewWSSubscriber创建WS全局对象
-DefaultWSSubscriber = ws.NewWSSubscriber("127.0.0.1",26791,"platone")
-
-// 使用 DefaultWebsocketManager 订阅Log事件
-DefaultWebsocketManager.WsClientForLog
-
-// 使用 DefaultWebsocketManager 订阅NewHeads事件
-DefaultWebsocketManager.WsClientForNewHeads
-```
 
 其中 Venachain-SDK-Go 提供了两种订阅功能：订阅区块头和订阅log。
 
@@ -493,20 +496,36 @@ address := "0x1000000000000000000000000000000000000005"
 topic := "0x8cd284134f0437457b5542cb3a7da283d0c38208c497c5b4b005df47719f98a1"
 ```
 
+### 示例
+
+`example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。
+
+`"git-c.i.wxblockchain.com/vena/src/client-sdk-go/ws" `提供了`InitWsSubscriber`函数初始化`DefaultWSSubscriber`调用相关的函数。
+
+```go
+// 入参：
+// ip: 链的ip地址
+// port: 链的ws 端口号
+// group: 注册为对应的group
+func InitWsSubscriber(ip string, port int64, group string){} 
+```
 **以下使用订阅区块头为例：**
 
 外部 `main` 包中直接运行mian 函数。前端访问 `ws_sub_test.html`测试页 http://127.0.0.1:8888/api/ws/ws_sub_test.html。 
 
+测试页的地址在: `client-sdk-go/ws/ws_sub_test.html` 中。
+
 ```go
 // main.go:9
 func main() {
-   gin.SetMode(gin.DebugMode)
-   gracesRouter := ws.InitRouter()
-   err := gracesRouter.Run("127.0.0.1:8888")
-   if err != nil {
-      logrus.Errorf("test start err: %v", err)
-      return
-   }
+	ws.InitWsSubscriber("127.0.0.1",26791,"venachain")
+	gin.SetMode(gin.DebugMode)
+	gracesRouter := ws.InitRouter()
+	err := gracesRouter.Run("127.0.0.1:8888")
+	if err != nil {
+		logrus.Errorf("test start err: %v", err)
+		return
+	}
 }
 ```
 
