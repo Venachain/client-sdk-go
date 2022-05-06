@@ -529,6 +529,26 @@ func main() {
 }
 ```
 
+同时需要在下列函数中修改静态文件的位置
+
+```go
+func customRouter() {
+   api := myRouter.Group("/api")
+   {
+      // websocket
+      wsGroup := api.Group("/ws")
+      {
+         if gin.Mode() == gin.DebugMode {
+           // ./ws/ws_sub_test.html需要修改为用户具体的网页文件位置
+            wsGroup.StaticFile("/ws_sub_test.html", "./ws/ws_sub_test.html") 
+         }
+         wsGroup.GET("/log/:group", DefaultWebsocketManager.WsClientForLog)
+         wsGroup.GET("/head/:group", DefaultWebsocketManager.WsClientForNewHeads)
+      }
+   }
+}
+```
+
 可在 输入栏中输入 `ping` 查看当前的连接是否成功。如果返回 `pong`，则表示当前连接成功。此时在Venachain 中发送交易，该订阅的结果会返回到前端页面。
 
 说明：
