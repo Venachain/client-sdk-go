@@ -58,12 +58,14 @@ func isWindowsSystem() bool {
 }
 
 func getCurrentFilePath() string {
-	var separator = "/"
+	var separator string
 	if isWindowsSystem() {
 		separator = "\\"
+	} else {
+		separator = "/"
 	}
 	_, fileStr, _, _ := runtime.Caller(1)
-	split_value := strings.Split(fileStr, separator)
+	split_value := strings.Split(fileStr, "/")
 	split_value = split_value[:len(split_value)-1]
 	var result string
 	for _, val := range split_value {

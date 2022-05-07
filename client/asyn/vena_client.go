@@ -125,8 +125,8 @@ func (venaClient *VenaClient) WsReadMsg() {
 	}
 }
 
-func getBlockHash(blockMessage []byte) (string, error) {
-	blockHeader, err := getBlockHeader(blockMessage)
+func GetBlockHash(blockMessage []byte) (string, error) {
+	blockHeader, err := GetBlockHeader(blockMessage)
 	if err != nil {
 		return "", err
 	}
@@ -134,7 +134,7 @@ func getBlockHash(blockMessage []byte) (string, error) {
 	return blockHash, nil
 }
 
-func getBlockHeader(msg []byte) (*WsResponseResult, error) {
+func GetBlockHeader(msg []byte) (*WsResponseResult, error) {
 	var blockHeaderRes WsResponseResult
 	if err := json.Unmarshal(msg, &blockHeaderRes); err != nil {
 		log.Error("err: %v", err)

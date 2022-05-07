@@ -187,7 +187,7 @@ func (asynContractClient AsynContractClient) GetTxsReceipt() {
 			for {
 				select {
 				case block := <-asynContractClient.WsClient.Message:
-					blockHash, err := getBlockHash(block)
+					blockHash, err := GetBlockHash(block)
 					//log.Debug("block hash %v", blockHash)
 					if err != nil {
 						log.Error("error:%v", err)

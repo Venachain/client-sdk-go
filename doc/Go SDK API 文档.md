@@ -266,7 +266,7 @@ func TestContractClient_Deploy(t *testing.T) {
 type AsynContractClient struct {
 	RpcContractClient *rpcClient.ContractClient // 用于RPC连接的合约客户端
 	WsClient          *WsClient                 //websocket 客户端
-	Result            chan interface{}          // 获取返回的结果
+	Result            chan interface{}          // 获取receipt返回的结果
 	Txhash            chan string               // 存储交易hash
 }
 ```
@@ -527,6 +527,7 @@ func main() {
 		return
 	}
 }
+
 ```
 
 同时需要在下列函数中修改静态文件的位置
