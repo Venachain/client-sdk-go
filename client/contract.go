@@ -129,10 +129,10 @@ func (contractClient ContractClient) GetReceipt(txhash string) (*packet.Receipt,
 	if response == nil {
 		return nil, nil
 	}
-	if err := json.Unmarshal(response, &res);err != nil{
+	if err := json.Unmarshal(response, &res); err != nil {
 		return nil, err
 	}
-	if res == nil{
+	if res == nil {
 		return nil, nil
 	}
 	// parse the rpc response
@@ -156,10 +156,10 @@ func (contractClient ContractClient) MakeContractGenerator(contract string, func
 		return nil, err
 	}
 	// convert user input string to args in Golang
-	funcArgs, err := methodAbi.StringToArgs(funcParams)
-	if err != nil {
-		return nil, err
-	}
+	funcArgs, _ := methodAbi.StringToArgs(funcParams)
+	//if err != nil {
+	//	return nil, err
+	//}
 	data := packet.NewData(funcArgs, methodAbi)
 	dataGenerator := packet.NewContractDataGen(data, *contractContent, cns.TxType)
 	dataGenerator.SetInterpreter(contractClient.VmType, cns.Name, cns.TxType)
