@@ -6,7 +6,7 @@ import (
 )
 
 func TestManager_WsClient(t *testing.T) {
-	InitWsSubscriber()
+	InitWsSubscriber("127.0.0.1", 26791, "venachain")
 	DefaultWSSubscriber.SubHeadForChain()
 	time.Sleep(time.Second * 100)
 }
