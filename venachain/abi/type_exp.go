@@ -297,7 +297,7 @@ func NewTypeV2(t string, internalType string, components []ArgumentMarshaling) (
 // StringConvert converts the input string to the actual type defined in golang
 func (t Type) StringConvert(value string) (interface{}, error) {
 	// eliminate space
-	value = TrimSpace(value)
+	value = strings.TrimSpace(value)
 
 	switch t.T {
 	case IntTy:
