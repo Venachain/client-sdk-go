@@ -69,6 +69,15 @@ func init() {
 	}
 }
 
+func InitLogConfig(level Level, size string, path string) error {
+	logConfig := LogConfig{
+		level,
+		size,
+		path,
+	}
+	return MakeLogConfig(logConfig)
+}
+
 func MakeLogConfig(cfg LogConfig) error {
 	logPath := cfg.Path
 	if logPath == "" {
