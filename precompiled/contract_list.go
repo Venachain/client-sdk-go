@@ -57,7 +57,7 @@ func isWindowsSystem() bool {
 	return false
 }
 
-func GetCurrentFilePath() string {
+func getCurrentFilePath() string {
 	var separator string
 	if isWindowsSystem() {
 		separator = "\\"
@@ -74,8 +74,12 @@ func GetCurrentFilePath() string {
 	return result
 }
 
+func GetPreCompiledDirPath() string {
+	return getCurrentFilePath()
+}
+
 func GetContractByte(jsonName string) ([]byte, error) {
-	parentFilePath := GetCurrentFilePath()
+	parentFilePath := getCurrentFilePath()
 	objectPath := parentFilePath + jsonName
 	file, err := os.Open(objectPath)
 	if err != nil {
