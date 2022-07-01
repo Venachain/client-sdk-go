@@ -69,7 +69,7 @@ type ContractClient struct {
 // keyfilePath: keyfile.json 文件的路径
 // passphrase: keyfile 文件对应的密码
 // contract: 调用合约的abi文件或预编译合约地址
-// vmType: 虚拟机类型
+// vmType: 虚拟机的类型，wasm、evm 或者 govm
 func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, contract, vmType string)(*ContractClient, error) {...}
 ```
 
@@ -80,7 +80,7 @@ func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, co
 // url: 链的IP 和RPC 地址
 // key: 用户的密钥，可以用NewKey(KeyfilePath, Passphrase string)函数构造
 // contract: 调用合约的abi文件或预编译合约地址
-// vmType: 虚拟机类型
+// vmType: 虚拟机的类型，wasm、evm 或者 govm
 func NewContractClientWithKey(ctx context.Context, url URL, key *keystore.Key, contract, vmType string) (*ContractClient, error){...}
 ```
 
@@ -274,12 +274,12 @@ type AsynContractClient struct {
 ```go
 // 入参：
 // ip: 链的ip地址
-// rpcPort： 链的rpc端口号
-// wsPort：链的websocket端口号
-// keyfilePath：keyfile 文件的路径
+// rpcPort: 链的rpc端口号
+// wsPort: 链的websocket端口号
+// keyfilePath: keyfile 文件的路径
 // passphrase: keyfile 对应的密码
 // contract: 要调用的合约的abi文件路径
-// vmType：虚拟机的类型，wasm或者evm
+// vmType: 虚拟机的类型，wasm、evm 或者 govm
 // buffSize: 可处理回执的信道缓存大小，设为100即为一次可以监听100个回执
 func NewAsynContractClient(ctx context.Context, ip string, rpcPort uint64, wsPort uint64, keyfilePath, passphrase, contract, vmType string, buffSize int) (*AsynContractClient, error) {...}
 ```
