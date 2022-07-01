@@ -2,6 +2,7 @@ package packet
 
 import (
 	"errors"
+
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
 	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
@@ -44,7 +45,11 @@ func (dataGen *ContractDataGen) SetInterpreter(vmType, name string, txType uint6
 	switch vmType {
 	case "evm":
 		dataGen.Interp = &EvmContractInterpreter{}
-	// the default interpreter is "wasm"
+	case "govm":
+		dataGen.Interp = &GovmContractInterpreter{
+			cnsName: name,
+			txType:  txType,
+		}
 	default:
 		dataGen.Interp = &WasmContractInterpreter{
 			cnsName: name,
