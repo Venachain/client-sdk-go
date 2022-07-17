@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"strings"
 
+	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
 )
 
 // MessageCallDemo, the interface for different types of data package methods
@@ -325,6 +325,86 @@ func (i WasmContractInterpreter) ParseNonConstantResponse(respStr string, output
 		result[0] = abi.BytesConverter(b, outputType[0].Type)
 	} else {
 		result[0] = fmt.Sprintf("message call has no return value\n")
+	}
+
+	return result
+}
+
+//============================Contract Govm===========================
+
+type GovmContractInterpreter struct {
+	txType  uint64 // transaction type for contract deployment and execution
+	cnsName string // contract name for contract execution by contract name
+}
+
+// combineData packet the data in the way defined by the wasm virtual mechine
+// Implement the Interpreter interface
+func (i GovmContractInterpreter) combineData(funcBytes [][]byte) (string, error) {
+	dataParams := make([][]byte, 0)
+	dataParams = append(dataParams, common.Int64ToBytes(int64(i.txType)))
+
+	if i.cnsName != "" {
+		dataParams = append(dataParams, []byte(i.cnsName))
+	}
+
+	// apend function params (contract method and parameters) to data
+	dataParams = append(dataParams, funcBytes...)
+	/// utl.Logger.Printf("combine data in govm, dataParam is %v", dataParams)
+	return rlpEncode(dataParams)
+}
+
+func (i *GovmContractInterpreter) encodeFunctionV2(abiFunc *FuncDesc, funcParams []interface{}) ([][]byte, error) {
+	var funcByte = make([][]byte, 1)
+
+	// converts the function params to bytes
+	for _, v := range funcParams {
+		p, _ := abi.GovmArgToBytes(v)
+		if p == nil {
+			return nil, errors.New("unsupported type，please check the contract or command parameters")
+		}
+		funcByte = append(funcByte, p)
+	}
+
+	// encode the contract method
+	funcByte[0] = i.encodeFuncName(abiFunc)
+
+	/// utl.Logger.Printf("the function byte is %v, the write operation is %v\n", funcByte, isWrite)
+	return funcByte, nil
+}
+
+// encodeFuncName encodes the contract method in the way defined by the wasm virtual mechine
+// Implement the Interpreter interface
+func (i *GovmContractInterpreter) encodeFuncName(abi *FuncDesc) []byte {
+	return []byte(abi.Name)
+}
+
+// setIsWrite judge the constant of the contract method based on govm
+// Implement the Interpreter interface
+func (i GovmContractInterpreter) setIsWrite(abiFunc *FuncDesc) bool {
+	if isConst, ok := abiFunc.Constant.(bool); ok {
+		return !isConst
+	}
+	return true
+}
+
+func (i GovmContractInterpreter) ReceiptParsingV2(receipt *Receipt, conAbi ContractContent) *ReceiptParsingReturn {
+	var fn = GovmEventParsingPerLogV2
+	var sysEvents = []string{precompile.CnsInvokeEvent, precompile.PermDeniedEvent} // precompile.CnsInitRegEvent
+
+	events := GetSysEvents(sysEvents)
+	events = append(events, conAbi.GetEvents()...)
+
+	return receipt.ParsingWrap(events, fn)
+}
+
+func (i GovmContractInterpreter) ParseNonConstantResponse(respStr string, outputType []abi.ArgumentMarshaling) []interface{} {
+	var result = make([]interface{}, 1)
+
+	if len(outputType) != 0 {
+		b, _ := hexutil.Decode(respStr)
+		result[0] = abi.BytesConverter(b, outputType[0].Type)
+	} else {
+		result[0] = "message call has no return value\n"
 	}
 
 	return result

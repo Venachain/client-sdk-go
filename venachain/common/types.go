@@ -21,6 +21,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"hash"
 	"math/big"
 	"math/rand"
 	"reflect"
@@ -29,6 +30,7 @@ import (
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/sha3"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/tjfoc/gmsm/sm3"
 )
 
 // Lengths of hashes and addresses in bytes.
@@ -50,6 +52,14 @@ const (
 var (
 	hashT    = reflect.TypeOf(Hash{})
 	addressT = reflect.TypeOf(Address{})
+	// encryption 当前链使用的密码学算法实现，此处要跟 crypto 包保持一致
+	encryption string
+)
+
+// encryption type
+const (
+	gm = "GM"
+	ec = "ECDSA"
 )
 
 // Hash represents the 32 byte Keccak256 hash of arbitrary data.
@@ -61,6 +71,26 @@ func BytesToHash(b []byte) Hash {
 	var h Hash
 	h.SetBytes(b)
 	return h
+}
+
+func init() {
+	encryption = ec // defaults to ECDSA
+}
+
+func newHash() hash.Hash {
+	switch encryption {
+	case gm:
+		return sm3.New()
+	case ec:
+		return sha3.NewKeccak256()
+	default:
+		return nil
+	}
+}
+
+// SetEncryption 在 crypto 的 Encryption 被改变时，此处也需要做对应的改变
+func SetEncryption(enc string) {
+	encryption = enc
 }
 
 // BigToHash sets byte representation of b to hash.
@@ -228,9 +258,9 @@ func (a Address) Hash() Hash { return BytesToHash(a[:]) }
 // Hex returns an EIP55-compliant hex string representation of the address.
 func (a Address) Hex() string {
 	unchecksummed := hex.EncodeToString(a[:])
-	sha := sha3.NewKeccak256()
-	sha.Write([]byte(unchecksummed))
-	hash := sha.Sum(nil)
+	hs := newHash()
+	hs.Write([]byte(unchecksummed))
+	hash := hs.Sum(nil)
 
 	result := []byte(unchecksummed)
 	for i := 0; i < len(result); i++ {
@@ -249,9 +279,9 @@ func (a Address) Hex() string {
 
 func (a Address) HexWithNoPrefix() string {
 	unchecksummed := hex.EncodeToString(a[:])
-	sha := sha3.NewKeccak256()
-	sha.Write([]byte(unchecksummed))
-	hash := sha.Sum(nil)
+	hs := newHash()
+	hs.Write([]byte(unchecksummed))
+	hash := hs.Sum(nil)
 
 	result := []byte(unchecksummed)
 	for i := 0; i < len(result); i++ {

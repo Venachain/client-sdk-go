@@ -386,3 +386,45 @@ type NodeTimer interface {
 	ReSendProof(proof []byte, chainId string) error      // 重新发送Proof
 	ReSendTx(Tx types.Transaction, chainID string) error // 重新发送Tx
 }
+
+// --------------------------- govm ------------------------------------
+func GovmEventParsingPerLogV2(eLog *Log, events []*FuncDesc) string {
+	var rlpList []interface{}
+
+	eventName, topicTypes := findWasmLogTopicV2(eLog.Topics[0], events)
+
+	if len(topicTypes) == 0 {
+		return ""
+	}
+
+	dataBytes, _ := hexutil.Decode(eLog.Data)
+	err := rlp.DecodeBytes(dataBytes, &rlpList)
+	if err != nil {
+		// todo: error handle
+		fmt.Printf("the error is %v\n", err)
+	}
+
+	result := fmt.Sprintf("Event %s: ", eventName)
+
+	var str string
+	for i, v := range rlpList {
+		if vs, ok := v.([]interface{}); ok {
+			for _, v := range vs {
+				result := ConvertRlpBytesTo(v.([]uint8), "string")
+				str += fmt.Sprintf("%v ", result)
+			}
+		} else {
+			result := ConvertRlpBytesTo(v.([]uint8), topicTypes[i])
+			str += fmt.Sprintf("%v ", result)
+		}
+	}
+	result += str
+
+	return result
+}
+
+func RlpBytesToUint8(b []byte) uint8 {
+	b = common.LeftPadBytes(b, 32)
+	result := common.CallResAsUint32(b)
+	return uint8(result)
+}

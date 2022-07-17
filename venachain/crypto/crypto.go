@@ -23,12 +23,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"math/big"
 	"os"
 
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/sha3"
+	"github.com/tjfoc/gmsm/sm2"
 )
 
 var (
@@ -37,6 +39,8 @@ var (
 )
 
 var errInvalidPubkey = errors.New("invalid secp256k1 public key")
+var errInvalidPubkeyECDSA = errors.New("invalid secp256k1 public key")
+var errInvalidPubkeyGM = errors.New("invalid sm2 public key")
 
 // Keccak256 calculates and returns the Keccak256 hash of the input data.
 func Keccak256(data ...[]byte) []byte {
@@ -45,6 +49,17 @@ func Keccak256(data ...[]byte) []byte {
 		d.Write(b)
 	}
 	return d.Sum(nil)
+}
+
+// Keccak256Hash calculates and returns the Keccak256 hash of the input data,
+// converting it to an internal Hash data structure.
+func Keccak256Hash(data ...[]byte) (h common.Hash) {
+	d := sha3.NewKeccak256()
+	for _, b := range data {
+		d.Write(b)
+	}
+	d.Sum(h[:0])
+	return h
 }
 
 // ToECDSA creates a private key with the given D value.
@@ -76,6 +91,29 @@ func toECDSA(d []byte, strict bool) (*ecdsa.PrivateKey, error) {
 		return nil, fmt.Errorf("invalid private key, >=N")
 	}
 	// The priv.D must not be zero or negative.
+	if priv.D.Sign() <= 0 {
+		return nil, fmt.Errorf("invalid private key, zero or negative")
+	}
+
+	priv.PublicKey.X, priv.PublicKey.Y = priv.PublicKey.Curve.ScalarBaseMult(d)
+	if priv.PublicKey.X == nil {
+		return nil, errors.New("invalid private key")
+	}
+	return priv, nil
+}
+
+// toGMPrivKey creates a GM private key with the given D value.
+func toGMPrivKey(d []byte) (*sm2.PrivateKey, error) {
+	priv := new(sm2.PrivateKey)
+	priv.PublicKey.Curve = P256Sm2()
+	if 8*len(d) != priv.Params().BitSize {
+		return nil, fmt.Errorf("invalid length, need %d bits", priv.Params().BitSize)
+	}
+	priv.D = new(big.Int).SetBytes(d)
+
+	if priv.D.Cmp(sm2P256N) >= 0 {
+		return nil, fmt.Errorf("invalid private key, >=N")
+	}
 	if priv.D.Sign() <= 0 {
 		return nil, fmt.Errorf("invalid private key, zero or negative")
 	}
@@ -129,6 +167,13 @@ func HexToECDSA(hexkey string) (*ecdsa.PrivateKey, error) {
 	return ToECDSA(b)
 }
 
+// SaveECDSA saves a secp256k1 private key to the given file with
+// restrictive permissions. The key data is saved hex-encoded.
+func SaveECDSA(file string, key *ecdsa.PrivateKey) error {
+	k := hex.EncodeToString(FromECDSA(key))
+	return ioutil.WriteFile(file, []byte(k), 0600)
+}
+
 // LoadECDSA loads a secp256k1 private key from the given file.
 func LoadECDSA(file string) (*ecdsa.PrivateKey, error) {
 	buf := make([]byte, 64)
@@ -169,5 +214,19 @@ func PubkeyToAddress(p ecdsa.PublicKey) common.Address {
 func zeroBytes(bytes []byte) {
 	for i := range bytes {
 		bytes[i] = 0
+	}
+}
+
+// 32byte
+func zeroByteSlice() []byte {
+	return []byte{
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
 	}
 }
