@@ -3,7 +3,6 @@ module git-c.i.wxblockchain.com/vena/src/client-sdk-go
 go 1.16
 
 require (
-	github.com/Venachain/Venachain v1.0.1
 	github.com/deckarep/golang-set v1.7.1
 	github.com/gggwvg/logrotate v0.0.0-20200322124011-2c1c889f862b
 	github.com/gin-gonic/gin v1.7.2-0.20220426005113-90e7073d56c0
@@ -20,4 +19,5 @@ require (
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/net v0.0.0-20210924151903-3ad01bbaa167
 	golang.org/x/sys v0.0.0-20220128215802-99c3d69c2c27
+	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 )
