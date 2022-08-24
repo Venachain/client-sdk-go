@@ -1,0 +1,195 @@
+[
+  {
+    "name": "execute",
+    "inputs": [
+      {
+        "name": "crossID",
+        "type": "string"
+      }, {
+        "name": "index",
+        "type": "int32"
+      },{
+        "name": "total",
+        "type": "int32"
+      },{
+        "name": "businessContractAddress",
+        "type": "string"
+      },{
+        "name": "callData",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "rollback",
+    "inputs": [
+      {
+        "name": "crossID",
+        "type": "string"
+      }, {
+        "name": "index",
+        "type": "int32"
+      },{
+        "name": "businessContractAddress",
+        "type": "string"
+      },{
+        "name": "rollbackCallData",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "commit",
+    "inputs": [
+      {
+        "name": "crossID",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "saveProof",
+    "inputs": [
+      {
+        "name": "proof",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "getProof",
+    "inputs": [
+      {
+        "name": "crossID",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "constant": "true",
+    "type": "function"
+  },
+  {
+    "name": "grant",
+    "inputs": [
+      {
+        "name": "addr",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "revoke",
+    "inputs": [
+      {
+        "name": "addr",
+        "type": "string"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "setSignatureThreshold",
+    "inputs": [
+      {
+        "name": "threshold",
+        "type": "int32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "int32"
+      }
+    ],
+    "constant": "false",
+    "type": "function"
+  },
+  {
+    "name": "Notify",
+    "inputs": [
+      {
+        "type": "int32"
+      },
+      {
+        "type": "string"
+      }
+    ],
+    "type": "event"
+  },
+  {
+    "name": "execute",
+    "inputs": [
+      {
+        "type": "int32"
+      },
+      {
+        "type": "string"
+      }
+    ],
+    "type": "event"
+  },
+  {
+    "name": "rollback",
+    "inputs": [
+      {
+        "type": "int32"
+      },
+      {
+        "type": "string"
+      }
+    ],
+    "type": "event"
+  }
+]

@@ -24,6 +24,7 @@ var (
 	NFTContractAddress           = syscontracts.NFTContractAddress.String()
 	EvidenceManagementAddress    = syscontracts.EvidenceManagementAddress.String() // The Venachain Precompiled contract addr for evidence management
 	BulletProofAddress           = syscontracts.BulletProofAddress.String()        // The Venachain Precompiled contract addr for Bullet proof
+	ContractProxyAddress         = syscontracts.ProxyAddress.String()
 )
 
 const (
@@ -44,6 +45,7 @@ var List = map[string]string{
 	NFTContractAddress:           "syscontracts/nft.abi.json",
 	EvidenceManagementAddress:    "syscontracts/evidenceManager.cpp.abi.json",
 	BulletProofAddress:           "syscontracts/RangeProof.cpp.abi.json",
+	ContractProxyAddress:         "syscontracts/proxy.abi.json",
 
 	CnsInitRegEvent: "syscontracts/cnsInitRegEvent.json",
 	CnsInvokeEvent:  "syscontracts/cnsInvokeEvent.json",

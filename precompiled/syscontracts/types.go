@@ -19,6 +19,7 @@ var (
 	NFTContractAddress           = common.HexToAddress("0x0000000000000000000000000000000000000012") // The Venachain Precompiled contract addr for NFT contract
 	EvidenceManagementAddress    = common.HexToAddress("0x0000000000000000000000000000000000000099") // The Venachain Precompiled contract addr for evidence management
 	BulletProofAddress           = common.HexToAddress("0x0000000000000000000000000000000000000100") // The Venachain Precompiled contract addr for Bullet proof
+	ProxyAddress                 = common.HexToAddress("0x0000000000000000000000000000000000000101") // The Venachain Precompiled contract addr for cross proxy
 )
 
 type UpdateNode struct {
