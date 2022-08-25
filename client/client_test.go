@@ -90,3 +90,18 @@ func TestRpcCall_getBlockByNumber(t *testing.T) {
 	}
 	fmt.Println(string(result))
 }
+
+func TestClient_GetBlockAllByHash(t *testing.T) {
+	client, err := InitClient()
+	if err != nil {
+		log.Error("error:%v", err)
+		return
+	}
+	blockHash := "0xf8f3b61ee5d739d460f527a640938ab8a231525685f29e7c203a1ce92410ecfa"
+
+	res, err := client.GetBlockAllByHash(blockHash)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(res)
+}

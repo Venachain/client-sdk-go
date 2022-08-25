@@ -23,7 +23,6 @@ import (
 	"io"
 	"math/big"
 	"sync/atomic"
-	"time"
 
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
@@ -60,12 +59,39 @@ type Response struct {
 }
 
 type Transaction struct {
-	data txdata
+	data txdata `json:"data"`
 	// caches
-	hash   atomic.Value
-	size   atomic.Value
-	from   atomic.Value
-	router int32
+	hash   atomic.Value `json:"hash"`
+	size   atomic.Value `json:"size"`
+	from   atomic.Value `json:"from"`
+	router int32        `json:"router"`
+}
+
+type RpcBlock struct {
+	Hash         common.Hash       `json:"hash"`
+	Transactions []*RpcTransaction `json:"transactions"`
+}
+
+type RpcBlock1 struct {
+	Transactions []*Transaction `json:"transactions"`
+	TxExtraInfo  []txExtraInfo  `json:"tx_extra_info"`
+	//Transactions []Body `json:"transactions"`
+}
+
+type RpcTransaction struct {
+	tx *Transaction `json:"transactions"`
+	txExtraInfo
+}
+
+type txExtraInfo struct {
+	BlockNumber      *string         `json:"blockNumber,omitempty"`
+	BlockHash        *common.Hash    `json:"blockHash,omitempty"`
+	From             *common.Address `json:"from,omitempty"`
+	Hash             string          `json:"hash"`
+	Nonce            string          `json:"nonce"`
+	To               string          `json:"to"`
+	TransactionIndex string          `json:"transactionIndex"`
+	Value            int             `json:"value"`
 }
 
 type txdata struct {
@@ -84,42 +110,6 @@ type txdata struct {
 
 	// This is only used when marshaling to JSON.
 	Hash *common.Hash `json:"hash" rlp:"-"`
-}
-
-// Block represents an entire block in the Ethereum blockchain.
-type Block struct {
-	header       *Header
-	transactions Transactions
-	//dag          DAG
-	// caches
-	hash atomic.Value
-	size atomic.Value
-
-	// These fields are used by package eth to track
-	// inter-peer block relay.
-	ReceivedAt   time.Time
-	ReceivedFrom interface{}
-	ConfirmSigns []*common.BlockConfirmSign
-}
-
-// Header represents a block header in the Ethereum blockchain.
-type Header struct {
-	ParentHash  common.Hash    `json:"parentHash"       gencodec:"required"`
-	Coinbase    common.Address `json:"miner"            gencodec:"required"`
-	Root        common.Hash    `json:"stateRoot"        gencodec:"required"`
-	TxHash      common.Hash    `json:"transactionsRoot" gencodec:"required"`
-	ReceiptHash common.Hash    `json:"receiptsRoot"     gencodec:"required"`
-	Bloom       string         `json:"logsBloom"        gencodec:"required"`
-	Number      string         `json:"number"           gencodec:"required"`
-	GasLimit    string         `json:"gasLimit"         gencodec:"required"`
-	GasUsed     string         `json:"gasUsed"          gencodec:"required"`
-	Time        string         `json:"timestamp"        gencodec:"required"`
-	Extra       string         `json:"extraData"        gencodec:"required"`
-	MixDigest   string         `json:"mixHash"          gencodec:"required"`
-	Nonce       string         `json:"nonce"            gencodec:"required"`
-	Hash        string         `json:"hash"            gencodec:"hash"`
-	// caches
-	sealHash atomic.Value `json:"-" rlp:"-"`
 }
 
 // Bloom represents a 2048 bit bloom filter.
@@ -229,7 +219,7 @@ func (tx *Transaction) UnmarshalJSON(input []byte) error {
 	return nil
 }
 
-//func (tx *Transaction) Cns() []byte    { return common.CopyBytes(tx.data.CnsData) }
+// func (tx *Transaction) Cns() []byte    { return common.CopyBytes(tx.data.CnsData) }
 func (tx *Transaction) Data() []byte       { return common.CopyBytes(tx.data.Payload) }
 func (tx *Transaction) Gas() uint64        { return tx.data.GasLimit }
 func (tx *Transaction) GasPrice() *big.Int { return new(big.Int).Set(tx.data.Price) }

@@ -59,21 +59,23 @@ func SuccessResponse(result string) *Response {
 }
 
 type Receipt struct {
-	Jsonrpc string `json:"jsonrpc"`
-	Id      int    `json:"id"`
-	Result  struct {
-		BlockHash         string `json:"blockHash"`
-		BlockNumber       string `json:"blockNumber"`
-		ContractAddress   string `json:"contractAddress"`
-		CumulativeGasUsed string `json:"cumulativeGasUsed"`
-		From              string `json:"from"`
-		GasUsed           string `json:"gasUsed"`
-		Root              string `json:"root"`
-		To                string `json:"to"`
-		TransactionHash   string `json:"transactionHash"`
-		TransactionIndex  string `json:"transactionIndex"`
-		Status            string `json:"status"`
-	} `json:"result"`
+	Jsonrpc string     `json:"jsonrpc"`
+	Id      int        `json:"id"`
+	Result  TxResponse `json:"result"`
+}
+
+type TxResponse struct {
+	BlockHash         string `json:"blockHash"`
+	BlockNumber       string `json:"blockNumber"`
+	ContractAddress   string `json:"contractAddress"`
+	CumulativeGasUsed string `json:"cumulativeGasUsed"`
+	From              string `json:"from"`
+	GasUsed           string `json:"gasUsed"`
+	Root              string `json:"root"`
+	To                string `json:"to"`
+	TransactionHash   string `json:"transactionHash"`
+	TransactionIndex  string `json:"transactionIndex"`
+	Status            string `json:"status"`
 }
 
 func (r *Receipt) ConvertFormatter() {

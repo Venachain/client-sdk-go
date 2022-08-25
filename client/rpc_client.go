@@ -22,7 +22,6 @@ const (
 func (pc Client) MessageCall(ctx context.Context, dataGen packet.MsgDataGen, tx common.TxParams, key *keystore.Key, sync bool) ([]interface{}, error) {
 	var result = make([]interface{}, 1)
 	var err error
-	// constant == false 或部署合约的情况
 	if dataGen.GetIsWrite() {
 		res, err := pc.Send(ctx, &tx, key)
 		if err != nil {
@@ -41,12 +40,6 @@ func (pc Client) MessageCall(ctx context.Context, dataGen packet.MsgDataGen, tx 
 			log.Info(string(receiptBytes))
 
 			recpt := dataGen.ReceiptParsing(polRes)
-			//if recpt.Status != packet.TxReceiptSuccessMsg {
-			//	result, _ := pc.GetRevertMsg(&tx, recpt.BlockNumber)
-			//	if len(result) >= 4 {
-			//		recpt.Err, _ = packet.UnpackError(result)
-			//	}
-			//}
 			result[0] = recpt.String()
 		} else {
 			result[0] = res

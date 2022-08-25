@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
 	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
@@ -17,9 +16,9 @@ type IClient interface {
 }
 
 type IContract interface {
-	Deploy(ctx context.Context, txparam common.TxParams, codepath string, consParams []string) (interface{}, error)
+	Deploy(ctx context.Context, abipath string, codepath string, consParams []string, sync bool) (interface{}, error)
 	ListContractMethods() (packet.ContractContent, error)
-	Execute(ctx context.Context, txparam common.TxParams, funcName string, funcParams []string, address string) (interface{}, error)
+	Execute(ctx context.Context, funcName string, funcParams []string, contract string, sync bool) (interface{}, error)
 	IsFuncNameInContract(funcName string) (bool, error)
 	GetReceipt(txhash string) (*packet.Receipt, error)
 }
