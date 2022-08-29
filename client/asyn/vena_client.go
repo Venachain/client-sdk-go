@@ -41,7 +41,7 @@ type WsClient struct {
 func NewVenaClient(ctx context.Context, ip string, wsPort uint64, rpcPort uint64, keyfilePath string, passphrase string, buffSize int) (*VenaClient, error) {
 	wsClient, err := NewWsClient(ctx, ip, wsPort, buffSize)
 	if err != nil {
-		log.Error("websocket dial err: %v", err)
+		log.Error("websocket dial err: ", err)
 		return nil, err
 	}
 	url := client.URL{
@@ -62,7 +62,7 @@ func NewVenaClient(ctx context.Context, ip string, wsPort uint64, rpcPort uint64
 func NewVenaClientWithClient(ctx context.Context, wsPort uint64, buffSize int, rpcClient *client.Client) (*VenaClient, error) {
 	wsClient, err := NewWsClient(ctx, rpcClient.URL.IP, wsPort, buffSize)
 	if err != nil {
-		log.Error("websocket dial err: %v", err)
+		log.Error("websocket dial err: ", err)
 		return nil, err
 	}
 	venaClient := &VenaClient{
@@ -76,7 +76,7 @@ func NewVenaClientWithClient(ctx context.Context, wsPort uint64, buffSize int, r
 func NewWsClient(ctx context.Context, ip string, wsPort uint64, buffSize int) (*WsClient, error) {
 	conn, err := DialWS(ctx, ip, wsPort)
 	if err != nil {
-		log.Error("websocket dial err: %v", err)
+		log.Error("websocket dial err: ", err)
 		return nil, err
 	}
 	client := &WsClient{
@@ -106,7 +106,7 @@ func (venaClient *VenaClient) SubNewHeads() {
 	message := []byte("{\"jsonrpc\":\"2.0\",\"method\":\"eth_subscribe\", \"params\": [\"newHeads\"],\"id\":\"subscription\"}")
 	err := venaClient.WsClient.Socket.WriteMessage(websocket.BinaryMessage, message)
 	if err != nil {
-		log.Error("error is %v", err)
+		log.Error("error is ", err)
 	}
 	// 监听订阅到的消息
 	venaClient.WsReadMsg()
@@ -117,10 +117,10 @@ func (venaClient *VenaClient) WsReadMsg() {
 	for {
 		messageType, message, err := venaClient.WsClient.Socket.ReadMessage()
 		if err != nil || messageType == websocket.CloseMessage {
-			log.Error("error is%v", err)
+			log.Error("error is ", err)
 			break
 		}
-		log.Info("sub message is %v", message)
+		log.Info("sub message is ", message)
 		venaClient.WsClient.Message <- message
 	}
 }
@@ -137,7 +137,7 @@ func GetBlockHash(blockMessage []byte) (string, error) {
 func GetBlockHeader(msg []byte) (*WsResponseResult, error) {
 	var blockHeaderRes WsResponseResult
 	if err := json.Unmarshal(msg, &blockHeaderRes); err != nil {
-		log.Error("err: %v", err)
+		log.Error("err: ", err)
 	}
 	return &blockHeaderRes, nil
 }
@@ -170,7 +170,7 @@ func (venaClient *VenaClient) queryTxsInBlock(transactions []string, blockHash s
 		if exit {
 			res, err := venaClient.getTxReceipt(transaction)
 			if err != nil {
-				log.Error("error %v", err)
+				log.Error("error ", err)
 				return nil, err
 			}
 			result = append(result, *res)
@@ -193,7 +193,7 @@ func (venaClient *VenaClient) queryTxInBlock(transaction string, blockHash strin
 	if exit {
 		res, err = venaClient.getTxReceipt(transaction)
 		if err != nil {
-			log.Error("error %v", err)
+			log.Error("error ", err)
 			return nil, err
 		}
 	}
@@ -233,7 +233,7 @@ func (venaClient *VenaClient) GetResultWithesChan() {
 	for {
 		select {
 		case result := <-venaClient.Result:
-			log.Info("receipt is: %v", result)
+			log.Info("receipt is: ", result)
 			return
 		}
 	}

@@ -4,288 +4,60 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fb29d2b9-86b3-4b4e-b49c-cfccf19b06a9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/client-sdk-go.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/client-sdk-go.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/account.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/account.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/account_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/account_test.go" afterDir="false" />
+    <list default="true" id="fb29d2b9-86b3-4b4e-b49c-cfccf19b06a9" name="Changes" comment="新增构造交易，用key对交易内容签名">
+      <change beforePath="$PROJECT_DIR$/.idea/client-sdk-go.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/asyn/contract.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/asyn/contract.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/asyn/vena_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/asyn/vena_client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/asyn/vena_client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/asyn/vena_client_test.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/client_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/cns.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/cns.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/cns_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/cns_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/contract.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/contract.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/contract_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/contract_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/firewall.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/firewall.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/firewall_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/firewall_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/node.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/node.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/node_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/node_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/role.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/role.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/role_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/role_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/rpc_client.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/rpc_client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/sysconfig.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/sysconfig.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/sysconfig_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/sysconfig_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/http_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/http_util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/map.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/map.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/response.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/response.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/bp.go" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/bp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/Go SDK API 文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/Go SDK API 文档.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/doc/PlatONE-Client-SDK-Go.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/example/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/combine_contract.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/combine_contract.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/tools_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/client/tools_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/packet/combine_deploy.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/combine_deploy.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/interpreter.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/interpreter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/param_solve.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/param_solve.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/privatekey.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/privatekey.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/tx_receipt.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/tx_receipt.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/tx_receipt_deprecated.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/tx_receipt_deprecated.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/packet/tx_utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/packet/tx_utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/argument.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/argument.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/argument_exp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/argument_exp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/error.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/error_exp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/error_exp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/numbers.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/numbers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/pack.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/pack.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/reflect.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/reflect.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/reflect_exp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/reflect_exp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/type.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/type.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/type_exp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/type_exp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/type_temp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/type_temp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/unpack.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/unpack.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/abi/unpack_exp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/abi/unpack_exp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/accounts/accounts.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/accounts/accounts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/accounts/hd.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/accounts/hd.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/accounts/url.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/accounts/url.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/bn256_fast.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/bn256_fast.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/bn256_fuzz.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/bn256_fuzz.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/bn256_slow.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/bn256_slow.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/bn256.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/bn256.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/bn256_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/bn256_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/curve.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/curve.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/example_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp12.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp12.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp2.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp2.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp6.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp6.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp_arm64.s" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp_arm64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp_decl.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp_decl.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp_generic.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp_generic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/gfp_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/gfp_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/lattice.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/lattice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/lattice_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/lattice_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/main_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/mul_amd64.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/mul_amd64.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/mul_arm64.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/mul_arm64.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/mul_bmi2_amd64.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/mul_bmi2_amd64.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/optate.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/optate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/cloudflare/twist.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/cloudflare/twist.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/bn256.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/bn256.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/bn256_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/bn256_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/curve.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/curve.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/example_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/gfp12.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/gfp12.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/gfp2.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/gfp2.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/gfp6.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/gfp6.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/main_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/main_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/optate.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/optate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/bn256/google/twist.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/bn256/google/twist.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/big.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/big.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/bytes.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/bytes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/bytes_util.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/bytes_util.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/byteutil/byteutil.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/byteutil/byteutil.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/hexutil/hexutil.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/hexutil/hexutil.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/hexutil/json.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/hexutil/json.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/inner_call.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/inner_call.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/math/big.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/math/big.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/math/big_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/math/big_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/math/float128.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/math/float128.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/math/integer.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/math/integer.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/math/integer_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/math/integer_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/size.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/size.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/common/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/common/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/ElGamal.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/ElGamal.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/ElGamal_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/ElGamal_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/aggbulletproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/aggbulletproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/aggbulletproof_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/aggbulletproof_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/algebra.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/algebra.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/algebra_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/algebra_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/bulletproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/bulletproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/bulletproof_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/bulletproof_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/innerproduct.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/innerproduct.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/innerproduct_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/innerproduct_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/key.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/key.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/schnorr.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/schnorr.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/schnorr_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/schnorr_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/transferproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/transferproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/transferproof_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/transferproof_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/withdrawproof.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/withdrawproof.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/bp/withdrawproof_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/bp/withdrawproof_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/crypto.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/crypto.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/curve.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/curve.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/ext.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/ext.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/.travis.yml" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/.travis.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/COPYING" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/COPYING" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/Makefile.am" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/Makefile.am" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/TODO" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/TODO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/autogen.sh" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/autogen.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/build-aux/m4/ax_jni_include_dir.m4" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/build-aux/m4/ax_jni_include_dir.m4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/build-aux/m4/ax_prog_cc_for_build.m4" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/build-aux/m4/ax_prog_cc_for_build.m4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/build-aux/m4/bitcoin_secp.m4" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/build-aux/m4/bitcoin_secp.m4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/configure.ac" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/configure.ac" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/contrib/lax_der_parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/contrib/lax_der_parsing.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/contrib/lax_der_parsing.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/contrib/lax_der_parsing.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/contrib/lax_der_privatekey_parsing.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/contrib/lax_der_privatekey_parsing.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/contrib/lax_der_privatekey_parsing.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/contrib/lax_der_privatekey_parsing.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/include/secp256k1.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/include/secp256k1.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/include/secp256k1_ecdh.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/include/secp256k1_ecdh.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/include/secp256k1_recovery.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/include/secp256k1_recovery.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/libsecp256k1.pc.in" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/libsecp256k1.pc.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/obj/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/obj/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/sage/group_prover.sage" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/sage/group_prover.sage" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/sage/secp256k1.sage" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/sage/secp256k1.sage" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/sage/weierstrass_prover.sage" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/sage/weierstrass_prover.sage" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/asm/field_10x26_arm.s" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/asm/field_10x26_arm.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/basic-config.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/basic-config.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_ecdh.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_ecdh.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_internal.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_internal.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_recover.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_recover.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_schnorr_verify.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_schnorr_verify.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_sign.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_sign.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/bench_verify.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/bench_verify.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecdsa.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecdsa.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecdsa_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecdsa_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/eckey.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/eckey.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/eckey_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/eckey_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult_const.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult_const.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult_const_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult_const_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult_gen.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult_gen.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult_gen_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult_gen_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/ecmult_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/ecmult_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_10x26.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_10x26.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_10x26_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_10x26_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_5x52.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_5x52.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_5x52_asm_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_5x52_asm_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_5x52_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_5x52_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_5x52_int128_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_5x52_int128_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/field_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/field_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/gen_context.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/gen_context.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/group.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/group.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/group_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/group_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/hash.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/hash.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/hash_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/hash_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1.java" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1Test.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/NativeSecp256k1Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/Secp256k1Context.java" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org/bitcoin/Secp256k1Context.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_NativeSecp256k1.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_NativeSecp256k1.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_NativeSecp256k1.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_NativeSecp256k1.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_Secp256k1Context.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_Secp256k1Context.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_Secp256k1Context.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/java/org_bitcoin_Secp256k1Context.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/ecdh/Makefile.am.include" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/ecdh/Makefile.am.include" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/ecdh/main_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/ecdh/main_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/ecdh/tests_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/ecdh/tests_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/recovery/Makefile.am.include" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/recovery/Makefile.am.include" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/recovery/main_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/recovery/main_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/modules/recovery/tests_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/modules/recovery/tests_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/num.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/num.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/num_gmp.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/num_gmp.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/num_gmp_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/num_gmp_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/num_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/num_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_4x64.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_4x64.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_4x64_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_4x64_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_8x32.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_8x32.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_8x32_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_8x32_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_low.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_low.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/scalar_low_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/scalar_low_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/secp256k1.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/secp256k1.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/testrand.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/testrand.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/testrand_impl.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/testrand_impl.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/tests.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/tests.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/tests_exhaustive.c" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/tests_exhaustive.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/libsecp256k1/src/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/libsecp256k1/src/util.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/panic_cb.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/panic_cb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/secp256.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/secp256.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/secp256k1/secp256_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/secp256k1/secp256_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/PATENTS" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/PATENTS" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/doc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/hashes.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/hashes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/keccakf.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/keccakf.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/keccakf_amd64.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/keccakf_amd64.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/keccakf_amd64.s" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/keccakf_amd64.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/sha3.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/sha3.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/sha3_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/sha3_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/shake.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/shake.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/testdata/keccakKats.json.deflate" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/testdata/keccakKats.json.deflate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/xor.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/xor.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/xor_generic.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/xor_generic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/sha3/xor_unaligned.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/sha3/xor_unaligned.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/crypto/signature_cgo.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/crypto/signature_cgo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/keystore/key.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/keystore/key.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/keystore/keystore_passphrase.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/keystore/keystore_passphrase.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/keystore/keystore_plain.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/keystore/keystore_plain.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/keystore/presale.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/keystore/presale.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/keystore/watch.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/keystore/watch.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/decode.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/decode.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/decode_tail_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/decode_tail_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/decode_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/decode_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/doc.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/encode.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/encode.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/encode_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/encode_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/encoder_example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/encoder_example_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/raw.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/raw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/raw_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/raw_test.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rlp/typecache.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rlp/typecache.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/errors.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/errors.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/http.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/http.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/json.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/json.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/subscription.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/subscription.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/utils.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/rpc/websocket.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/rpc/websocket.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/platone/vm/sc_param_manager.go" beforeDir="false" afterPath="$PROJECT_DIR$/venachain/vm/sc_param_manager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/precompiled/contract_list.go" beforeDir="false" afterPath="$PROJECT_DIR$/precompiled/contract_list.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/precompiled/syscontracts/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/precompiled/syscontracts/types.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/block.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/block.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/derive_sha.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/derive_sha.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/gen_tx_json.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/gen_tx_json.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/transaction.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/types/transaction_signing.go" beforeDir="false" afterPath="$PROJECT_DIR$/types/transaction_signing.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ws/ws_subscriber.go" beforeDir="false" afterPath="$PROJECT_DIR$/ws/ws_subscriber.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ws/client_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/ws/client_test.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
   <component name="GOROOT" url="file:///usr/local/go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/packet/param_solve.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/packet/tx_utils.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/client/contract.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/packet/combine_deploy.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/client/rpc_client.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/packet/combine_contract.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/packet/interpreter.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/local/go/src/strings/strings.go" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/venachain/abi/type_exp.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/client/contract_test.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/venachain/abi/type_temp.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/common/http_util.go" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/local/go/src/context/context.go" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="27jnZHgm7WIOxnBd2LvXuL1uG4t" />
   <component name="ProjectViewState">
@@ -293,6 +65,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -305,22 +78,24 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.updates" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
   </component>
-  <component name="RunManager" selected="Go Test.TestContractClient_GetReceipt in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client">
-    <configuration name="TestAccountClient_CreateAccountk in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/precompiled/syscontracts" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Test.TestRpcCall_getBlockByNumber in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="client-sdk-go" />
-      <working_directory value="$PROJECT_DIR$/client" />
-      <root_directory value="$PROJECT_DIR$" />
+      <working_directory value="$PROJECT_DIR$" />
       <kind value="PACKAGE" />
-      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <pattern value="^\QTestAccountClient_CreateAccountk\E$" />
       <method v="2" />
     </configuration>
-    <configuration name="TestContractClient_GetReceipt in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+    <configuration name="TestClient_GetBlockAllByHash in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
       <module name="client-sdk-go" />
       <working_directory value="$PROJECT_DIR$/client" />
       <root_directory value="$PROJECT_DIR$" />
@@ -329,13 +104,74 @@
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$" />
       <framework value="gotest" />
-      <pattern value="^\QTestContractClient_GetReceipt\E$" />
+      <pattern value="^\QTestClient_GetBlockAllByHash\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestClient_GetBlockAllByNumber in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="client-sdk-go" />
+      <working_directory value="$PROJECT_DIR$/client" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestClient_GetBlockAllByNumber\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestNewExecuteContract in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="client-sdk-go" />
+      <working_directory value="$PROJECT_DIR$/client" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestNewExecuteContract\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRpcCall_getBlockByHash in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="client-sdk-go" />
+      <working_directory value="$PROJECT_DIR$/client" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRpcCall_getBlockByHash\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TestRpcCall_getBlockByNumber in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" type="GoTestRunConfiguration" factoryName="Go Test" temporary="true" nameIsGenerated="true">
+      <module name="client-sdk-go" />
+      <working_directory value="$PROJECT_DIR$/client" />
+      <root_directory value="$PROJECT_DIR$" />
+      <kind value="PACKAGE" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <pattern value="^\QTestRpcCall_getBlockByNumber\E$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="client-sdk-go" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="git-c.i.wxblockchain.com/vena/src/client-sdk-go" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Test.TestContractClient_GetReceipt in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
-        <item itemvalue="Go Test.TestAccountClient_CreateAccountk in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+        <item itemvalue="Go Test.TestRpcCall_getBlockByNumber in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+        <item itemvalue="Go Test.TestNewExecuteContract in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+        <item itemvalue="Go Test.TestClient_GetBlockAllByHash in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+        <item itemvalue="Go Test.TestRpcCall_getBlockByHash in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
+        <item itemvalue="Go Test.TestClient_GetBlockAllByNumber in git-c.i.wxblockchain.com/vena/src/client-sdk-go/client" />
       </list>
     </recent_temporary>
   </component>
@@ -353,8 +189,290 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="新增单独用key对交易进行签名的方法" />
+    <MESSAGE value="新增初始化log方法" />
+    <MESSAGE value="公开GetCurrentFilePath方法" />
+    <MESSAGE value="bugfix：wasm合约获取string结果如果是空返回一长串0的问题" />
+    <MESSAGE value="更改log日志规范" />
+    <MESSAGE value="新增代理合约的预编译合约和新接口" />
+    <MESSAGE value="新增构造交易，用key对交易内容签名" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增构造交易，用key对交易内容签名" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/venachain/abi/type_temp.go</url>
+          <line>29</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/venachain/abi/type_temp.go</url>
+          <line>31</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/interpreter.go</url>
+          <line>324</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/combine_contract.go</url>
+          <line>123</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/rpc_client.go</url>
+          <line>55</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract_test.go</url>
+          <line>133</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/venachain/abi/type_temp.go</url>
+          <line>15</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/rpc_client.go</url>
+          <line>63</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>186</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>187</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>128</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>121</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>104</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract_test.go</url>
+          <line>223</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract_test.go</url>
+          <line>224</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract.go</url>
+          <line>122</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract.go</url>
+          <line>130</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract.go</url>
+          <line>248</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/combine_deploy.go</url>
+          <line>55</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract.go</url>
+          <line>126</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/tools_test.go</url>
+          <line>27</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/tools_test.go</url>
+          <line>26</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/tools.go</url>
+          <line>34</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/tools_test.go</url>
+          <line>28</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/http_util.go</url>
+          <line>97</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/http_util.go</url>
+          <line>93</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/http_util.go</url>
+          <line>92</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/http_util.go</url>
+          <line>105</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract_test.go</url>
+          <line>34</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/common/http_util.go</url>
+          <line>98</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/contract.go</url>
+          <line>296</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/rpc_client.go</url>
+          <line>77</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/combine_contract.go</url>
+          <line>87</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/combine_contract.go</url>
+          <line>88</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/packet/combine_contract.go</url>
+          <line>91</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/tools.go</url>
+          <line>30</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>153</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>136</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>138</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>137</line>
+          <option name="timeStamp" value="48" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>89</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>90</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>93</line>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>72</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>73</line>
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>76</line>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>101</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>102</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>74</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client_test.go</url>
+          <line>119</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/venachain/rpc/client.go</url>
+          <line>288</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>115</line>
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/client/client.go</url>
+          <line>116</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
