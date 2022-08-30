@@ -728,7 +728,7 @@ func GenerateAggBpStatement(m, n int64) *AggBpStatement {
 }
 
 func GenerateAggBpStatement_range(m, n int64, range_hash []byte) *AggBpStatement {
-	aggbpparam = AggBpStatement{}
+	aggbpparam := AggBpStatement{}
 	aggbpparam.m = m
 	aggbpparam.bpParam.n = n
 
