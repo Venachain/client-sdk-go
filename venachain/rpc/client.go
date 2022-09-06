@@ -24,6 +24,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"reflect"
@@ -258,6 +259,15 @@ func (c *Client) Close() {
 		<-c.didQuit
 	case <-c.didQuit:
 	}
+}
+
+func (c *Client) ResetHttpClient(cli http.Client) {
+	if !c.isHTTP {
+		return
+	}
+	conn, _ := c.writeConn.(*httpConn)
+	conn.client = &cli
+	return
 }
 
 // Call performs a JSON-RPC call with the given arguments and unmarshals into
