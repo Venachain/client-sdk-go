@@ -28,6 +28,7 @@ import (
 	"strings"
 
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/byteutil"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
 )
@@ -52,24 +53,24 @@ const (
 	TupleTy
 )
 
-//// Type is the reflection of the supported argument type
-//type Type struct {
-//	Elem *Type
-//
-//	Kind reflect.Kind
-//	Type reflect.Type
-//	Size int
-//	T    byte // Our own type checking
-//
-//	stringKind string // holds the unparsed string for deriving signatures
-//
-//	// newly Added [2020-08-06]
-//	// Tuple relative fields
-//	TupleRawName  string       // Raw struct name defined in source code, may be empty.
-//	TupleElems    []*Type      // Type information of all tuple fields
-//	TupleRawNames []string     // Raw field name of all tuple fields
-//	TupleType     reflect.Type // Underlying struct of the tuple
-//}
+// // Type is the reflection of the supported argument type
+// type Type struct {
+// 	Elem *Type
+
+// 	Kind reflect.Kind
+// 	Type reflect.Type
+// 	Size int
+// 	T    byte // Our own type checking
+
+// 	stringKind string // holds the unparsed string for deriving signatures
+
+// 	// newly Added [2020-08-06]
+// 	// Tuple relative fields
+// 	TupleRawName  string       // Raw struct name defined in source code, may be empty.
+// 	TupleElems    []*Type      // Type information of all tuple fields
+// 	TupleRawNames []string     // Raw field name of all tuple fields
+// 	TupleType     reflect.Type // Underlying struct of the tuple
+// }
 
 var (
 	// typeRegex parses the abi sub types
@@ -253,7 +254,7 @@ type WasmInput struct {
 func (c *WasmInput) NewContractTypeFromJson(input []byte) error {
 	var err error
 	if err = json.Unmarshal(input, c); err != nil {
-		return errors.New("GenerateInputData sol json unmarshal error: ")
+		return fmt.Errorf("GenerateInputData wasm json unmarshal error: %v", err.Error())
 	}
 	return err
 }
@@ -274,11 +275,57 @@ func (c *WasmInput) GenerateInputData() ([]byte, error) {
 	for _, param := range c.FuncParams {
 		paramType, paramValue, err := SpliceParam(param)
 		if err != nil {
-			return nil, errors.New("SpliceParam wasm param err")
+			return nil, fmt.Errorf("SpliceParam wasm param err: %v", err.Error())
 		}
 		p, err := StringConverter(paramValue, paramType)
 		if err != nil {
-			return nil, errors.New("StringConverter wasm param err")
+			return nil, fmt.Errorf("StringConverter wasm param err: %v", err.Error())
+		}
+		paramArr = append(paramArr, p)
+	}
+
+	paramBytes, e := rlp.EncodeToBytes(paramArr)
+	if e != nil {
+		return nil, fmt.Errorf("rlp.EncodeToBytes wasm param err: %v", e.Error())
+	}
+	return paramBytes, nil
+}
+
+type GovmInput struct {
+	TxType     int      `json:"-"`
+	FuncName   string   `json:"func_name"`
+	FuncParams []string `json:"func_params"`
+}
+
+func (c *GovmInput) NewContractTypeFromJson(input []byte) error {
+	var err error
+	if err = json.Unmarshal(input, c); err != nil {
+		return fmt.Errorf("GenerateInputData wasm json unmarshal error: %v", err.Error())
+	}
+	return nil
+}
+
+// Generate the input data of the wasm contract
+func (c *GovmInput) GenerateInputData() ([]byte, error) {
+
+	if c.FuncName == "" {
+		return nil, errors.New("miss govm func name")
+	}
+	c.TxType = common.TxTypeCallSollCompatibleWasm
+
+	paramArr := [][]byte{
+		common.Int64ToBytes(int64(c.TxType)),
+		[]byte(c.FuncName),
+	}
+
+	for _, param := range c.FuncParams {
+		paramType, paramValue, err := SpliceParam(param)
+		if err != nil {
+			return nil, fmt.Errorf("SpliceParam govm param err: %v", err.Error())
+		}
+		p, err := StringConverter(paramValue, paramType)
+		if err != nil {
+			return nil, fmt.Errorf("StringConverter govm param err: %v", err.Error())
 		}
 		paramArr = append(paramArr, p)
 	}
@@ -312,12 +359,38 @@ func SpliceParam(param string) (paramType string, paramValue string, err error) 
 
 func StringConverter(source string, t string) ([]byte, error) {
 	switch t {
-	case "int32", "uint32", "uint", "int":
-		dest, err := strconv.Atoi(source)
+	case "string":
+		return common.StringToBytes(source), nil
+	case "int8":
+		dest, err := strconv.ParseInt(source, 10, 8)
+		return common.Int8ToBytes(int8(dest)), err
+	case "int16":
+		dest, err := strconv.ParseInt(source, 10, 16)
+		return common.Int16ToBytes(int16(dest)), err
+	case "int32":
+		dest, err := strconv.ParseInt(source, 10, 32)
 		return common.Int32ToBytes(int32(dest)), err
-	case "int64", "uint64":
+	case "int64":
 		dest, err := strconv.ParseInt(source, 10, 64)
 		return common.Int64ToBytes(dest), err
+	case "int":
+		dest, err := strconv.ParseInt(source, 10, 0)
+		return common.IntToBytes(int(dest)), err
+	case "uint8":
+		dest, err := strconv.ParseUint(source, 10, 8)
+		return common.Uint8ToBytes(uint8(dest)), err
+	case "uint16":
+		dest, err := strconv.ParseUint(source, 10, 16)
+		return common.Uint16ToBytes(uint16(dest)), err
+	case "uint32":
+		dest, err := strconv.ParseUint(source, 10, 32)
+		return common.Uint32ToBytes(uint32(dest)), err
+	case "uint64":
+		dest, err := strconv.ParseUint(source, 10, 64)
+		return common.Uint64ToBytes(dest), err
+	case "uint":
+		dest, err := strconv.ParseUint(source, 10, 0)
+		return common.UintToBytes(uint(dest)), err
 	case "float32":
 		dest, err := strconv.ParseFloat(source, 32)
 		return common.Float32ToBytes(float32(dest)), err
@@ -330,6 +403,18 @@ func StringConverter(source string, t string) ([]byte, error) {
 		} else {
 			return []byte{}, errors.New("invalid boolean param")
 		}
+	case "*big.Int":
+		dest, ok := big.NewInt(0).SetString(source, 10)
+		if !ok {
+			return []byte{}, errors.New("invalid *big.Int param")
+		}
+		return dest.Bytes(), nil
+	case "common.Address":
+		dest := common.Hex2Bytes(source)
+		if dest == nil {
+			return []byte{}, errors.New("invalid common.Address param")
+		}
+		return dest, nil
 	default:
 		return []byte(source), nil
 	}
@@ -343,7 +428,7 @@ type SolInput struct {
 func (s *SolInput) NewContractTypeFromJson(input []byte) error {
 	var err error
 	if err = json.Unmarshal(input, s); err != nil {
-		return errors.New("GenerateInputData sol json unmarshal error")
+		return fmt.Errorf("GenerateInputData sol json unmarshal error: %v", err.Error())
 	}
 	return err
 }
@@ -357,29 +442,29 @@ func (s *SolInput) GenerateInputData() ([]byte, error) {
 	for _, param := range s.FuncParams {
 		paramType, paramValue, err := SpliceParam(param)
 		if err != nil {
-			return nil, errors.New("sol SpliceParam error")
+			return nil, fmt.Errorf("sol SpliceParam error: %v", err.Error())
 		}
 		// parsing arg type
 		var argument Argument
 		if argument.Type, err = NewType(paramType); err != nil {
-			return nil, errors.New("sol NewType error")
+			return nil, fmt.Errorf("sol NewType error: %v", err.Error())
 		}
 		arguments = append(arguments, argument)
 
 		// parsing arg value
 		arg, err := SolInputTypeConversion(paramType, paramValue)
 		if err != nil {
-			return nil, errors.New("sol SolInputTypeConversion error")
+			return nil, fmt.Errorf("sol SolInputTypeConversion error: %v", err.Error())
 		}
 		args = append(args, arg)
 		paramTypes = append(paramTypes, paramType)
 	}
 	paramsBytes, err := arguments.Pack(args...)
 	if err != nil {
-		return nil, errors.New("pack args error")
+		return nil, fmt.Errorf("pack args error: %v", err.Error())
 	}
 	// sig func
-	inputBytes := crypto.Keccak256([]byte(Sig(s.FuncName, paramTypes)))[:4]
+	inputBytes := crypto.DefaultHasher.Hash256([]byte(Sig(s.FuncName, paramTypes)))[:4]
 	// append params byte stream
 	inputBytes = append(inputBytes, paramsBytes...)
 	return inputBytes, nil
@@ -522,7 +607,8 @@ func SolInputStringTOInt(v string, bitSize int, hasNotPrefixU bool) (interface{}
 	}
 }
 
-func ParseWasmCallSolInput(input []byte) ([]byte, error) {
+// ParseGovmWasmCallSolInput 重新组装 input 以支持 govm 和 wasm 调用 solidity 合约
+func ParseGovmWasmCallSolInput(input []byte) ([]byte, error) {
 	// Only used in compatibility mode
 	ptr := new(interface{})
 	err := rlp.Decode(bytes.NewReader(input), &ptr)
@@ -559,6 +645,57 @@ func ParseWasmCallSolInput(input []byte) ([]byte, error) {
 		FuncParams: params,
 	}
 	newInput, err := solInput.GenerateInputData()
+	if err != nil {
+		return input, err
+	}
+	return newInput, nil
+}
+
+func ParseWasmCallGovmInput(input []byte) ([]byte, error) {
+	// Only used in compatibility mode
+	ptr := new(interface{})
+	err := rlp.Decode(bytes.NewReader(input), &ptr)
+	if err != nil {
+		return input, err
+	}
+	rlpList := reflect.ValueOf(ptr).Elem().Interface()
+	if _, ok := rlpList.([]interface{}); !ok {
+		return input, fmt.Errorf("error input rlp data type")
+	}
+	iRlpList := rlpList.([]interface{})
+	if len(iRlpList) < 2 {
+		return input, fmt.Errorf("error input rlp data count")
+	}
+	var (
+		txType   int
+		funcName string
+		params   []string
+	)
+	t, ok := iRlpList[0].([]byte)
+	if !ok {
+		return input, fmt.Errorf("error input rlp data txType")
+	}
+	txType = byteutil.BytesToInt(t)
+
+	v, ok := iRlpList[1].([]byte)
+	if !ok {
+		return input, fmt.Errorf("error input rlp data funcname")
+	}
+	funcName = string(v)
+
+	for _, v := range iRlpList[2:] {
+		vv, ok := v.([]byte)
+		if !ok {
+			return input, fmt.Errorf("error input rlp data funcparams")
+		}
+		params = append(params, string(vv))
+	}
+	govmInput := GovmInput{
+		TxType:     txType,
+		FuncName:   funcName,
+		FuncParams: params,
+	}
+	newInput, err := govmInput.GenerateInputData()
 	if err != nil {
 		return input, err
 	}

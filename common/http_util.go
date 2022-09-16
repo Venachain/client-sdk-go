@@ -157,6 +157,6 @@ func rlpEncodeSignedTx(val interface{}) (string, error) {
 // Warning: if the design of the nonce mechanism is modified
 // this part should be modified as well
 func getNonceRand() uint64 {
-	rand.Seed(time.Now().Unix())
+	rand.Seed(time.Now().UnixNano())
 	return rand.Uint64()
 }

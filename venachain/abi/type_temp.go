@@ -1,9 +1,9 @@
 package abi
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math/big"
 	"reflect"
 	"strconv"
@@ -28,7 +28,7 @@ func BytesConverter(source []byte, t string) interface{} {
 	case "float128":
 		return common.CallResAsFloat128(source)
 	case "string", "int128_s", "uint128_s", "int256_s", "uint256_s":
-		source = bytes.TrimRight(source, "\x00")
+		// source = bytes.TrimRight(source, "\x00")
 		if len(source) < 64 {
 			return string(source[:])
 		} else {
@@ -102,8 +102,45 @@ func WasmArgToBytes(arg interface{}) []byte {
 	case reflect.String:
 		return []byte(arg.(string))
 	default:
-		panic("unsupported type")
+		return nil
+		//panic("unsupported type")
 	}
+}
+
+func GovmArgToBytes(source interface{}) ([]byte, error) {
+	switch dest := source.(type) {
+	case string:
+		return []byte(dest), nil
+	case int8:
+		return common.Int8ToBytes(dest), nil
+	case int16:
+		return common.Int16ToBytes(dest), nil
+	case int32:
+		return common.Int32ToBytes(dest), nil
+	case int64:
+		return common.Int64ToBytes(dest), nil
+	case int:
+		return common.Int64ToBytes(int64(dest)), nil
+	case uint8:
+		return common.Uint8ToBytes(dest), nil
+	case uint16:
+		return common.Uint16ToBytes(dest), nil
+	case uint32:
+		return common.Uint32ToBytes(dest), nil
+	case uint64:
+		return common.Uint64ToBytes(dest), nil
+	case uint:
+		return common.Uint64ToBytes(uint64(dest)), nil
+	case bool:
+		return common.BoolToBytes(dest), nil
+	case *big.Int:
+		return dest.Bytes(), nil
+	case common.Address:
+		return dest.Bytes(), nil
+	case []byte:
+		return dest, nil
+	}
+	return nil, errors.New(fmt.Sprintf("GovmArgToBytes function not support %v", source))
 }
 
 func StringConverterV2(source string, t string) ([]byte, error) {

@@ -11,7 +11,9 @@ import (
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
 	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	vena_common "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rpc"
 )
 
 type ContractClient struct {
@@ -37,6 +39,40 @@ func NewContractClient(ctx context.Context, url URL, keyfilePath, passphrase, co
 	}
 	contractClient := &ContractClient{
 		client,
+		&contractContent,
+		vmType,
+	}
+	return contractClient, nil
+}
+
+// NewContractClientWithAccount: 通过账户初始化合约客户端，可以不传keyfile文件，链上的账户签名
+// contract：合约abi 文件的位置或合约地址
+// vm： 虚拟机 evm 或 wasm，不传默认为wasm
+// address: 账户地址
+func NewContractClientWithAccount(ctx context.Context, url URL, contract, vmType, address string) (*ContractClient, error) {
+	err := packet.ParamValid(vmType, "VmType")
+	if err != nil {
+		return nil, err
+	}
+	endpoint := url.GetEndpoint()
+	rpcClient, err := rpc.DialContext(ctx, endpoint)
+	if err != nil {
+		return nil, err
+	}
+	key := keystore.Key{
+		Address: vena_common.HexToAddress(address),
+	}
+	client := Client{
+		RpcClient: rpcClient,
+		Key:       &key,
+		URL:       &url,
+	}
+	contractContent, err := GenContractContent(contract)
+	if err != nil {
+		return nil, err
+	}
+	contractClient := &ContractClient{
+		&client,
 		&contractContent,
 		vmType,
 	}
@@ -88,6 +124,26 @@ func (contractClient ContractClient) Deploy(ctx context.Context, abipath string,
 	if err != nil {
 		return nil, err
 	}
+	txParams, err := MakeTxparamForDeploy(dataGenerator, &contractClient.Key.Address)
+	if err != nil {
+		return nil, err
+	}
+	result, err := contractClient.MessageCall(ctx, dataGenerator, *txParams, contractClient.Key, sync)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// consParams 为solidyty 合约中constructor的相关参数
+func (contractClient ContractClient) DeployWithBytes(ctx context.Context, abiBytes []uint8, codeBytes []uint8, consParams []string, sync bool) (interface{}, error) {
+	// 构造dataGenerator
+	contractContent, err := packet.ParseAbiFromJson(abiBytes)
+	if err != nil {
+		return nil, err
+	}
+	dataGenerator := packet.NewDeployDataGen(contractContent)
+	dataGenerator.SetInterpreter(contractClient.VmType, abiBytes, codeBytes, nil, nil)
 	txParams, err := MakeTxparamForDeploy(dataGenerator, &contractClient.Key.Address)
 	if err != nil {
 		return nil, err

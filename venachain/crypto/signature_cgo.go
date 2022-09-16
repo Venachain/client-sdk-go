@@ -26,6 +26,7 @@ import (
 
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/secp256k1"
+	"github.com/tjfoc/gmsm/sm2"
 )
 
 // Ecrecover returns the uncompressed public key that created the given signature.
@@ -85,4 +86,8 @@ func CompressPubkey(pubkey *ecdsa.PublicKey) []byte {
 // S256 returns an instance of the secp256k1 curve.
 func S256() elliptic.Curve {
 	return secp256k1.S256()
+}
+
+func P256Sm2() elliptic.Curve {
+	return sm2.P256Sm2()
 }

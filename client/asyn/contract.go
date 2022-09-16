@@ -2,13 +2,14 @@ package asyn
 
 import (
 	"context"
+	"time"
+
 	rpcClient "git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
 	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
 	"github.com/gorilla/websocket"
-	"time"
 )
 
 type AsynContractClient struct {
@@ -72,7 +73,7 @@ func (asynContractClient AsynContractClient) SubNewHeads() {
 	message := []byte("{\"jsonrpc\":\"2.0\",\"method\":\"eth_subscribe\", \"params\": [\"newHeads\"],\"id\":\"subscription\"}")
 	err := asynContractClient.WsClient.Socket.WriteMessage(websocket.BinaryMessage, message)
 	if err != nil {
-		log.Error("error is %v", err)
+		log.Error("error is", err)
 	}
 	// 监听订阅到的消息
 	asynContractClient.WsReadMsg()
@@ -84,7 +85,7 @@ func (asynContractClient AsynContractClient) SubNewHeadsWithPing(tryGetClientInt
 	message := []byte("{\"jsonrpc\":\"2.0\",\"method\":\"eth_subscribe\", \"params\": [\"newHeads\"],\"id\":\"subscription\"}")
 	err := asynContractClient.WsClient.Socket.WriteMessage(websocket.BinaryMessage, message)
 	if err != nil {
-		log.Error("error is %v", err)
+		log.Error("error is", err)
 	}
 	ticker := time.NewTicker(time.Duration(tryGetClientInterval) * time.Millisecond)
 	for range ticker.C {
@@ -104,10 +105,10 @@ func (asynContractClient AsynContractClient) WsReadMsg() {
 		if err != nil || messageType == websocket.CloseMessage {
 			msg := []byte("CloseMessage")
 			asynContractClient.WsClient.Message <- msg
-			log.Error("error is%v", err)
+			log.Error("error is", err)
 			break
 		}
-		log.Info("sub message is %v", string(message))
+		log.Debug("sub message is ", string(message))
 		asynContractClient.WsClient.Message <- message
 	}
 }
@@ -190,13 +191,13 @@ func (asynContractClient AsynContractClient) GetTxsReceipt() {
 					blockHash, err := GetBlockHash(block)
 					//log.Debug("block hash %v", blockHash)
 					if err != nil {
-						log.Error("error:%v", err)
+						log.Error("error: ", err)
 						return
 					}
 					//log.Debug("txhash %v", txhash)
 					txReceipt, err := asynContractClient.queryTxInBlock(txhash, blockHash)
 					if err != nil {
-						log.Error("error:%v", err)
+						log.Error("error:", err)
 						return
 					}
 					if txReceipt != nil {
@@ -224,7 +225,7 @@ func (asynContractClient AsynContractClient) queryTxInBlock(transaction string, 
 	if exit {
 		res, err = asynContractClient.RpcContractClient.GetReceipt(transaction)
 		if err != nil {
-			log.Error("error %v", err)
+			log.Error("error ", err)
 			return nil, err
 		}
 	}
