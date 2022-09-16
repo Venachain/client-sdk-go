@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
+	"github.com/Venachain/client-sdk-go/venachain/bn256"
 )
 
 func TestEnc(t *testing.T) {

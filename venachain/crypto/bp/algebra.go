@@ -5,10 +5,10 @@ import (
 	"crypto/sha256"
 	"math/big"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/venachain/bn256"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
 
 	"github.com/pkg/errors"
 )

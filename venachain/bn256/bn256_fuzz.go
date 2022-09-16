@@ -11,8 +11,8 @@ import (
 	"bytes"
 	"math/big"
 
-	cloudflare "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
-	google "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
+	cloudflare "github.com/Venachain/client-sdk-go/venachain/bn256"
+	google "github.com/Venachain/client-sdk-go/venachain/bn256"
 )
 
 // FuzzAdd fuzzez bn256 addition between the Google and Cloudflare libraries.

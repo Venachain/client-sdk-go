@@ -3,8 +3,8 @@ package crypto
 import (
 	"math/big"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/bp"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/crypto/bp"
 )
 
 // 输入两个值和范围，生成proof

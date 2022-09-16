@@ -20,8 +20,8 @@ import (
 	"math/big"
 	"reflect"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/math"
 )
 
 var (

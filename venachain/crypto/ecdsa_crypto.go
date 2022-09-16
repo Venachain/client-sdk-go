@@ -9,9 +9,9 @@ import (
 	"math/big"
 	"os"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/secp256k1"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/crypto/secp256k1"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 // SHA3Hasher SHA3哈希实现

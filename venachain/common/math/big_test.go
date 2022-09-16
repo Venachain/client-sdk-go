@@ -22,7 +22,7 @@ import (
 	"math/big"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 func TestHexOrDecimal256(t *testing.T) {

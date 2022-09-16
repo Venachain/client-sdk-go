@@ -27,9 +27,9 @@ import (
 	"reflect"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/sha3"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/crypto/sha3"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 	"github.com/tjfoc/gmsm/sm3"
 )
 

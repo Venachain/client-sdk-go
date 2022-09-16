@@ -3,11 +3,11 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+	"github.com/Venachain/client-sdk-go/types"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
-	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/precompiled/syscontracts"
+	common_venachain "github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 type IClient interface {

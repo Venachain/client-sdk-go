@@ -12,9 +12,9 @@ import (
 	"math/big"
 	"os"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/math"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 	"github.com/tjfoc/gmsm/sm2"
 	"github.com/tjfoc/gmsm/sm3"
 )

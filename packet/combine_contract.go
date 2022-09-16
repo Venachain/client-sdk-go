@@ -3,9 +3,9 @@ package packet
 import (
 	"errors"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
-	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
+	common_plaone "github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 type RawData struct {

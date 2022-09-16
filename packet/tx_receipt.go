@@ -8,15 +8,15 @@ import (
 	"reflect"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+	"github.com/Venachain/client-sdk-go/types"
 
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/byteutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/byteutil"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 const (

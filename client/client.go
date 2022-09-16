@@ -7,11 +7,11 @@ import (
 	"io/ioutil"
 	"math/big"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rpc"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/types"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/venachain/rpc"
 )
 
 // Client 链 RPC 连接客户端

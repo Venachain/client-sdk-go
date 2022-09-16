@@ -1,10 +1,10 @@
 package client
 
 import (
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	vena_common "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/packet"
+	vena_common "github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
 )
 
 type ExecuteContract struct {

@@ -6,9 +6,9 @@ import (
 	"math/big"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
+	"github.com/Venachain/client-sdk-go/venachain/bn256"
 )
 
 func TestTfStatmentMarshal(t *testing.T) {

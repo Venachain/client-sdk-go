@@ -3,9 +3,9 @@ package client
 import (
 	"context"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
 )
 
 type CnsClient struct {

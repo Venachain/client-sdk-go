@@ -6,13 +6,13 @@ Venachain Go SDK是面向Go开发者，提供的Venachain联盟链的Go开发工
 
 ## SDK 下载
 
-请首先下载SDK最新版本的发布包，[下载地址](https://git-c.i.wxblockchain.com/vena/src/client-sdk-go)。
+请首先下载SDK最新版本的发布包，[下载地址](https://github.com/Venachain/client-sdk-go)。
 
 将发布包到本地目录，如下所示：
 
 ```shell
 # 下载
-git clone https://git-c.i.wxblockchain.com/vena/src/client-sdk-go.git
+git clone https://github.com/Venachain/client-sdk-go.git
 ```
 
 ## SDK 使用
@@ -21,15 +21,15 @@ git clone https://git-c.i.wxblockchain.com/vena/src/client-sdk-go.git
 
 ```go
 // 编辑go.mod 文件添加sdk 包
-require git-c.i.wxblockchain.com/vena/src/client-sdk-go v0.0.0-00010101000000-000000000000
-replace git-c.i.wxblockchain.com/vena/src/client-sdk-go => git clone 后sdk所在的文件路径
+require github.com/Venachain/client-sdk-go v0.0.0-00010101000000-000000000000
+replace github.com/Venachain/client-sdk-go => git clone 后sdk所在的文件路径
 ```
 
 ```go
 // 导入sdk包
 import (
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client/asyn"
+	"github.com/Venachain/client-sdk-go/client"
+	"github.com/Venachain/client-sdk-go/client/asyn"
 )
 ```
 

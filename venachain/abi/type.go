@@ -27,10 +27,10 @@ import (
 	"strconv"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/byteutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/byteutil"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 // Type enumerator

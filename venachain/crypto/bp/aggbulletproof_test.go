@@ -5,7 +5,7 @@ import (
 	"math/big"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
+	"github.com/Venachain/client-sdk-go/venachain/bn256"
 )
 
 func TestVectorCommitment_Commit(t *testing.T) {

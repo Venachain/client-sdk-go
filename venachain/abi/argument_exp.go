@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
 )
 
 type ArgumentMarshaling struct {

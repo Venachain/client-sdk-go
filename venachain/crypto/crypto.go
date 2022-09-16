@@ -27,9 +27,9 @@ import (
 	"math/big"
 	"os"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/sha3"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/math"
+	"github.com/Venachain/client-sdk-go/venachain/crypto/sha3"
 	"github.com/tjfoc/gmsm/sm2"
 )
 

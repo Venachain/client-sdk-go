@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 // BytesConverter converts the bytes to the specific data type

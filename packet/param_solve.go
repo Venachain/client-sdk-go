@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
-	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/vm"
+	"github.com/Venachain/client-sdk-go/log"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
+	common_venachain "github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/vm"
 )
 
 const defaultTxType = 2

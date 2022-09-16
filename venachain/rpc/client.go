@@ -34,7 +34,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/log"
 )
 
 var (

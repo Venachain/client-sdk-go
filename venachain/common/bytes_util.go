@@ -8,7 +8,7 @@ import (
 	"math/big"
 	"strconv"
 
-	math2 "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
+	math2 "github.com/Venachain/client-sdk-go/venachain/common/math"
 )
 
 func BytesCombine(pBytes ...[]byte) []byte {

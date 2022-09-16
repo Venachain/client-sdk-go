@@ -17,7 +17,7 @@
 package types
 
 import (
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 type DerivableList interface {

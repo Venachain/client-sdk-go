@@ -6,9 +6,9 @@ import (
 	"errors"
 	"math/big"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/bn256"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/bn256"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 type WithdrawStatement struct {

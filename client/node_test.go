@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/precompiled/syscontracts"
 	"github.com/stretchr/testify/assert"
 )
 

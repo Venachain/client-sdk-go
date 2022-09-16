@@ -25,8 +25,8 @@ import (
 	"errors"
 	"fmt"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/accounts"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/accounts"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
 
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/pbkdf2"

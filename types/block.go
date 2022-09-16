@@ -5,8 +5,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 // 记录有交易依赖关系的交易依赖情况

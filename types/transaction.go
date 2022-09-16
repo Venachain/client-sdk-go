@@ -24,12 +24,12 @@ import (
 	"math/big"
 	"sync/atomic"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto/sha3"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/crypto/sha3"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 	lru "github.com/hashicorp/golang-lru"
 )
 

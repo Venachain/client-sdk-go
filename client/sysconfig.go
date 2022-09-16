@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"strconv"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/vm"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/venachain/vm"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
 )
 
 const (

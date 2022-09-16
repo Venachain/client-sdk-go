@@ -10,8 +10,8 @@ import (
 	"strings"
 	"unsafe"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
 )
 
 // Type is the reflection of the supported argument type

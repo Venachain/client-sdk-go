@@ -30,7 +30,7 @@ import (
 	"strings"
 	"time"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/log"
 	mapset "github.com/deckarep/golang-set"
 	"golang.org/x/net/websocket"
 )

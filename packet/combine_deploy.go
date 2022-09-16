@@ -3,9 +3,9 @@ package packet
 import (
 	"encoding/json"
 	"errors"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
 )
 
 // DeployCall, used for combining the data of contract deployment

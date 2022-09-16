@@ -13,7 +13,7 @@ type Client struct {
 }
 ```
 
-在 `git-c.i.wxblockchain.com/vena/src/client-sdk-go/client` 包下:
+在 `github.com/Venachain/client-sdk-go/client` 包下:
 
 通用的Client 结构体包括RpcClient，可以继承 Venachian 中RpcClient 的方法，Passphrase 和 Key 为必须参数，URL 为要使用的 Venachian 的相关 IP 和 RPCPort。 其中提供了NewURL 函数来创建URL。
 
@@ -47,7 +47,7 @@ func NewClientWithKey(ctx context.Context, url URL, key *keystore.Key) (*Client,
 
 ## 使用方法: 同步获取交易回执
 
-在 `git-c.i.wxblockchain.com/vena/src/client-sdk-go/client` 包下:
+在 `github.com/Venachain/client-sdk-go/client` 包下:
 
 由于初始化keystore.Key 时会消耗一部分比较大的内存，因此在使用时建议使用单例模式，通过定义一个全局的DefaultContractClient变量去调用Client 的方法。或者可以调用`NewKey(KeyfilePath, Passphrase string)` 将key定义为全局变量，然后使用`NewClientWithKey`去构建Client。具体的使用方法如下：
 
@@ -257,7 +257,7 @@ func TestContractClient_Deploy(t *testing.T) {
 
 #### 1. 初始化异步合约客户端
 
-在`	git-c.i.wxblockchain.com/vena/src/client-sdk-go/client/asyn`包下.
+在`	github.com/Venachain/client-sdk-go/client/asyn`包下.
 
 异步获取receipt提供websocket 订阅区块头来为用户查询receipt的接口，sdk会在后台与链建立连接，订阅区块头的信息，再从区块hash中查找交易，再去查找交易的回执。
 
@@ -500,7 +500,7 @@ topic := "0x8cd284134f0437457b5542cb3a7da283d0c38208c497c5b4b005df47719f98a1"
 
 `example.go `中使用`gin`框架为后端实现写了一个例子。同时提供前端测试页 `ws_sub_test.html`。
 
-`"git-c.i.wxblockchain.com/vena/src/client-sdk-go/ws" `提供了`InitWsSubscriber`函数初始化`DefaultWSSubscriber`调用相关的函数。
+`"github.com/Venachain/client-sdk-go/ws" `提供了`InitWsSubscriber`函数初始化`DefaultWSSubscriber`调用相关的函数。
 
 ```go
 // 入参：

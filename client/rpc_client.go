@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"time"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
 )
 
 const (

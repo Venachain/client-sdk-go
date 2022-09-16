@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"reflect"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled/syscontracts"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/precompiled/syscontracts"
 )
 
 func ConvertBytesTo(input []byte, targetType string) reflect.Value {

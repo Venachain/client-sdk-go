@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	precompile "git-c.i.wxblockchain.com/vena/src/client-sdk-go/precompiled"
-	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/packet"
+	precompile "github.com/Venachain/client-sdk-go/precompiled"
+	common_venachain "github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
 )
 
 type FireWallClient struct {

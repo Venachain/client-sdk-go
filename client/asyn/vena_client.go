@@ -7,10 +7,10 @@ import (
 	"net/url"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+	"github.com/Venachain/client-sdk-go/client"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/types"
 	"github.com/gorilla/websocket"
 )
 

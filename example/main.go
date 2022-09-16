@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/ws"
+	"github.com/Venachain/client-sdk-go/ws"
 )
 
 // 以下为websocket 测试

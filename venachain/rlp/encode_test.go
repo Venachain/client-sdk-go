@@ -28,7 +28,7 @@ import (
 	"sync"
 	"testing"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
 )
 
 type testEncoder struct {

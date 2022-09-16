@@ -20,8 +20,8 @@ package accounts
 import (
 	"math/big"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
+	"github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/types"
 )
 
 // Account represents an Ethereum account located at a specific location defined

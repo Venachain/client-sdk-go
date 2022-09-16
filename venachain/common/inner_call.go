@@ -5,7 +5,7 @@ import (
 	"math"
 	"math/big"
 
-	math2 "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/math"
+	math2 "github.com/Venachain/client-sdk-go/venachain/common/math"
 )
 
 func CallResAsUint128(bts []byte) *big.Int {

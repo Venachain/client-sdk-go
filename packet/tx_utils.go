@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/abi"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/crypto"
+	"github.com/Venachain/client-sdk-go/venachain/abi"
+	"github.com/Venachain/client-sdk-go/venachain/crypto"
 )
 
 //

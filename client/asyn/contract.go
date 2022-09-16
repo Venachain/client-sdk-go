@@ -4,11 +4,11 @@ import (
 	"context"
 	"time"
 
-	rpcClient "git-c.i.wxblockchain.com/vena/src/client-sdk-go/client"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
+	rpcClient "github.com/Venachain/client-sdk-go/client"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/packet"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
 	"github.com/gorilla/websocket"
 )
 

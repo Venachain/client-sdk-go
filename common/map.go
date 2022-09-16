@@ -3,7 +3,7 @@ package common
 import (
 	"sync"
 
-	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
+	common_venachain "github.com/Venachain/client-sdk-go/venachain/common"
 )
 
 type HashMaps struct {

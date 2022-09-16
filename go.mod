@@ -1,4 +1,4 @@
-module git-c.i.wxblockchain.com/vena/src/client-sdk-go
+module github.com/Venachain/client-sdk-go
 
 go 1.16
 

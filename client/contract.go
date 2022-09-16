@@ -7,13 +7,13 @@ import (
 	"fmt"
 	"strings"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/log"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/packet"
-	common_plaone "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	vena_common "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rpc"
+	"github.com/Venachain/client-sdk-go/common"
+	"github.com/Venachain/client-sdk-go/log"
+	"github.com/Venachain/client-sdk-go/packet"
+	common_plaone "github.com/Venachain/client-sdk-go/venachain/common"
+	vena_common "github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/venachain/rpc"
 )
 
 type ContractClient struct {

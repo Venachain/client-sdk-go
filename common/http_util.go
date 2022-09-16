@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/types"
-	common_venachain "git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/common/hexutil"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/keystore"
-	"git-c.i.wxblockchain.com/vena/src/client-sdk-go/venachain/rlp"
+	"github.com/Venachain/client-sdk-go/types"
+	common_venachain "github.com/Venachain/client-sdk-go/venachain/common"
+	"github.com/Venachain/client-sdk-go/venachain/common/hexutil"
+	"github.com/Venachain/client-sdk-go/venachain/keystore"
+	"github.com/Venachain/client-sdk-go/venachain/rlp"
 )
 
 type JsonParam struct {
