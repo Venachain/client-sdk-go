@@ -108,7 +108,7 @@ func (asynContractClient AsynContractClient) WsReadMsg() {
 			log.Error("error is", err)
 			break
 		}
-		log.Info("sub message is ", string(message))
+		log.Debug("sub message is ", string(message))
 		asynContractClient.WsClient.Message <- message
 	}
 }
